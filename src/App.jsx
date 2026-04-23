@@ -21,6 +21,7 @@ import ShopPage        from "./pages/guest/ShopPage";
 import FavoritesPage   from "./pages/guest/FavoritesPage";
 import PortfolioPage   from "./pages/guest/PortfolioPage";
 import SellerDashboard from "./pages/seller/SellerDashboard";
+import RegisterShopPage from "./pages/seller/RegisterShopPage";
 import AdminDashboard  from "./pages/admin/AdminDashboard";
 
 
@@ -42,6 +43,7 @@ function App() {
             <Route path="/"              element={<HomePage />} />
             <Route path="/login"         element={<LoginPage />} />
             <Route path="/register"      element={<RegisterPage />} />
+            <Route path="/register-shop" element={<RegisterShopPage />} />
             <Route path="/shop/:shopId"  element={<ShopPage />} />
             <Route path="/favorites"     element={<FavoritesPage />} />
             <Route path="/portfolio"     element={<PortfolioPage />} />

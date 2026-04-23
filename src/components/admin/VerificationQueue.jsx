@@ -92,7 +92,7 @@ function VerificationQueue() {
     setBusy(seller.id);
     try {
       const batch = writeBatch(db);
-      batch.update(doc(db, "users", seller.id), { isApproved: true, status: "approved" });
+      batch.update(doc(db, "users", seller.id), { isApproved: true, status: "approved", role: "seller" });
       if (shop) batch.update(doc(db, "shops", shop.id), { isApproved: true });
       await batch.commit();
       showToast(t("toastApproveOk"), "success");
