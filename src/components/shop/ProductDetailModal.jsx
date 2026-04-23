@@ -38,6 +38,24 @@ function ProductDetailModal({ product, shop, onClose, dir }) {
   const waUrl    = toWAUrl(shop?.contactWhatsApp);
   const emailUrl = shop?.contactEmail ? `mailto:${shop.contactEmail}` : null;
 
+  const handleDownload = () => {
+    if (product?.productPicture) {
+      const link = document.createElement('a');
+      link.href = product.productPicture;
+      link.download = `${product.productName || 'product'}.jpg`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+
+  const handleAsk = () => {
+    if (waUrl && product) {
+      const message = encodeURIComponent(`مرحباً، أريد أن أسأل عن المنتج: ${product.productName}`);
+      window.open(`${waUrl}?text=${message}`, '_blank');
+    }
+  };
+
   return (
     <AnimatePresence>
       <motion.div
@@ -119,6 +137,20 @@ function ProductDetailModal({ product, shop, onClose, dir }) {
                   )}
                 </div>
               )}
+
+              {/* Additional actions */}
+              <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap", marginTop: "1rem" }}>
+                {product?.productPicture && (
+                  <button onClick={handleDownload} style={S.emailBtn}>
+                    ⬇️ {t("downloadImage")}
+                  </button>
+                )}
+                {waUrl && (
+                  <button onClick={handleAsk} style={S.waBtn}>
+                    💬 {t("askAboutProduct")}
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
