@@ -1,0 +1,218 @@
+/**
+ * components/home/ShopGrid.jsx
+ * Shop grid with:
+ *   • Featured shops first (isFeatured badge)
+ *   • Location filter via URL ?city= & ?area= params
+ *   • Text search via ?search= param
+ *   • Product count per shop
+ *   • Verified badge on all approved shops
+ */
+
+import { useState, useEffect, useMemo } from "react";
+import { motion }                        from "framer-motion";
+import { useTranslation }                from "react-i18next";
+import { useLocation, useNavigate }      from "react-router-dom";
+import {
+  collection, query, where, getDocs, getCountFromServer,
+} from "firebase/firestore";
+import { db }          from "../../firebase/config";
+import { useLanguage } from "../../context/LanguageContext";
+import GoldSpinner     from "../common/GoldSpinner";
+
+const GOLD = "#D4AF37";
+
+/* ── Fetch product count for a shop ─────────────────────────── */
+async function fetchProductCount(shopId) {
+  try {
+    const snap = await getCountFromServer(
+      query(collection(db, "products"), where("shopId", "==", shopId), where("isAvailable", "==", true))
+    );
+    return snap.data().count;
+  } catch { return 0; }
+}
+
+/* ── Shop Card ───────────────────────────────────────────────── */
+function ShopCard({ shop, index, productCount }) {
+  const { t }         = useTranslation();
+  const navigate      = useNavigate();
+  const [hov, setHov] = useState(false);
+
+  const goToShop = () => {
+    console.log("Card clicked, navigating to:", `/shop/${shop.id}`);
+    // Primary: React Router navigation
+    navigate(`/shop/${shop.id}`);
+    // Fallback: hard navigation in case router context has any issue
+    // (remove this line once confirmed working)
+    // window.location.href = `/shop/${shop.id}`;
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.38, delay: index * 0.07 }}
+      onClick={goToShop}
+      style={{
+        backgroundColor: hov ? "#506070" : "#455A64",
+        border:          `1px solid ${hov ? GOLD : "rgba(212,175,55,0.2)"}`,
+        borderRadius:    "16px",
+        padding:         "1.25rem",
+        cursor:          "pointer",
+        transition:      "background-color 0.2s, border-color 0.2s",
+        fontFamily:      "'Tajawal', sans-serif",
+        boxShadow:       hov ? "0 6px 24px rgba(212,175,55,0.15)" : "0 2px 12px rgba(0,0,0,0.2)",
+        position:        "relative",
+        overflow:        "hidden",
+      }}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+    >
+      {/* Featured badge */}
+      {shop.isFeatured && (
+        <div style={{ position: "absolute", top: "10px", insetInlineEnd: "10px", backgroundColor: GOLD, color: "#263238", borderRadius: "20px", padding: "2px 10px", fontSize: "0.72rem", fontWeight: 800, pointerEvents: "none" }}>
+          ⭐ {t("shopFeatured")}
+        </div>
+      )}
+
+      {/* Avatar */}
+      <div style={{ width: "48px", height: "48px", borderRadius: "12px", backgroundColor: "rgba(212,175,55,0.15)", border: "1.5px solid rgba(212,175,55,0.35)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.3rem", fontWeight: 800, color: GOLD, marginBottom: "0.85rem", pointerEvents: "none" }}>
+        {(shop.shopName || "?").charAt(0).toUpperCase()}
+      </div>
+
+      {/* Name */}
+      <p style={{ fontSize: "1rem", fontWeight: 700, color: "#FFFFFF", margin: "0 0 0.3rem", pointerEvents: "none" }}>{shop.shopName}</p>
+
+      {/* Location */}
+      <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.55)", margin: "0 0 0.5rem", pointerEvents: "none" }}>
+        📍 {shop.shopCity}{shop.shopArea ? ` · ${shop.shopArea}` : ""}
+      </p>
+
+      {/* Product count */}
+      {productCount !== undefined && (
+        <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.4)", margin: "0 0 0.75rem", pointerEvents: "none" }}>
+          💎 {productCount} {t("shopProductsCount")}
+        </p>
+      )}
+
+      {/* Badges */}
+      <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "0.9rem", pointerEvents: "none" }}>
+        {shop.isApproved && (
+          <span style={{ backgroundColor: "rgba(212,175,55,0.12)", color: GOLD, border: "1px solid rgba(212,175,55,0.3)", borderRadius: "20px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 700 }}>
+            ✓ {t("shopVerified")}
+          </span>
+        )}
+      </div>
+
+      {/* CTA button — explicit onClick with stopPropagation */}
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          console.log("Button clicked, navigating to:", `/shop/${shop.id}`);
+          navigate(`/shop/${shop.id}`);
+        }}
+        style={{ width: "100%", padding: "0.55rem", backgroundColor: hov ? "#FFD700" : "transparent", border: `1.5px solid ${hov ? "#FFD700" : "rgba(212,175,55,0.4)"}`, borderRadius: "9px", color: hov ? "#263238" : GOLD, fontFamily: "'Tajawal', sans-serif", fontSize: "0.88rem", fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}
+      >
+        {t("shopViewCollection")}
+      </button>
+    </motion.div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SHOP GRID
+   ══════════════════════════════════════════════════════════════ */
+function ShopGrid() {
+  const { t }        = useTranslation();
+  const { language } = useLanguage();
+  const location     = useLocation();
+  const dir          = language === "ar" ? "rtl" : "ltr";
+
+  // Read URL params
+  const params      = new URLSearchParams(location.search);
+  const cityFilter  = params.get("city")   || "";
+  const areaFilter  = params.get("area")   || "";
+  const searchQuery = params.get("search") || "";
+
+  const [allShops,     setAllShops]     = useState([]);
+  const [productCounts,setProductCounts]= useState({});
+  const [loading,      setLoading]      = useState(true);
+  const [error,        setError]        = useState("");
+
+  /* ── Fetch all approved shops once ─────────────────────── */
+  useEffect(() => {
+    const fetchShops = async () => {
+      setLoading(true); setError("");
+      try {
+        const q    = query(collection(db, "shops"), where("isApproved", "==", true));
+        const snap = await getDocs(q);
+        const raw  = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        // Featured first
+        const featured = raw.filter((s) => s.isFeatured);
+        const rest     = raw.filter((s) => !s.isFeatured);
+        const ordered  = [...featured, ...rest];
+        setAllShops(ordered);
+
+        // Fetch product counts in parallel
+        const counts = {};
+        await Promise.all(ordered.map(async (shop) => {
+          counts[shop.id] = await fetchProductCount(shop.id);
+        }));
+        setProductCounts(counts);
+      } catch (e) {
+        console.error("[ShopGrid]", e);
+        setError(t("errorLoadingShops"));
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchShops();
+  }, []); // fetch once — filter client-side
+
+  /* ── Client-side filter ─────────────────────────────────── */
+  const displayed = useMemo(() => {
+    let list = [...allShops];
+    if (cityFilter)   list = list.filter((s) => s.shopCity === cityFilter);
+    if (areaFilter)   list = list.filter((s) => s.shopArea === areaFilter);
+    if (searchQuery)  list = list.filter((s) => (s.shopName || "").toLowerCase().includes(searchQuery.toLowerCase()) || (s.shopArea || "").toLowerCase().includes(searchQuery.toLowerCase()));
+    return list;
+  }, [allShops, cityFilter, areaFilter, searchQuery]);
+
+  return (
+    <section style={{ padding: "1.5rem 1.5rem 2.5rem", fontFamily: "'Tajawal', sans-serif" }} dir={dir}>
+      {/* Section header */}
+      <div style={{ marginBottom: "1.75rem", textAlign: "center" }}>
+        <h2 style={{ fontSize: "clamp(1.3rem,3vw,1.75rem)", fontWeight: 800, color: "#FFFFFF", margin: "0 0 0.4rem" }}>
+          {cityFilter ? `🏙️ ${cityFilter}${areaFilter ? ` · ${areaFilter}` : ""}` : t("shopsTitle")}
+        </h2>
+        <p style={{ fontSize: "0.95rem", color: "rgba(255,255,255,0.55)", margin: 0 }}>{t("shopsSubtitle")}</p>
+        <div style={{ width: "48px", height: "3px", backgroundColor: GOLD, borderRadius: "2px", margin: "0.9rem auto 0" }} />
+      </div>
+
+      {loading && (
+        <div style={{ display: "flex", justifyContent: "center", padding: "3rem" }}>
+          <GoldSpinner fullScreen={false} size={52} />
+        </div>
+      )}
+
+      {error && <p style={{ color: "#FCA5A5", textAlign: "center" }}>{error}</p>}
+
+      {!loading && !error && displayed.length === 0 && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: "center", padding: "3rem 1rem" }}>
+          <div style={{ fontSize: "3rem", marginBottom: "0.75rem" }}>🏪</div>
+          <h3 style={{ color: "#FFFFFF", margin: "0 0 0.5rem", fontSize: "1.1rem" }}>{t("shopsEmpty")}</h3>
+          <p style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.9rem" }}>{t("shopsEmptyDesc")}</p>
+        </motion.div>
+      )}
+
+      {!loading && !error && displayed.length > 0 && (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1.25rem", maxWidth: "1200px", margin: "0 auto" }}>
+          {displayed.map((shop, i) => (
+            <ShopCard key={shop.id} shop={shop} index={i} productCount={productCounts[shop.id]} />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
+export default ShopGrid;
