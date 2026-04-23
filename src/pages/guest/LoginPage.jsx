@@ -1,13 +1,7 @@
 /**
  * pages/guest/LoginPage.jsx
  * Firebase-authenticated login page for DahabNow.
- *
- * Flow:
- *   1. User submits email + password
- *   2. Firebase Auth signInWithEmailAndPassword
- *   3. Read role from Firestore /users/{uid}
- *   4. Redirect:  admin → /admin | seller → /seller | unknown → /register
- *   5. Show bilingual error on wrong credentials
+ * Visuals updated to match topographic gold design.
  */
 
 import { useState } from "react";
@@ -18,7 +12,6 @@ import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db, googleProvider } from "../../firebase/config";
 import { useLanguage }               from "../../context/LanguageContext";
-import DahabNowLogo                  from "../../components/common/DahabNowLogo";
 import ForgotPassword                from "../../components/common/ForgotPassword";
 import GoldSpinner                   from "../../components/common/GoldSpinner";
 
@@ -43,6 +36,20 @@ const S = {
   page: {
     minHeight:       "100vh",
     backgroundColor: "#263238",
+    backgroundImage: `repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(212,175,55,0.04) 40px,
+      rgba(212,175,55,0.04) 41px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 40px,
+      rgba(212,175,55,0.06) 40px,
+      rgba(212,175,55,0.06) 41px
+    )`,
     display:         "flex",
     alignItems:      "center",
     justifyContent:  "center",
@@ -51,30 +58,30 @@ const S = {
   },
   card: {
     backgroundColor: "#455A64",
-    borderRadius:    "20px",
+    borderRadius:    "16px",
     border:          "1.5px solid #D4AF37",
-    padding:         "2.5rem 2rem",
+    padding:         "2.5rem",
     width:           "100%",
-    maxWidth:        "440px",
-    boxShadow:       "0 8px 48px rgba(0,0,0,0.45)",
+    maxWidth:        "420px",
+    boxShadow:       "0 16px 48px rgba(0,0,0,0.6)",
   },
   logoWrap: {
     display:        "flex",
     flexDirection:  "column",
     alignItems:     "center",
-    gap:            "10px",
-    marginBottom:   "1.75rem",
+    gap:            "8px",
+    marginBottom:   "1.5rem",
   },
   appName: {
-    fontSize:    "1.1rem",
-    fontWeight:  700,
+    fontSize:    "1.2rem",
+    fontWeight:  800,
     color:       "#D4AF37",
-    letterSpacing: "0.04em",
+    letterSpacing: "0.02em",
     margin:      0,
   },
   title: {
-    fontSize:     "1.45rem",
-    fontWeight:   700,
+    fontSize:     "1.4rem",
+    fontWeight:   800,
     color:        "#FFFFFF",
     textAlign:    "center",
     marginBottom: "1.75rem",
@@ -82,21 +89,21 @@ const S = {
   },
   label: {
     display:       "block",
-    fontSize:      "0.88rem",
-    fontWeight:    600,
-    color:         "rgba(255,255,255,0.8)",
+    fontSize:      "0.85rem",
+    fontWeight:    700,
+    color:         "#D4AF37",
     marginBottom:  "0.4rem",
   },
   inputWrap: {
     position:      "relative",
-    marginBottom:  "1.1rem",
+    marginBottom:  "1.25rem",
   },
   input: {
     width:           "100%",
-    padding:         "0.78rem 1rem",
-    backgroundColor: "rgba(38,50,56,0.75)",
-    border:          "1.5px solid rgba(212,175,55,0.35)",
-    borderRadius:    "10px",
+    padding:         "0.85rem 1rem",
+    backgroundColor: "rgba(38,50,56,0.5)",
+    border:          "1px solid rgba(255,255,255,0.2)",
+    borderRadius:    "8px",
     color:           "#FFFFFF",
     fontFamily:      "'Tajawal', sans-serif",
     fontSize:        "0.95rem",
@@ -115,10 +122,9 @@ const S = {
     border:          "none",
     color:           "#D4AF37",
     cursor:          "pointer",
-    fontSize:        "0.82rem",
+    fontSize:        "1.1rem",
     fontFamily:      "'Tajawal', sans-serif",
-    fontWeight:      600,
-    padding:         "0 0.75rem",
+    padding:         "0 1rem",
   },
   ctaBtn: {
     width:           "100%",
@@ -126,19 +132,19 @@ const S = {
     backgroundColor: "#FFD700",
     color:           "#263238",
     border:          "none",
-    borderRadius:    "12px",
+    borderRadius:    "8px",
     fontFamily:      "'Tajawal', sans-serif",
     fontSize:        "1rem",
     fontWeight:      800,
     cursor:          "pointer",
     marginTop:       "0.5rem",
-    letterSpacing:   "0.07em",
+    letterSpacing:   "0.05em",
     transition:      "opacity 0.2s, transform 0.15s",
   },
   errorBox: {
     backgroundColor: "rgba(239,68,68,0.12)",
     border:          "1px solid rgba(239,68,68,0.45)",
-    borderRadius:    "10px",
+    borderRadius:    "8px",
     padding:         "0.7rem 1rem",
     color:           "#FCA5A5",
     fontSize:        "0.88rem",
@@ -147,35 +153,32 @@ const S = {
   },
   footer: {
     textAlign:  "center",
-    marginTop:  "1.4rem",
+    marginTop:  "1.2rem",
     fontSize:   "0.9rem",
-    color:      "rgba(255,255,255,0.65)",
+    color:      "rgba(255,255,255,0.7)",
   },
   link: {
     color:          "#D4AF37",
     fontWeight:     700,
     textDecoration: "none",
-    marginInlineStart: "0.3rem",
+    marginInlineStart: "0.4rem",
   },
   forgotLink: {
     display:        "block",
-    textAlign:      "end",
+    textAlign:      "start", // aligned left / start
     color:          "#D4AF37",
-    fontSize:       "0.87rem",
+    fontSize:       "0.85rem",
     fontWeight:     600,
     cursor:         "pointer",
     background:     "none",
     border:         "none",
     fontFamily:     "'Tajawal', sans-serif",
     padding:        0,
-    marginTop:      "0.1rem",
-    marginBottom:   "1.1rem",
+    marginBottom:   "1.25rem",
   },
   divider: {
-    height:          "1.5px",
-    backgroundColor: "rgba(212,175,55,0.2)",
-    margin:          "1.5rem 0",
-    borderRadius:    "1px",
+    height:          "1px",
+    backgroundColor: "rgba(255,255,255,0.1)",
   },
 };
 
@@ -294,19 +297,24 @@ function LoginPage() {
       >
         {/* ── Card ─────────────────────────────────────────── */}
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
           style={S.card}
         >
           {/* Logo */}
           <div style={S.logoWrap}>
-            <DahabNowLogo size={56} />
+            <svg width="48" height="48" viewBox="0 0 40 40" fill="none">
+              <path d="M15 20C15 14.477 19.477 10 25 10C30.523 10 35 14.477 35 20C35 25.523 30.523 30 25 30"
+                stroke="#D4AF37" strokeWidth="3" strokeLinecap="round"/>
+              <path d="M25 20C25 25.523 20.523 30 15 30C9.477 30 5 25.523 5 20C5 14.477 9.477 10 15 10"
+                stroke="#D4AF37" strokeWidth="3" strokeLinecap="round"/>
+            </svg>
             <p style={S.appName}>DahabNow</p>
           </div>
 
           {/* Title */}
-          <h1 style={{ ...S.title, marginBottom: "1.5rem" }}>
+          <h1 style={{ ...S.title, marginBottom: "2rem" }}>
             {t("loginTitle")}
           </h1>
 
@@ -361,7 +369,7 @@ function LoginPage() {
                   onBlur={()  => setPwFocused(false)}
                   style={{
                     ...S.input,
-                    paddingInlineEnd: "4.5rem",
+                    paddingInlineEnd: "3.5rem",
                     ...(pwFocused ? S.inputFocused : {}),
                   }}
                   autoComplete="current-password"
@@ -377,7 +385,7 @@ function LoginPage() {
                   }}
                   aria-label={showPassword ? t("hidePassword") : t("showPassword")}
                 >
-                  {showPassword ? t("hidePassword") : t("showPassword")}
+                  {showPassword ? "🙈" : "👁️"}
                 </button>
               </div>
             </div>
@@ -404,32 +412,35 @@ function LoginPage() {
           </form>
 
           {/* Divider */}
-          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", margin: "1rem 0" }}>
-            <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255,255,255,0.15)" }} />
+          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", margin: "1.5rem 0" }}>
+            <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255,255,255,0.1)" }} />
             <span style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.4)", whiteSpace: "nowrap" }}>
               {t("orAuthorizeWith")}
             </span>
-            <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255,255,255,0.15)" }} />
+            <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(255,255,255,0.1)" }} />
           </div>
 
           {/* Google button */}
           <button onClick={handleGoogleLogin} style={{
             width: "100%",
             padding: "0.75rem",
-            backgroundColor: "rgba(255,255,255,0.05)",
-            border: "1.5px solid rgba(255,255,255,0.2)",
-            borderRadius: "10px",
+            backgroundColor: "transparent",
+            border: "1px solid rgba(255,255,255,0.2)",
+            borderRadius: "8px",
             color: "#FFFFFF",
             fontFamily: "'Tajawal', sans-serif",
             fontSize: "0.95rem",
-            fontWeight: 600,
+            fontWeight: 700,
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             gap: "0.75rem",
             transition: "all 0.2s",
-          }}>
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.05)" }}
+          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent" }}
+          >
             {/* Google SVG icon */}
             <svg width="20" height="20" viewBox="0 0 48 48">
               <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
@@ -440,9 +451,6 @@ function LoginPage() {
             </svg>
             {t("continueWithGoogle")}
           </button>
-
-          {/* Divider */}
-          <div style={S.divider} />
 
           {/* Sign-up link */}
           <p style={S.footer}>
