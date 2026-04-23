@@ -8,6 +8,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { useLanguage }    from "../../context/LanguageContext";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { useLiveGoldPrice } from "../../hooks/useLiveGoldPrice";
@@ -231,6 +232,7 @@ function ServiceBox({ icon, titleKey, descKey, ctaKey, onClick, comingSoon }) {
 /* ── Services Hub ── */
 function ServicesHub() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { language } = useLanguage();
   const dir = language === "ar" ? "rtl" : "ltr";
   const [modal, setModal] = useState(null);
@@ -245,7 +247,7 @@ function ServicesHub() {
       <div style={{ display: "flex", gap: "1.25rem", flexWrap: "wrap", maxWidth: "900px", margin: "0 auto" }}>
         <ServiceBox icon="📊" titleKey="servicePriceChartTitle" descKey="servicePriceChartDesc" ctaKey="serviceOpenChart"  onClick={() => setModal("chart")} />
         <ServiceBox icon="🕌" titleKey="serviceZakatTitle"      descKey="serviceZakatDesc"      ctaKey="serviceCalculate" onClick={() => setModal("zakat")} />
-        <ServiceBox icon="💼" titleKey="servicePortfolioTitle"  descKey="servicePortfolioDesc"  ctaKey="serviceOpenChart" comingSoon />
+        <ServiceBox icon="💼" titleKey="servicePortfolioTitle"  descKey="servicePortfolioDesc"  ctaKey="serviceCreatePortfolio" onClick={() => navigate("/portfolio")} />
       </div>
       <AnimatePresence>
         {modal === "chart" && <ChartModal key="chart" onClose={() => setModal(null)} dir={dir} />}
