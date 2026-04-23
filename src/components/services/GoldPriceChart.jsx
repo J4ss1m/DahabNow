@@ -33,12 +33,26 @@ const closeBtn = { position: "absolute", top: "1rem", insetInlineEnd: "1rem", ba
 
 function ModalWrap({ onClose, children, wide }) {
   return (
-    <>
-      <motion.div key="bg" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={overlay} onClick={onClose} />
-      <motion.div key="mm" initial={{ opacity: 0, scale: 0.88 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.88 }} transition={{ duration: 0.27, ease: [0.34, 1.2, 0.64, 1] }} style={{ ...overlay, backgroundColor: "transparent" }} onClick={e => e.stopPropagation()}>
-        <div style={{ ...modal, maxWidth: wide ? "680px" : "540px" }}>{children}</div>
+    <motion.div
+      key="bg"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      style={overlay}
+      onClick={onClose}
+    >
+      <motion.div
+        key="mm"
+        initial={{ opacity: 0, scale: 0.88 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.88 }}
+        transition={{ duration: 0.27, ease: [0.34, 1.2, 0.64, 1] }}
+        onClick={(e) => e.stopPropagation()}
+        style={{ ...modal, maxWidth: wide ? "680px" : "540px" }}
+      >
+        {children}
       </motion.div>
-    </>
+    </motion.div>
   );
 }
 

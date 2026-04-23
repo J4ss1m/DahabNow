@@ -65,95 +65,95 @@ function ProductDetailModal({ product, shop, onClose, dir }) {
         exit={{ opacity: 0 }}
         style={S.overlay}
         onClick={onClose}
-      />
-      <motion.div
-        key="pd-modal"
-        initial={{ opacity: 0, scale: 0.88 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.88 }}
-        transition={{ duration: 0.28, ease: [0.34, 1.2, 0.64, 1] }}
-        style={{ ...S.overlay, backgroundColor: "transparent" }}
-        onClick={(e) => e.stopPropagation()}
       >
-        <div style={S.modal} dir={dir}>
-          {/* Close */}
-          <button style={S.closeBtn} onClick={onClose}>✕</button>
+        <motion.div
+          key="pd-modal"
+          initial={{ opacity: 0, scale: 0.88 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.88 }}
+          transition={{ duration: 0.28, ease: [0.34, 1.2, 0.64, 1] }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div style={S.modal} dir={dir}>
+            {/* Close */}
+            <button style={S.closeBtn} onClick={onClose}>✕</button>
 
-          <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
-            {/* Image */}
-            <div style={{ flex: "0 0 300px", minHeight: "280px", backgroundColor: "rgba(38,50,56,0.5)" }}>
-              {product.productPicture
-                ? <img src={product.productPicture} alt={product.productName} style={S.img} />
-                : <div style={S.imgPlaceholder}>💎</div>
-              }
-            </div>
-
-            {/* Details */}
-            <div style={{ flex: 1, minWidth: "260px", padding: "1.75rem" }}>
-              {/* Karat + availability */}
-              <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "0.75rem" }}>
-                <span style={S.karatBadge}>{product.karat}K</span>
-                <span style={{ ...S.karatBadge, backgroundColor: product.isAvailable ? "rgba(74,222,128,0.12)" : "rgba(239,68,68,0.12)", color: product.isAvailable ? "#4ADE80" : "#FCA5A5", border: `1px solid ${product.isAvailable ? "rgba(74,222,128,0.3)" : "rgba(239,68,68,0.3)"}` }}>
-                  {product.isAvailable ? t("productAvailableStatus") : t("productUnavailableStatus")}
-                </span>
+            <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
+              {/* Image */}
+              <div style={{ flex: "0 0 300px", minHeight: "280px", backgroundColor: "rgba(38,50,56,0.5)" }}>
+                {product.productPicture
+                  ? <img src={product.productPicture} alt={product.productName} style={S.img} />
+                  : <div style={S.imgPlaceholder}>💎</div>
+                }
               </div>
 
-              {/* Name */}
-              <h2 style={{ fontSize: "1.3rem", fontWeight: 800, color: "#FFFFFF", margin: "0 0 0.5rem" }}>
-                {product.productName}
-              </h2>
+              {/* Details */}
+              <div style={{ flex: 1, minWidth: "260px", padding: "1.75rem" }}>
+                {/* Karat + availability */}
+                <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "0.75rem" }}>
+                  <span style={S.karatBadge}>{product.karat}K</span>
+                  <span style={{ ...S.karatBadge, backgroundColor: product.isAvailable ? "rgba(74,222,128,0.12)" : "rgba(239,68,68,0.12)", color: product.isAvailable ? "#4ADE80" : "#FCA5A5", border: `1px solid ${product.isAvailable ? "rgba(74,222,128,0.3)" : "rgba(239,68,68,0.3)"}` }}>
+                    {product.isAvailable ? t("productAvailableStatus") : t("productUnavailableStatus")}
+                  </span>
+                </div>
 
-              {/* Weight */}
-              <div style={{ marginBottom: "1rem" }}>
-                <div style={S.label}>{t("productWeight")}</div>
-                <div style={S.value}>{product.weight}g</div>
-              </div>
+                {/* Name */}
+                <h2 style={{ fontSize: "1.3rem", fontWeight: 800, color: "#FFFFFF", margin: "0 0 0.5rem" }}>
+                  {product.productName}
+                </h2>
 
-              {/* Description */}
-              {product.productDescription && (
+                {/* Weight */}
                 <div style={{ marginBottom: "1rem" }}>
-                  <div style={S.label}>{t("productDescription")}</div>
-                  <div style={{ ...S.value, color: "rgba(255,255,255,0.75)", lineHeight: 1.55, fontSize: "0.92rem" }}>
-                    {product.productDescription}
+                  <div style={S.label}>{t("productWeight")}</div>
+                  <div style={S.value}>{product.weight}g</div>
+                </div>
+
+                {/* Description */}
+                {product.productDescription && (
+                  <div style={{ marginBottom: "1rem" }}>
+                    <div style={S.label}>{t("productDescription")}</div>
+                    <div style={{ ...S.value, color: "rgba(255,255,255,0.75)", lineHeight: 1.55, fontSize: "0.92rem" }}>
+                      {product.productDescription}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* Price note */}
-              <div style={S.priceNote}>💡 {t("productPriceNote")}</div>
+                {/* Price note */}
+                <div style={S.priceNote}>💡 {t("productPriceNote")}</div>
 
-              {/* Contact buttons */}
-              {(waUrl || emailUrl) && (
-                <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap", marginTop: "1.25rem" }}>
+                {/* Contact buttons */}
+                {(waUrl || emailUrl) && (
+                  <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap", marginTop: "1.25rem" }}>
+                    {waUrl && (
+                      <a href={waUrl} target="_blank" rel="noreferrer" style={S.waBtn}>
+                        📱 {t("shopContactWhatsApp")}
+                      </a>
+                    )}
+                    {emailUrl && (
+                      <a href={emailUrl} style={S.emailBtn}>
+                        ✉️ {t("shopContactEmail")}
+                      </a>
+                    )}
+                  </div>
+                )}
+
+                {/* Additional actions */}
+                <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap", marginTop: "1rem" }}>
+                  {product?.productPicture && (
+                    <button onClick={handleDownload} style={S.emailBtn}>
+                      ⬇️ {t("downloadImage")}
+                    </button>
+                  )}
                   {waUrl && (
-                    <a href={waUrl} target="_blank" rel="noreferrer" style={S.waBtn}>
-                      📱 {t("shopContactWhatsApp")}
-                    </a>
-                  )}
-                  {emailUrl && (
-                    <a href={emailUrl} style={S.emailBtn}>
-                      ✉️ {t("shopContactEmail")}
-                    </a>
+                    <button onClick={handleAsk} style={S.waBtn}>
+                      💬 {t("askAboutProduct")}
+                    </button>
                   )}
                 </div>
-              )}
-
-              {/* Additional actions */}
-              <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap", marginTop: "1rem" }}>
-                {product?.productPicture && (
-                  <button onClick={handleDownload} style={S.emailBtn}>
-                    ⬇️ {t("downloadImage")}
-                  </button>
-                )}
-                {waUrl && (
-                  <button onClick={handleAsk} style={S.waBtn}>
-                    💬 {t("askAboutProduct")}
-                  </button>
-                )}
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </motion.div>
     </AnimatePresence>
   );
