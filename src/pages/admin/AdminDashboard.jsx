@@ -34,12 +34,16 @@ const GOLD = "#D4AF37";
 /* ── Sidebar ─────────────────────────────────────────────────── */
 function Sidebar({ activeTab, onSelect, dir }) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   return (
     <aside style={{ width: "220px", flexShrink: 0, backgroundColor: CARD, borderInlineEnd: "1px solid rgba(212,175,55,0.2)", display: "flex", flexDirection: "column", padding: "1.5rem 0", fontFamily: "'Tajawal', sans-serif", minHeight: "100%" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "0 1.25rem 1.5rem" }}>
+      <button onClick={() => navigate("/")} style={{ display: "flex", alignItems: "center", gap: "8px", padding: "0 1.25rem 1.5rem", background: "none", border: "none", color: "inherit", cursor: "pointer" }}>
         <DahabNowLogo size={28} />
         <span style={{ color: GOLD, fontWeight: 800, fontSize: "0.95rem" }}>DahabNow</span>
-      </div>
+      </button>
+      <button onClick={() => navigate("/")} style={{ display: "flex", alignItems: "center", gap: "8px", margin: "0 1.25rem 1rem", padding: "0.65rem 0.85rem", backgroundColor: "rgba(212,175,55,0.08)", border: "1px solid rgba(212,175,55,0.25)", borderRadius: "14px", color: GOLD, fontWeight: 700, cursor: "pointer", fontFamily: "'Tajawal', sans-serif" }}>
+        🏠 {t("headerHome")}
+      </button>
       <p style={{ fontSize: "0.7rem", fontWeight: 700, color: "rgba(255,255,255,0.4)", letterSpacing: "0.1em", textTransform: "uppercase", padding: "0 1.25rem", marginBottom: "0.5rem" }}>
         {t("adminDashboard")}
       </p>

@@ -81,6 +81,9 @@
   "headerNotifications": "Notifications",
   "headerFavorites": "Favorites",
   "headerDashboard": "Dashboard",
+  "headerMyDashboard": "My Dashboard",
+  "headerAdminPanel": "Admin Panel",
+  "headerHome": "Home",
   "headerProfile": "Profile Settings",
   "headerMyPortfolio": "My Portfolio",
   "headerNoNotifications": "No new notifications",
@@ -434,5 +437,6 @@
   "home": "Home",
   "viewShop": "View Shop",
   "adSlideLabel": "Featured Ad",
-  "goldPriceUnit": "Price per gram (SAR) — 24K"
+  "goldPriceUnit": "Price per gram (SAR) — 24K",
+  "goldPriceSubtitle": "Price per gram (SAR) — {{karat}}K"
 }

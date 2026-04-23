@@ -75,8 +75,12 @@ function ShopCard({ shop, index, productCount }) {
       )}
 
       {/* Avatar */}
-      <div style={{ width: "48px", height: "48px", borderRadius: "12px", backgroundColor: "rgba(212,175,55,0.15)", border: "1.5px solid rgba(212,175,55,0.35)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.3rem", fontWeight: 800, color: GOLD, marginBottom: "0.85rem", pointerEvents: "none" }}>
-        {(shop.shopName || "?").charAt(0).toUpperCase()}
+      <div style={{ width: "48px", height: "48px", borderRadius: "12px", backgroundColor: "rgba(212,175,55,0.15)", border: "1.5px solid rgba(212,175,55,0.35)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.3rem", fontWeight: 800, color: GOLD, marginBottom: "0.85rem", pointerEvents: "none", overflow: "hidden" }}>
+        {shop.shopPicture ? (
+          <img src={shop.shopPicture} alt={shop.shopName} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        ) : (
+          (shop.shopName || "?").charAt(0).toUpperCase()
+        )}
       </div>
 
       {/* Name */}

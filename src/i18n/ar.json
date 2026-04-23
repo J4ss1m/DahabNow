@@ -434,5 +434,6 @@
   "home": "الرئيسية",
   "viewShop": "عرض المحل",
   "adSlideLabel": "إعلان مميز",
-  "goldPriceUnit": "السعر لكل غرام (ريال) — 24 قيراط"
+  "goldPriceUnit": "السعر لكل غرام (ريال) — 24 قيراط",
+  "goldPriceSubtitle": "السعر لكل غرام (ريال) — {{karat}} قيراط"
 }

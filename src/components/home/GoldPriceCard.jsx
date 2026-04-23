@@ -102,7 +102,7 @@ function KaratCard({ karat, price, prevPrice, shimmer }) {
 
       {/* SAR unit */}
       <div style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.55)", marginBottom: "0.5rem" }}>
-        {t("goldPriceUnit")}
+        {t("goldPriceSubtitle", { karat })}
       </div>
 
       {/* Direction arrow */}

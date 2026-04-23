@@ -85,6 +85,7 @@ function Header() {
   const [showLocPicker,setShowLocPicker]= useState(false);
   const [mobileOpen,   setMobileOpen]   = useState(false);
   const [notifUnread,  setNotifUnread]  = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(true);
 
   const searchRef  = useRef(null);
   const notifRef   = useRef(null);
@@ -137,13 +138,45 @@ function Header() {
 
   const favCount = favorites.size;
   const isHome   = location.pathname === "/";
+  const isDashboardPage = location.pathname.startsWith("/seller") || location.pathname.startsWith("/admin");
+
+  useEffect(() => {
+    if (isDashboardPage) {
+      setHeaderVisible(true);
+      return;
+    }
+
+    let lastScrollY = window.scrollY;
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        setHeaderVisible(false);
+      } else {
+        setHeaderVisible(true);
+      }
+      lastScrollY = currentScrollY;
+    };
+
+    const handlePointerMove = (event) => {
+      if (event.clientY <= 60) {
+        setHeaderVisible(true);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("pointermove", handlePointerMove);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("pointermove", handlePointerMove);
+    };
+  }, [isDashboardPage]);
 
   /* ── Shared icon button style ─────────────────────────────── */
   const iconBtn = { background: "none", border: "none", cursor: "pointer", padding: "4px 6px", color: "rgba(255,255,255,0.75)", fontSize: "1rem", display: "flex", alignItems: "center", gap: "4px", fontFamily: "'Tajawal', sans-serif", borderRadius: "8px", transition: "background 0.15s" };
 
   return (
     <>
-      <header style={{ position: "fixed", top: 0, left: 0, right: 0, height: "68px", backgroundColor: CARD, borderBottom: `1.5px solid rgba(212,175,55,0.3)`, zIndex: 1500, display: "flex", alignItems: "center", padding: "0 1rem", gap: "0.6rem", fontFamily: "'Tajawal', sans-serif" }} dir={dir}>
+      <header style={{ position: "fixed", top: 0, left: 0, right: 0, height: "68px", backgroundColor: CARD, borderBottom: `1.5px solid rgba(212,175,55,0.3)`, zIndex: 1500, display: "flex", alignItems: "center", padding: "0 1rem", gap: "0.6rem", fontFamily: "'Tajawal', sans-serif", transform: headerVisible ? "translateY(0)" : "translateY(-100%)", transition: "transform 0.22s ease" }} dir={dir}>
 
         {/* Logo */}
         <button onClick={() => navigate("/")} style={{ ...iconBtn, gap: "8px", flexShrink: 0 }}>
@@ -177,6 +210,17 @@ function Header() {
         <button onClick={toggleLanguage} style={{ ...iconBtn, fontSize: "0.82rem", fontWeight: 700, color: GOLD, border: `1px solid rgba(212,175,55,0.35)`, borderRadius: "20px", padding: "3px 12px" }}>
           {t("language")}
         </button>
+
+        {userProfile?.role === "seller" && (
+          <button onClick={() => navigate("/seller")} style={{ padding: "0.45rem 1rem", backgroundColor: "transparent", border: `1.5px solid ${GOLD}`, borderRadius: "20px", color: GOLD, fontFamily: "'Tajawal', sans-serif", fontSize: "0.85rem", fontWeight: 700, cursor: "pointer" }}>
+            {t("headerMyDashboard")}
+          </button>
+        )}
+        {userProfile?.role === "admin" && (
+          <button onClick={() => navigate("/admin")} style={{ padding: "0.45rem 1rem", backgroundColor: "transparent", border: `1.5px solid ${GOLD}`, borderRadius: "20px", color: GOLD, fontFamily: "'Tajawal', sans-serif", fontSize: "0.85rem", fontWeight: 700, cursor: "pointer" }}>
+            {t("headerAdminPanel")}
+          </button>
+        )}
 
         {/* Location (desktop) */}
         <div style={{ position: "relative", display: window.innerWidth < 900 ? "none" : "block" }}>

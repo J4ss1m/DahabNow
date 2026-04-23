@@ -54,6 +54,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation }      from "react-i18next";
+import { useNavigate }        from "react-router-dom";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db }                  from "../../firebase/config";
 import { useAuth }             from "../../context/AuthContext";
@@ -90,6 +91,7 @@ const SIDEBAR_W = 220; // px desktop
 /* ── Sidebar ──────────────────────────────────────────────────  */
 function Sidebar({ activeTab, onSelect, dir }) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   return (
     <aside style={{
@@ -104,10 +106,13 @@ function Sidebar({ activeTab, onSelect, dir }) {
       minHeight:       "100%",
     }}>
       {/* Logo */}
-      <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "0 1.25rem 1.5rem" }}>
+      <button onClick={() => navigate("/")} style={{ display: "flex", alignItems: "center", gap: "8px", padding: "0 1.25rem 1.5rem", background: "none", border: "none", color: "inherit", cursor: "pointer" }}>
         <DahabNowLogo size={28} />
         <span style={{ color: GOLD, fontWeight: 800, fontSize: "0.95rem" }}>DahabNow</span>
-      </div>
+      </button>
+      <button onClick={() => navigate("/")} style={{ display: "flex", alignItems: "center", gap: "8px", margin: "0 1.25rem 1rem", padding: "0.65rem 0.85rem", backgroundColor: "rgba(212,175,55,0.08)", border: "1px solid rgba(212,175,55,0.25)", borderRadius: "14px", color: GOLD, fontWeight: 700, cursor: "pointer", fontFamily: "'Tajawal', sans-serif" }}>
+        🏠 {t("headerHome")}
+      </button>
 
       {/* Label */}
       <p style={{

@@ -12,6 +12,22 @@ import { db }         from "../../firebase/config";
 import { useLanguage } from "../../context/LanguageContext";
 
 const CITIES = ["Riyadh", "Jeddah", "Madinah", "Mecca", "Dammam"];
+const CLOUDINARY_CLOUD  = "db97lfv7s";
+const CLOUDINARY_PRESET = "dahabnow_products";
+
+const uploadToCloudinary = async (file) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", CLOUDINARY_PRESET);
+  formData.append("cloud_name", CLOUDINARY_CLOUD);
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, {
+    method: "POST",
+    body: formData,
+  });
+  const data = await res.json();
+  if (!data.secure_url) throw new Error("Upload failed");
+  return data.secure_url;
+};
 
 /* ── Shared styles ───────────────────────────────────────────── */
 const S = {
@@ -158,6 +174,8 @@ function MyShop({ shop, shopId }) {
   const [saving,  setSaving]  = useState(false);
   const [success, setSuccess] = useState("");
   const [error,   setError]   = useState("");
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [preview, setPreview] = useState(shop?.shopPicture || "");
 
   // Editable form state — initialise from shop prop
   const [form, setForm] = useState({
@@ -167,6 +185,8 @@ function MyShop({ shop, shopId }) {
     shopAddress:     shop?.shopAddress     || "",
     contactWhatsApp: shop?.contactWhatsApp || "",
     contactEmail:    shop?.contactEmail    || "",
+    shopPicture:     shop?.shopPicture     || "",
+    locationLink:    shop?.locationLink    || "",
   });
 
   if (!shop) {
@@ -174,6 +194,23 @@ function MyShop({ shop, shopId }) {
   }
 
   const set = (key) => (e) => setForm((p) => ({ ...p, [key]: e.target.value }));
+
+  const handlePictureSelect = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setError("");
+    setUploadingImage(true);
+    try {
+      const url = await uploadToCloudinary(file);
+      setForm((prev) => ({ ...prev, shopPicture: url }));
+      setPreview(url);
+    } catch (err) {
+      console.error("[MyShop] picture upload error:", err);
+      setError(t("errorGeneric"));
+    } finally {
+      setUploadingImage(false);
+    }
+  };
 
   const handleSave = async () => {
     setError(""); setSuccess("");
@@ -254,6 +291,29 @@ function MyShop({ shop, shopId }) {
           </FieldRow>
           <FieldRow label={t("myShopAddress")} value={form.shopAddress} editMode={editing}>
             <input style={S.input} value={form.shopAddress} onChange={set("shopAddress")} />
+          </FieldRow>
+        </div>
+
+        <div style={S.divider} />
+
+        <div style={S.row}>
+          <FieldRow label={t("shopPicture")} value={form.shopPicture} editMode={editing}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              {preview ? (
+                <img src={preview} alt={t("shopPicture")} style={{ width: "100%", maxHeight: "180px", objectFit: "cover", borderRadius: "12px", border: "1px solid rgba(212,175,55,0.25)" }} />
+              ) : (
+                <div style={{ width: "100%", minHeight: "110px", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.04)", border: "1px dashed rgba(212,175,55,0.3)", borderRadius: "12px", color: "rgba(255,255,255,0.45)", fontSize: "0.95rem" }}>
+                  {t("shopPicture")}
+                </div>
+              )}
+              <label style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "0.65rem 1rem", backgroundColor: "rgba(212,175,55,0.15)", border: "1.5px solid rgba(212,175,55,0.35)", borderRadius: "10px", color: "#D4AF37", cursor: editing ? "pointer" : "not-allowed", fontWeight: 700, fontSize: "0.93rem" }}>
+                {uploadingImage ? t("loading") : t("shopPicture")}
+                <input type="file" accept="image/*" style={{ display: "none" }} onChange={handlePictureSelect} disabled={!editing} />
+              </label>
+            </div>
+          </FieldRow>
+          <FieldRow label={t("shopLocationLink")} value={form.locationLink} editMode={editing}>
+            <input style={S.input} value={form.locationLink} onChange={set("locationLink")} placeholder="https://maps.app.goo.gl/..." />
           </FieldRow>
         </div>
 

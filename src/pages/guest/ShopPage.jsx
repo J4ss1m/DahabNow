@@ -232,8 +232,7 @@ function ShopPage() {
 
   /* ── 8. Render helpers ────────────────────────────────────── */
   const waUrl = toWAUrl(shop?.contactWhatsApp);
-  const emailUrl = shop?.contactEmail ? `mailto:${shop.contactEmail}` : null;
-  const saved = isFavorite(shopId);
+  const emailUrl = shop?.contactEmail ? `mailto:${shop.contactEmail}` : null;  const locationUrl = shop?.locationLink || null;  const saved = isFavorite(shopId);
 
   /* ── Loading state ────────────────────────────────────────── */
   if (loading) {
@@ -269,8 +268,12 @@ function ShopPage() {
 
           <div style={{ maxWidth: "900px", margin: "0 auto" }}>
             {/* Avatar */}
-            <div style={{ width: "64px", height: "64px", borderRadius: "16px", backgroundColor: "rgba(212,175,55,0.15)", border: "2px solid rgba(212,175,55,0.4)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.6rem", fontWeight: 800, color: GOLD, marginBottom: "1rem" }}>
-              {(shop.shopName || "?").charAt(0).toUpperCase()}
+            <div style={{ width: "64px", height: "64px", borderRadius: "16px", backgroundColor: "rgba(212,175,55,0.15)", border: "2px solid rgba(212,175,55,0.4)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.6rem", fontWeight: 800, color: GOLD, marginBottom: "1rem", overflow: "hidden" }}>
+              {shop.shopPicture ? (
+                <img src={shop.shopPicture} alt={shop.shopName} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              ) : (
+                (shop.shopName || "?").charAt(0).toUpperCase()
+              )}
             </div>
 
             {/* Name + verified badge */}
@@ -302,6 +305,12 @@ function ShopPage() {
                 <a href={emailUrl}
                   style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "0.6rem 1.2rem", backgroundColor: "rgba(212,175,55,0.15)", border: `1.5px solid ${GOLD}`, borderRadius: "10px", color: GOLD, fontFamily: "'Tajawal', sans-serif", fontSize: "0.9rem", fontWeight: 700, textDecoration: "none" }}>
                   ✉️ {t("shopContactEmail")}
+                </a>
+              )}
+              {locationUrl && (
+                <a href={locationUrl} target="_blank" rel="noreferrer"
+                  style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "0.6rem 1.2rem", backgroundColor: "rgba(212,175,55,0.15)", border: `1.5px solid ${GOLD}`, borderRadius: "10px", color: GOLD, fontFamily: "'Tajawal', sans-serif", fontSize: "0.9rem", fontWeight: 700, textDecoration: "none" }}>
+                  📍 {t("shopLocationButton")}
                 </a>
               )}
               <motion.button
