@@ -446,5 +446,11 @@
   "viewShop": "View Shop",
   "adSlideLabel": "Featured Ad",
   "goldPriceUnit": "Price per gram (SAR) — 24K",
-  "goldPriceSubtitle": "Price per gram (SAR) — {{karat}}K"
+  "goldPriceSubtitle": "Price per gram (SAR) — {{karat}}K",
+
+  "contactUs": "Contact Us",
+  "contactUsTitle": "Contact Us",
+  "contactUsDesc": "We welcome your reports, suggestions, and help requests",
+  "contactWhatsApp": "WhatsApp",
+  "contactEmail": "Email"
 }
