@@ -240,7 +240,7 @@ function MyShop({ shop, shopId }) {
       <div style={S.header}>
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
           <h2 style={S.title}>{t("myShopTitle")}</h2>
-          {shop.isApproved && (
+          {shop.isApproved && shop.sellerId !== "imported" && (
             <span style={S.badge}>✓ {t("myShopVerified")}</span>
           )}
         </div>

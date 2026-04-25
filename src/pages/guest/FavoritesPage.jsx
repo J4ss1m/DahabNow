@@ -43,7 +43,7 @@ function FavCard({ shop, index, onRemove }) {
       <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.5)", margin: "0 0 1rem" }}>📍 {shop.shopCity}{shop.shopArea ? ` · ${shop.shopArea}` : ""}</p>
 
       {/* Verified badge */}
-      {shop.isApproved && (
+      {shop.isApproved && shop.sellerId !== "imported" && (
         <span style={{ backgroundColor: "rgba(212,175,55,0.12)", color: GOLD, border: "1px solid rgba(212,175,55,0.3)", borderRadius: "20px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 700, display: "inline-block", marginBottom: "1rem" }}>
           ✓ {t("shopVerified")}
         </span>

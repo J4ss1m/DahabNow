@@ -281,7 +281,7 @@ function ShopPage() {
               <h1 style={{ fontSize: "clamp(1.5rem,4vw,2.2rem)", fontWeight: 900, color: GOLD, margin: 0 }}>
                 {shop.shopName}
               </h1>
-              {shop.isApproved && (
+              {shop.isApproved && shop.sellerId !== "imported" && (
                 <span style={{ backgroundColor: "rgba(212,175,55,0.15)", color: GOLD, border: "1px solid rgba(212,175,55,0.4)", borderRadius: "20px", padding: "3px 12px", fontSize: "0.8rem", fontWeight: 700 }}>
                   ✓ {t("shopVerifiedBadge")}
                 </span>

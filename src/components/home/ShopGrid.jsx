@@ -100,7 +100,7 @@ function ShopCard({ shop, index, productCount }) {
 
       {/* Badges */}
       <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "0.9rem", pointerEvents: "none" }}>
-        {shop.isApproved && (
+        {shop.isApproved && shop.sellerId !== "imported" && (
           <span style={{ backgroundColor: "rgba(212,175,55,0.12)", color: GOLD, border: "1px solid rgba(212,175,55,0.3)", borderRadius: "20px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 700 }}>
             ✓ {t("shopVerified")}
           </span>
