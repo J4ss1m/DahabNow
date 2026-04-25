@@ -112,6 +112,8 @@
   "shopsEmpty": "لا توجد محلات متاحة بعد",
   "shopsEmptyDesc": "كن أول من يسجّل محله الذهبي على ذهبنو",
   "shopsLoading": "جارٍ تحميل المحلات...",
+  "filterAllCities": "جميع المدن",
+  "filterAllAreas": "جميع الأحياء",
   "servicesTitle": "خدماتنا",
   "servicesSubtitle": "كل ما تحتاجه لاتخاذ قرارات ذهبية ذكية",
   "servicePriceChartTitle": "مخطط الأسعار العالمي",

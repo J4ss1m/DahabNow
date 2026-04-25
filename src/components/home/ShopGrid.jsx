@@ -129,6 +129,7 @@ function ShopGrid() {
   const { t }        = useTranslation();
   const { language } = useLanguage();
   const location     = useLocation();
+  const navigate     = useNavigate();
   const dir          = language === "ar" ? "rtl" : "ltr";
 
   // Read URL params
@@ -141,6 +142,38 @@ function ShopGrid() {
   const [productCounts,setProductCounts]= useState({});
   const [loading,      setLoading]      = useState(true);
   const [error,        setError]        = useState("");
+
+  const setCityFilter = (city) => {
+    const newParams = new URLSearchParams(location.search);
+    if (city) {
+      newParams.set("city", city);
+    } else {
+      newParams.delete("city");
+    }
+    newParams.delete("area");
+    navigate({ search: newParams.toString() });
+  };
+
+  const setAreaFilter = (area) => {
+    const newParams = new URLSearchParams(location.search);
+    if (area) {
+      newParams.set("area", area);
+    } else {
+      newParams.delete("area");
+    }
+    navigate({ search: newParams.toString() });
+  };
+
+  const uniqueCities = useMemo(() => {
+    const cities = new Set(allShops.map(s => s.shopCity).filter(Boolean));
+    return Array.from(cities).sort();
+  }, [allShops]);
+
+  const uniqueAreas = useMemo(() => {
+    if (!cityFilter) return [];
+    const areas = new Set(allShops.filter(s => s.shopCity === cityFilter).map(s => s.shopArea).filter(Boolean));
+    return Array.from(areas).sort();
+  }, [allShops, cityFilter]);
 
   /* ── Fetch all approved shops once ─────────────────────── */
   useEffect(() => {
@@ -186,11 +219,56 @@ function ShopGrid() {
       {/* Section header */}
       <div style={{ marginBottom: "1.75rem", textAlign: "center" }}>
         <h2 style={{ fontSize: "clamp(1.3rem,3vw,1.75rem)", fontWeight: 800, color: "#FFFFFF", margin: "0 0 0.4rem" }}>
-          {cityFilter ? `🏙️ ${cityFilter}${areaFilter ? ` · ${areaFilter}` : ""}` : t("shopsTitle")}
+          {cityFilter ? `🏙️ ${t(`city${cityFilter}`) !== `city${cityFilter}` ? t(`city${cityFilter}`) : cityFilter}${areaFilter ? ` · ${areaFilter}` : ""}` : t("shopsTitle")}
         </h2>
         <p style={{ fontSize: "0.95rem", color: "rgba(255,255,255,0.55)", margin: 0 }}>{t("shopsSubtitle")}</p>
         <div style={{ width: "48px", height: "3px", backgroundColor: GOLD, borderRadius: "2px", margin: "0.9rem auto 0" }} />
       </div>
+
+      {/* ── Filters ─────────────────────────────────────────── */}
+      {!loading && !error && allShops.length > 0 && (
+        <div style={{ marginBottom: "2rem", maxWidth: "1200px", margin: "0 auto 2rem" }}>
+          {/* Cities */}
+          <div style={{ display: "flex", gap: "0.5rem", overflowX: "auto", paddingBottom: "0.5rem", scrollbarWidth: "none" }}>
+            <button
+              onClick={() => setCityFilter("")}
+              style={{ flexShrink: 0, padding: "0.6rem 1.25rem", borderRadius: "20px", border: `1.5px solid ${!cityFilter ? "#FFD700" : "rgba(255,255,255,0.2)"}`, backgroundColor: !cityFilter ? "#FFD700" : "rgba(255,255,255,0.05)", color: !cityFilter ? "#263238" : "rgba(255,255,255,0.8)", fontFamily: "'Tajawal', sans-serif", fontSize: "0.9rem", fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}
+            >
+              {t("filterAllCities")}
+            </button>
+            {uniqueCities.map(city => (
+              <button
+                key={city}
+                onClick={() => setCityFilter(city)}
+                style={{ flexShrink: 0, padding: "0.6rem 1.25rem", borderRadius: "20px", border: `1.5px solid ${cityFilter === city ? "#FFD700" : "rgba(255,255,255,0.2)"}`, backgroundColor: cityFilter === city ? "#FFD700" : "rgba(255,255,255,0.05)", color: cityFilter === city ? "#263238" : "rgba(255,255,255,0.8)", fontFamily: "'Tajawal', sans-serif", fontSize: "0.9rem", fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}
+              >
+                {t(`city${city}`) !== `city${city}` ? t(`city${city}`) : city}
+              </button>
+            ))}
+          </div>
+
+          {/* Areas */}
+          {cityFilter && uniqueAreas.length > 0 && (
+            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} style={{ display: "flex", gap: "0.5rem", overflowX: "auto", paddingTop: "0.75rem", paddingBottom: "0.5rem", scrollbarWidth: "none" }}>
+              <button
+                onClick={() => setAreaFilter("")}
+                style={{ flexShrink: 0, padding: "0.5rem 1rem", borderRadius: "20px", border: `1px solid ${!areaFilter ? "#FFD700" : "rgba(255,255,255,0.15)"}`, backgroundColor: !areaFilter ? "rgba(212,175,55,0.15)" : "transparent", color: !areaFilter ? "#FFD700" : "rgba(255,255,255,0.6)", fontFamily: "'Tajawal', sans-serif", fontSize: "0.85rem", fontWeight: 600, cursor: "pointer", transition: "all 0.2s" }}
+              >
+                {t("filterAllAreas")}
+              </button>
+              {uniqueAreas.map(area => (
+                <button
+                  key={area}
+                  onClick={() => setAreaFilter(area)}
+                  style={{ flexShrink: 0, padding: "0.5rem 1rem", borderRadius: "20px", border: `1px solid ${areaFilter === area ? "#FFD700" : "rgba(255,255,255,0.15)"}`, backgroundColor: areaFilter === area ? "rgba(212,175,55,0.15)" : "transparent", color: areaFilter === area ? "#FFD700" : "rgba(255,255,255,0.6)", fontFamily: "'Tajawal', sans-serif", fontSize: "0.85rem", fontWeight: 600, cursor: "pointer", transition: "all 0.2s" }}
+                >
+                  {area}
+                </button>
+              ))}
+            </motion.div>
+          )}
+        </div>
+      )}
 
       {loading && (
         <div style={{ display: "flex", justifyContent: "center", padding: "3rem" }}>
