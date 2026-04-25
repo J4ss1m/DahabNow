@@ -164,10 +164,7 @@ function ShopGrid() {
     navigate({ search: newParams.toString() });
   };
 
-  const uniqueCities = useMemo(() => {
-    const cities = new Set(allShops.map(s => s.shopCity).filter(Boolean));
-    return Array.from(cities).sort();
-  }, [allShops]);
+  const CITIES = ["Jeddah", "Riyadh", "Khubar", "Dammam", "Mecca", "Madina"];
 
   const uniqueAreas = useMemo(() => {
     if (!cityFilter) return [];
@@ -236,7 +233,7 @@ function ShopGrid() {
             >
               {t("filterAllCities")}
             </button>
-            {uniqueCities.map(city => (
+            {CITIES.map(city => (
               <button
                 key={city}
                 onClick={() => setCityFilter(city)}
