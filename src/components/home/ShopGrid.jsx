@@ -33,7 +33,7 @@ async function fetchProductCount(shopId) {
 
 /* ── Shop Card ───────────────────────────────────────────────── */
 function ShopCard({ shop, index, productCount }) {
-  const { t }         = useTranslation();
+  const { t, i18n }         = useTranslation();
   const navigate      = useNavigate();
   const [hov, setHov] = useState(false);
 
@@ -77,18 +77,18 @@ function ShopCard({ shop, index, productCount }) {
       {/* Avatar */}
       <div style={{ width: "48px", height: "48px", borderRadius: "12px", backgroundColor: "rgba(212,175,55,0.15)", border: "1.5px solid rgba(212,175,55,0.35)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.3rem", fontWeight: 800, color: GOLD, marginBottom: "0.85rem", pointerEvents: "none", overflow: "hidden" }}>
         {shop.shopPicture ? (
-          <img src={shop.shopPicture} alt={shop.shopName} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          <img src={shop.shopPicture} alt={i18n.language === 'ar' && shop.shopNameAr ? shop.shopNameAr : shop.shopName} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
         ) : (
-          (shop.shopName || "?").charAt(0).toUpperCase()
+          ((i18n.language === 'ar' && shop.shopNameAr ? shop.shopNameAr : shop.shopName) || "?").charAt(0).toUpperCase()
         )}
       </div>
 
       {/* Name */}
-      <p style={{ fontSize: "1rem", fontWeight: 700, color: "#FFFFFF", margin: "0 0 0.3rem", pointerEvents: "none" }}>{shop.shopName}</p>
+      <p style={{ fontSize: "1rem", fontWeight: 700, color: "#FFFFFF", margin: "0 0 0.3rem", pointerEvents: "none" }}>{i18n.language === 'ar' && shop.shopNameAr ? shop.shopNameAr : shop.shopName}</p>
 
       {/* Location */}
       <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.55)", margin: "0 0 0.5rem", pointerEvents: "none" }}>
-        📍 {shop.shopCity}{shop.shopArea ? ` · ${shop.shopArea}` : ""}
+        📍 {i18n.language === 'ar' && shop.shopCityAr ? shop.shopCityAr : shop.shopCity}{(i18n.language === 'ar' && shop.shopAreaAr) || shop.shopArea ? ` · ${i18n.language === 'ar' && shop.shopAreaAr ? shop.shopAreaAr : shop.shopArea}` : ""}
       </p>
 
       {/* Product count */}
@@ -126,7 +126,7 @@ function ShopCard({ shop, index, productCount }) {
    SHOP GRID
    ══════════════════════════════════════════════════════════════ */
 function ShopGrid() {
-  const { t }        = useTranslation();
+  const { t, i18n }        = useTranslation();
   const { language } = useLanguage();
   const location     = useLocation();
   const navigate     = useNavigate();
@@ -253,15 +253,19 @@ function ShopGrid() {
               >
                 {t("filterAllAreas")}
               </button>
-              {uniqueAreas.map(area => (
-                <button
-                  key={area}
-                  onClick={() => setAreaFilter(area)}
-                  style={{ flexShrink: 0, padding: "0.5rem 1rem", borderRadius: "20px", border: `1px solid ${areaFilter === area ? "#FFD700" : "rgba(255,255,255,0.15)"}`, backgroundColor: areaFilter === area ? "rgba(212,175,55,0.15)" : "transparent", color: areaFilter === area ? "#FFD700" : "rgba(255,255,255,0.6)", fontFamily: "'Tajawal', sans-serif", fontSize: "0.85rem", fontWeight: 600, cursor: "pointer", transition: "all 0.2s" }}
-                >
-                  {area}
-                </button>
-              ))}
+              {uniqueAreas.map(area => {
+                const matchedShop = allShops.find(s => s.shopArea === area);
+                const displayArea = i18n.language === 'ar' && matchedShop && matchedShop.shopAreaAr ? matchedShop.shopAreaAr : area;
+                return (
+                  <button
+                    key={area}
+                    onClick={() => setAreaFilter(area)}
+                    style={{ flexShrink: 0, padding: "0.5rem 1rem", borderRadius: "20px", border: `1px solid ${areaFilter === area ? "#FFD700" : "rgba(255,255,255,0.15)"}`, backgroundColor: areaFilter === area ? "rgba(212,175,55,0.15)" : "transparent", color: areaFilter === area ? "#FFD700" : "rgba(255,255,255,0.6)", fontFamily: "'Tajawal', sans-serif", fontSize: "0.85rem", fontWeight: 600, cursor: "pointer", transition: "all 0.2s" }}
+                  >
+                    {displayArea}
+                  </button>
+                );
+              })}
             </motion.div>
           )}
         </div>

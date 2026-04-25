@@ -114,7 +114,7 @@ function ShopPage() {
 
   /* ── 2. All hooks ────────────────────────────────────────── */
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { language } = useLanguage();
   const { toggleFavorite, isFavorite } = useFavorites(); // never throws
   const { showToast } = useToastSafe();
@@ -270,16 +270,16 @@ function ShopPage() {
             {/* Avatar */}
             <div style={{ width: "64px", height: "64px", borderRadius: "16px", backgroundColor: "rgba(212,175,55,0.15)", border: "2px solid rgba(212,175,55,0.4)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.6rem", fontWeight: 800, color: GOLD, marginBottom: "1rem", overflow: "hidden" }}>
               {shop.shopPicture ? (
-                <img src={shop.shopPicture} alt={shop.shopName} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <img src={shop.shopPicture} alt={i18n.language === 'ar' && shop.shopNameAr ? shop.shopNameAr : shop.shopName} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               ) : (
-                (shop.shopName || "?").charAt(0).toUpperCase()
+                ((i18n.language === 'ar' && shop.shopNameAr ? shop.shopNameAr : shop.shopName) || "?").charAt(0).toUpperCase()
               )}
             </div>
 
             {/* Name + verified badge */}
             <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap", marginBottom: "0.4rem" }}>
               <h1 style={{ fontSize: "clamp(1.5rem,4vw,2.2rem)", fontWeight: 900, color: GOLD, margin: 0 }}>
-                {shop.shopName}
+                {i18n.language === 'ar' && shop.shopNameAr ? shop.shopNameAr : shop.shopName}
               </h1>
               {shop.isApproved && shop.sellerId !== "imported" && (
                 <span style={{ backgroundColor: "rgba(212,175,55,0.15)", color: GOLD, border: "1px solid rgba(212,175,55,0.4)", borderRadius: "20px", padding: "3px 12px", fontSize: "0.8rem", fontWeight: 700 }}>
@@ -290,7 +290,7 @@ function ShopPage() {
 
             {/* City / area */}
             <p style={{ fontSize: "0.95rem", color: "rgba(255,255,255,0.55)", margin: "0 0 1.25rem" }}>
-              📍 {shop.shopCity}{shop.shopArea ? ` · ${shop.shopArea}` : ""}
+              📍 {i18n.language === 'ar' && shop.shopCityAr ? shop.shopCityAr : shop.shopCity}{(i18n.language === 'ar' && shop.shopAreaAr) || shop.shopArea ? ` · ${i18n.language === 'ar' && shop.shopAreaAr ? shop.shopAreaAr : shop.shopArea}` : ""}
             </p>
 
             {/* Action buttons */}
