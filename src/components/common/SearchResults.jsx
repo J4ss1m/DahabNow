@@ -42,20 +42,18 @@ function SearchResults({ query: searchQ, onClose }) {
     const timer = setTimeout(async () => {
       setLoading(true);
       try {
-        const lowerQ = searchQ.toLowerCase().trim();
-        
+        const query = searchQ.toLowerCase().trim();
+
         // Fetch all approved shops
         const shopSnap = await getDocs(query(collection(db, "shops"), where("isApproved", "==", true)));
-        
+
         const allShops = shopSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
-        
-        const matched = allShops.filter(s => 
-          (s.shopName && s.shopName.toLowerCase().includes(lowerQ)) ||
-          (s.shopNameAr && s.shopNameAr.toLowerCase().includes(lowerQ)) ||
-          (s.shopCity && s.shopCity.toLowerCase().includes(lowerQ)) ||
-          (s.shopCityAr && s.shopCityAr.toLowerCase().includes(lowerQ)) ||
-          (s.shopArea && s.shopArea.toLowerCase().includes(lowerQ)) ||
-          (s.shopAreaAr && s.shopAreaAr.toLowerCase().includes(lowerQ))
+
+        const matched = allShops.filter((shop) =>
+          shop.shopName?.toLowerCase().includes(query) ||
+          shop.shopNameAr?.includes(searchQ) ||
+          shop.shopCity?.toLowerCase().includes(query) ||
+          shop.shopArea?.toLowerCase().includes(query)
         ).slice(0, 8); // Max 8 results
 
         setShops(matched);
