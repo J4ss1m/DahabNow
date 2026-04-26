@@ -107,6 +107,24 @@ function ShopCard({ shop, index, productCount }) {
         )}
       </div>
 
+      {/* External Link */}
+      {(() => {
+        const url = shop?.locationLink;
+        if (!url) return null;
+        const isGmaps = url.toLowerCase().includes("google.com/maps") || url.toLowerCase().includes("goo.gl/maps") || url.toLowerCase().includes("maps.google") || url.toLowerCase().includes("maps.app.goo");
+        return (
+          <a
+            href={url}
+            target="_blank"
+            rel="noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", width: "100%", padding: "0.55rem", backgroundColor: "rgba(212,175,55,0.1)", border: `1px solid rgba(212,175,55,0.3)`, borderRadius: "9px", color: GOLD, fontFamily: "'Tajawal', sans-serif", fontSize: "0.85rem", fontWeight: 700, textDecoration: "none", marginBottom: "0.6rem", transition: "all 0.2s", boxSizing: "border-box" }}
+          >
+            {isGmaps ? `📍 ${t("shopLocationButton")}` : `🔗 ${t("visitWebsite")}`}
+          </a>
+        );
+      })()}
+
       {/* CTA button — explicit onClick with stopPropagation */}
       <button
         onClick={(e) => {
