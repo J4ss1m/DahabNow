@@ -8,10 +8,12 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion }            from "framer-motion";
 import { useTranslation }    from "react-i18next";
+import { FiEye, FiEyeOff }   from "react-icons/fi";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db, googleProvider } from "../../firebase/config";
 import { useLanguage }               from "../../context/LanguageContext";
+import DahabNowLogo                  from "../../components/common/DahabNowLogo";
 import ForgotPassword                from "../../components/common/ForgotPassword";
 import GoldSpinner                   from "../../components/common/GoldSpinner";
 
@@ -304,12 +306,7 @@ function LoginPage() {
         >
           {/* Logo */}
           <div style={S.logoWrap}>
-            <svg width="48" height="48" viewBox="0 0 40 40" fill="none">
-              <path d="M15 20C15 14.477 19.477 10 25 10C30.523 10 35 14.477 35 20C35 25.523 30.523 30 25 30"
-                stroke="#D4AF37" strokeWidth="3" strokeLinecap="round"/>
-              <path d="M25 20C25 25.523 20.523 30 15 30C9.477 30 5 25.523 5 20C5 14.477 9.477 10 15 10"
-                stroke="#D4AF37" strokeWidth="3" strokeLinecap="round"/>
-            </svg>
+            <DahabNowLogo />
             <p style={S.appName}>DahabNow</p>
           </div>
 
@@ -385,7 +382,7 @@ function LoginPage() {
                   }}
                   aria-label={showPassword ? t("hidePassword") : t("showPassword")}
                 >
-                  {showPassword ? "🙈" : "👁️"}
+                  {showPassword ? <FiEyeOff /> : <FiEye />}
                 </button>
               </div>
             </div>
