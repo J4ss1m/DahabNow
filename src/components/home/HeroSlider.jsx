@@ -19,6 +19,8 @@ import { useNavigate }              from "react-router-dom";
 import { useLanguage }              from "../../context/LanguageContext";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db }                       from "../../firebase/config";
+import iuLogo                       from "../../assets/iu-logo.png";
+import DahabNowLogo                 from "../common/DahabNowLogo";
 
 /* ── Decorative ring (pointer-events off, purely visual) ─────── */
 const Ring = ({ x, y, size, opacity }) => (
@@ -53,6 +55,16 @@ const DEFAULTS = [
     ctaPath:   "#prices",
     gradient:  "linear-gradient(135deg,#1e2030 0%,#263238 45%,#2a1e1e 100%)",
     icon:      "📈",
+  },
+  {
+    isAd:           false,
+    isProjectSlide: true,
+    titleKey:       "projectName",
+    subKey:         "softwareEngineering",
+    ctaKey:         "footerServices",
+    ctaPath:        "#services",
+    gradient:       "linear-gradient(135deg,#1a2024 0%,#263238 50%,#202621 100%)",
+    icon:           "",
   },
 ];
 
@@ -178,74 +190,122 @@ function HeroSlider() {
             pointerEvents:  "auto",
           }}
         >
-          {/* Ambient rings */}
-          <Ring x="-80px" y="-80px" size="320px" opacity={0.4} />
-          <Ring x="60%"   y="-40px" size="220px" opacity={0.3} />
-          <Ring x="10%"   y="60%"   size="180px" opacity={0.25} />
-          <Ring x="75%"   y="55%"   size="260px" opacity={0.2} />
+          {slide.isProjectSlide ? (
+            <div style={{ position: "relative", zIndex: 2, display: "flex", flexDirection: "column", alignItems: "center", width: "100%", maxWidth: "800px" }}>
+              {/* Islamic geometric background specific to this slide */}
+              <div style={{ position: "absolute", inset: "-100px", pointerEvents: "none", opacity: 0.05, backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 20px, #D4AF37 20px, #D4AF37 21px), repeating-linear-gradient(-45deg, transparent, transparent 20px, #D4AF37 20px, #D4AF37 21px)`, zIndex: -1 }} />
+              
+              <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", marginBottom: "1.5rem", flexWrap: "wrap", justifyContent: "center" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <DahabNowLogo size={36} />
+                  <span style={{ color: "#D4AF37", fontWeight: 900, fontSize: "1.4rem", letterSpacing: "0.05em" }}>DahabNow</span>
+                </div>
+                <div style={{ width: "2px", height: "30px", backgroundColor: "rgba(212,175,55,0.3)" }} />
+                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                  <img src={iuLogo} alt="Islamic University of Madinah" style={{ height: "40px", objectFit: "contain" }} />
+                  <span style={{ color: "#FFFFFF", fontWeight: 700, fontSize: "1rem", maxWidth: "150px", textAlign: "start", lineHeight: 1.2 }}>{t("universityName")}</span>
+                </div>
+              </div>
 
-          {/* Gold accent line */}
-          <motion.div
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-            style={{ width: "60px", height: "3px", backgroundColor: "#D4AF37", borderRadius: "2px", marginBottom: "1.25rem", transformOrigin: dir === "rtl" ? "right" : "left" }}
-          />
+              <motion.h1 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} style={{ color: "#D4AF37", fontSize: "clamp(1.5rem, 3vw, 2.2rem)", fontWeight: 800, margin: "0 0 0.5rem" }}>
+                {t("projectName")}
+              </motion.h1>
+              
+              <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} style={{ color: "rgba(255,255,255,0.8)", fontSize: "1.1rem", margin: "0 0 2rem" }}>
+                {t("courseName")}: <strong style={{ color: "#FFFFFF" }}>{t("softwareEngineering")}</strong>
+              </motion.p>
 
-          {/* Icon */}
-          <motion.div
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.1, duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
-            style={{ fontSize: "3rem", marginBottom: "0.75rem", lineHeight: 1 }}
-          >
-            {slide.icon}
-          </motion.div>
+              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "1.5rem", width: "100%", borderTop: "1px solid rgba(212,175,55,0.2)", borderBottom: "1px solid rgba(212,175,55,0.2)", padding: "1.5rem 0" }}>
+                <div style={{ flex: "1 1 200px" }}>
+                  <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem", textTransform: "uppercase", margin: "0 0 0.3rem" }}>{t("student")} 1</p>
+                  <p style={{ color: "#D4AF37", fontWeight: 800, fontSize: "1.1rem", margin: "0 0 0.2rem" }}>{t("student1Name")}</p>
+                  <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.9rem", margin: 0, fontFamily: "monospace" }}>{t("universityId")}: 452032893</p>
+                </div>
+                <div style={{ width: "1px", backgroundColor: "rgba(212,175,55,0.2)" }} />
+                <div style={{ flex: "1 1 200px" }}>
+                  <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem", textTransform: "uppercase", margin: "0 0 0.3rem" }}>{t("student")} 2</p>
+                  <p style={{ color: "#D4AF37", fontWeight: 800, fontSize: "1.1rem", margin: "0 0 0.2rem" }}>{t("student2Name")}</p>
+                  <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.9rem", margin: 0, fontFamily: "monospace" }}>{t("universityId")}: 443058203</p>
+                </div>
+              </motion.div>
 
-          {/* Ad badge */}
-          {slide.isAd && (
-            <motion.span
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15 }}
-              style={{ backgroundColor: "rgba(212,175,55,0.18)", color: "#D4AF37", border: "1px solid rgba(212,175,55,0.4)", borderRadius: "20px", padding: "3px 14px", fontSize: "0.78rem", fontWeight: 700, marginBottom: "0.6rem", display: "inline-block" }}
-            >
-              ⭐ {t("adSlideLabel")}
-            </motion.span>
+              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} style={{ marginTop: "1.5rem" }}>
+                <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem", textTransform: "uppercase", margin: "0 0 0.3rem" }}>{t("courseInstructor")}</p>
+                <p style={{ color: "#D4AF37", fontWeight: 800, fontSize: "1.2rem", margin: 0 }}>{t("instructorName")}</p>
+              </motion.div>
+            </div>
+          ) : (
+            <>
+              {/* Ambient rings */}
+              <Ring x="-80px" y="-80px" size="320px" opacity={0.4} />
+              <Ring x="60%"   y="-40px" size="220px" opacity={0.3} />
+              <Ring x="10%"   y="60%"   size="180px" opacity={0.25} />
+              <Ring x="75%"   y="55%"   size="260px" opacity={0.2} />
+
+              {/* Gold accent line */}
+              <motion.div
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ delay: 0.2, duration: 0.6 }}
+                style={{ width: "60px", height: "3px", backgroundColor: "#D4AF37", borderRadius: "2px", marginBottom: "1.25rem", transformOrigin: dir === "rtl" ? "right" : "left" }}
+              />
+
+              {/* Icon */}
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.1, duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
+                style={{ fontSize: "3rem", marginBottom: "0.75rem", lineHeight: 1 }}
+              >
+                {slide.icon}
+              </motion.div>
+
+              {/* Ad badge */}
+              {slide.isAd && (
+                <motion.span
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15 }}
+                  style={{ backgroundColor: "rgba(212,175,55,0.18)", color: "#D4AF37", border: "1px solid rgba(212,175,55,0.4)", borderRadius: "20px", padding: "3px 14px", fontSize: "0.78rem", fontWeight: 700, marginBottom: "0.6rem", display: "inline-block" }}
+                >
+                  ⭐ {t("adSlideLabel")}
+                </motion.span>
+              )}
+
+              {/* Title */}
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+                style={{ fontSize: "clamp(1.5rem,4vw,2.5rem)", fontWeight: 800, color: "#FFFFFF", margin: "0 0 0.75rem", lineHeight: 1.2, maxWidth: "700px" }}
+              >
+                {slide.isAd ? slide.shopName : t(slide.titleKey)}
+              </motion.h1>
+
+              {/* Subtitle */}
+              <motion.p
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+                style={{ fontSize: "clamp(0.92rem,2.2vw,1.15rem)", color: "rgba(255,255,255,0.72)", margin: "0 0 1.75rem", maxWidth: "560px", lineHeight: 1.55 }}
+              >
+                {slide.isAd ? slide.adMessage : t(slide.subKey)}
+              </motion.p>
+
+              {/* CTA button */}
+              <motion.button
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.45 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={() => handleCta(slide)}
+                style={{ backgroundColor: "#FFD700", color: "#263238", border: "none", borderRadius: "12px", padding: "0.8rem 2rem", fontSize: "1rem", fontWeight: 800, cursor: "pointer", fontFamily: "'Tajawal',sans-serif", letterSpacing: "0.04em" }}
+              >
+                {slide.isAd ? t("viewShop") : t(slide.ctaKey)}
+              </motion.button>
+            </>
           )}
-
-          {/* Title */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            style={{ fontSize: "clamp(1.5rem,4vw,2.5rem)", fontWeight: 800, color: "#FFFFFF", margin: "0 0 0.75rem", lineHeight: 1.2, maxWidth: "700px" }}
-          >
-            {slide.isAd ? slide.shopName : t(slide.titleKey)}
-          </motion.h1>
-
-          {/* Subtitle */}
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            style={{ fontSize: "clamp(0.92rem,2.2vw,1.15rem)", color: "rgba(255,255,255,0.72)", margin: "0 0 1.75rem", maxWidth: "560px", lineHeight: 1.55 }}
-          >
-            {slide.isAd ? slide.adMessage : t(slide.subKey)}
-          </motion.p>
-
-          {/* CTA button */}
-          <motion.button
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.45 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={() => handleCta(slide)}
-            style={{ backgroundColor: "#FFD700", color: "#263238", border: "none", borderRadius: "12px", padding: "0.8rem 2rem", fontSize: "1rem", fontWeight: 800, cursor: "pointer", fontFamily: "'Tajawal',sans-serif", letterSpacing: "0.04em" }}
-          >
-            {slide.isAd ? t("viewShop") : t(slide.ctaKey)}
-          </motion.button>
         </motion.div>
       </AnimatePresence>
 
