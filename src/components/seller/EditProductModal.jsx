@@ -33,7 +33,7 @@ const S = {
     inset:           0,
     backgroundColor: "rgba(0,0,0,0.65)",
     display:         "flex",
-    alignItems:      "flex-end",
+    alignItems:      "center",
     justifyContent:  "center",
     zIndex:          1100,
     padding:         "0",
@@ -45,7 +45,7 @@ const S = {
     padding:         "2rem 1.5rem",
     width:           "100%",
     maxWidth:        "560px",
-    maxHeight:       "92vh",
+    maxHeight:       "85vh",
     overflowY:       "auto",
     fontFamily:      "'Tajawal', sans-serif",
     boxSizing:       "border-box",
@@ -208,7 +208,7 @@ function EditProductModal({ product, productId, onClose, onSaved, dir }) {
         animate={{ y: 0 }}
         exit={{ y: "100%" }}
         transition={{ duration: 0.32, ease: [0.25, 0.46, 0.45, 0.94] }}
-        style={{ ...S.overlay, alignItems: "flex-end", backgroundColor: "transparent" }}
+        style={{ ...S.overlay, backgroundColor: "transparent" }}
         onClick={(e) => e.stopPropagation()}
         dir={dir}
       >

@@ -33,6 +33,8 @@ const styles = {
     width:           "100%",
     maxWidth:        "420px",
     boxShadow:       "0 8px 40px rgba(0,0,0,0.5)",
+    maxHeight:       "85vh",
+    overflowY:       "auto",
   },
   title: {
     fontFamily:  "'Tajawal', sans-serif",

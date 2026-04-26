@@ -20,7 +20,7 @@ const toWAUrl = (num) => {
 
 const S = {
   overlay: { position: "fixed", inset: 0, backgroundColor: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1500, padding: "1rem", overflowY: "auto" },
-  modal: { backgroundColor: "#263238", border: "1.5px solid rgba(212,175,55,0.3)", borderRadius: "20px", width: "100%", maxWidth: "820px", overflow: "hidden", position: "relative", boxShadow: "0 16px 64px rgba(0,0,0,0.6)", fontFamily: "'Tajawal', sans-serif" },
+  modal: { backgroundColor: "#263238", border: "1.5px solid rgba(212,175,55,0.3)", borderRadius: "20px", width: "100%", maxWidth: "820px", position: "relative", boxShadow: "0 16px 64px rgba(0,0,0,0.6)", fontFamily: "'Tajawal', sans-serif", maxHeight: "85vh", overflowY: "auto" },
   closeBtn: { position: "absolute", top: "1rem", insetInlineEnd: "1rem", background: "rgba(255,255,255,0.08)", border: "none", borderRadius: "8px", color: "rgba(255,255,255,0.7)", fontSize: "1.1rem", cursor: "pointer", width: "34px", height: "34px", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10 },
   img: { width: "100%", height: "100%", objectFit: "cover" },
   imgPlaceholder: { width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "4rem", backgroundColor: "rgba(69,90,100,0.6)" },

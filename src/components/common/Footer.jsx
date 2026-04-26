@@ -37,7 +37,7 @@ function ContactModal({ onClose, dir }) {
           justifyContent:  "center",
           padding:         "1.25rem",
         }}
-      />
+      >
       <motion.div
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -46,10 +46,7 @@ function ContactModal({ onClose, dir }) {
         onClick={(e) => e.stopPropagation()}
         dir={dir}
         style={{
-          position:        "fixed",
-          top:             "50%",
-          left:            "50%",
-          transform:       "translate(-50%, -50%)",
+          position:        "relative",
           backgroundColor: CARD,
           borderRadius:    "18px",
           border:          `1.5px solid rgba(212,175,55,0.4)`,
@@ -59,6 +56,8 @@ function ContactModal({ onClose, dir }) {
           boxShadow:       "0 12px 48px rgba(0,0,0,0.55)",
           fontFamily:      "'Tajawal', sans-serif",
           zIndex:          1201,
+          maxHeight:       "85vh",
+          overflowY:       "auto"
         }}
       >
         <button
@@ -172,7 +171,7 @@ function ContactModal({ onClose, dir }) {
           {t("contactUsDesc")}
         </p>
       </motion.div>
-    </>
+    </motion.div>
   );
 }
 

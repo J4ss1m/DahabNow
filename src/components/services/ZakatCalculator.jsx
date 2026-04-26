@@ -10,7 +10,7 @@ const ZAKAT_RATE = 0.025;
 /* ── Styles ── */
 const BG = "#263238", CARD = "#455A64", GOLD = "#D4AF37", CTA = "#FFD700", WHITE = "#FFFFFF";
 const overlay = { position: "fixed", inset: 0, backgroundColor: "rgba(0,0,0,0.72)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1200, padding: "1.25rem" };
-const modal = { backgroundColor: "#2d3f47", borderRadius: "18px", border: "1.5px solid rgba(212,175,55,0.4)", padding: "2rem", width: "100%", minHeight: "450px", boxShadow: "0 16px 56px rgba(0,0,0,0.6)", fontFamily: "'Tajawal',sans-serif", position: "relative", maxHeight: "92vh", overflowY: "auto", overflow: "visible" };
+const modal = { backgroundColor: "#2d3f47", borderRadius: "18px", border: "1.5px solid rgba(212,175,55,0.4)", padding: "2rem", width: "100%", minHeight: "450px", boxShadow: "0 16px 56px rgba(0,0,0,0.6)", fontFamily: "'Tajawal',sans-serif", position: "relative", maxHeight: "85vh", overflowY: "auto" };
 const closeBtn = { position: "absolute", top: "1rem", insetInlineEnd: "1rem", background: "none", border: "none", color: "rgba(255,255,255,0.55)", fontSize: "1.2rem", cursor: "pointer", padding: "4px 8px", borderRadius: "6px" };
 const LBL = { display: "block", fontSize: "0.88rem", fontWeight: 600, color: "rgba(255,255,255,0.7)", marginBottom: "0.35rem" };
 const INP = { width: "100%", padding: "0.72rem 1rem", backgroundColor: "rgba(38,50,56,0.8)", border: "1.5px solid rgba(212,175,55,0.3)", borderRadius: "10px", color: WHITE, fontFamily: "'Tajawal',sans-serif", fontSize: "0.95rem", outline: "none", boxSizing: "border-box", marginBottom: "1rem" };
