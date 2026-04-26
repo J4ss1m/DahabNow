@@ -106,6 +106,28 @@ function ContactModal({ onClose, dir }) {
           </a>
 
           <a
+            href="https://wa.me/966578006021"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "flex", alignItems: "center", gap: "12px",
+              backgroundColor: "rgba(38,50,56,0.6)",
+              padding: "1rem", borderRadius: "12px",
+              textDecoration: "none", color: WHITE,
+              border: "1px solid rgba(255,255,255,0.1)",
+              transition: "border-color 0.2s"
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.borderColor = GOLD}
+            onMouseLeave={(e) => e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"}
+          >
+            <span style={{ fontSize: "1.5rem" }}>📱</span>
+            <div>
+              <p style={{ margin: 0, fontSize: "0.85rem", color: "rgba(255,255,255,0.6)" }}>{t("contactWhatsApp")}</p>
+              <p style={{ margin: 0, fontSize: "1.05rem", fontWeight: 700, direction: "ltr" }}>057 800 6021</p>
+            </div>
+          </a>
+
+          <a
             href="mailto:saadsmy2912@gmail.com"
             style={{
               display: "flex", alignItems: "center", gap: "12px",
@@ -122,6 +144,26 @@ function ContactModal({ onClose, dir }) {
             <div>
               <p style={{ margin: 0, fontSize: "0.85rem", color: "rgba(255,255,255,0.6)" }}>{t("contactEmail")}</p>
               <p style={{ margin: 0, fontSize: "1.05rem", fontWeight: 700 }}>saadsmy2912@gmail.com</p>
+            </div>
+          </a>
+
+          <a
+            href="mailto:jjjassim559@gmail.com"
+            style={{
+              display: "flex", alignItems: "center", gap: "12px",
+              backgroundColor: "rgba(38,50,56,0.6)",
+              padding: "1rem", borderRadius: "12px",
+              textDecoration: "none", color: WHITE,
+              border: "1px solid rgba(255,255,255,0.1)",
+              transition: "border-color 0.2s"
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.borderColor = GOLD}
+            onMouseLeave={(e) => e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"}
+          >
+            <span style={{ fontSize: "1.5rem" }}>✉️</span>
+            <div>
+              <p style={{ margin: 0, fontSize: "0.85rem", color: "rgba(255,255,255,0.6)" }}>{t("contactEmail")}</p>
+              <p style={{ margin: 0, fontSize: "1.05rem", fontWeight: 700 }}>jjjassim559@gmail.com</p>
             </div>
           </a>
         </div>
