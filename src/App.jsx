@@ -9,6 +9,7 @@ import { useState }     from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ToastProvider }    from "./components/common/Toast";
 import { FavoritesProvider } from "./context/FavoritesContext";
+import { ThemeProvider } from "./context/ThemeContext";
 
 import SplashScreen    from "./components/common/SplashScreen";
 import ProtectedRoute  from "./routes/ProtectedRoute";
@@ -31,13 +32,14 @@ function App() {
   );
 
   return (
-    <ToastProvider>
-      <FavoritesProvider>
-        {showSplash && (
-          <SplashScreen onComplete={() => setShowSplash(false)} />
-        )}
+    <ThemeProvider>
+      <ToastProvider>
+        <FavoritesProvider>
+          {showSplash && (
+            <SplashScreen onComplete={() => setShowSplash(false)} />
+          )}
 
-        <BrowserRouter>
+          <BrowserRouter>
           <Routes>
             {/* ── Public ─────────────────────────────────────── */}
             <Route path="/"              element={<HomePage />} />
@@ -72,8 +74,9 @@ function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
-      </FavoritesProvider>
-    </ToastProvider>
+        </FavoritesProvider>
+      </ToastProvider>
+    </ThemeProvider>
   );
 }
 

@@ -12,9 +12,10 @@ import { useState, useRef, useEffect }  from "react";
 import { motion, AnimatePresence }       from "framer-motion";
 import { useTranslation }                from "react-i18next";
 import { useNavigate, useLocation }      from "react-router-dom";
-import { FiSearch, FiMapPin, FiHeart, FiUser, FiMenu, FiX } from "react-icons/fi";
+import { FiSearch, FiMapPin, FiHeart, FiUser, FiMenu, FiX, FiSun, FiMoon } from "react-icons/fi";
 import { useAuth }                       from "../../context/AuthContext";
 import { useLanguage }                   from "../../context/LanguageContext";
+import { useTheme }                      from "../../context/ThemeContext";
 import { useFavorites }                  from "../../context/FavoritesContext";
 import { signOut }                       from "firebase/auth";
 import { auth }                          from "../../firebase/config";
@@ -73,6 +74,7 @@ function AccountDropdown({ currentUser, userProfile, dir, t, onClose }) {
 function Header() {
   const { t }                      = useTranslation();
   const { language, toggleLanguage } = useLanguage();
+  const { theme, toggleTheme }     = useTheme();
   const { currentUser, userProfile } = useAuth();
   const { favorites }              = useFavorites();
   const navigate                   = useNavigate();
@@ -206,6 +208,11 @@ function Header() {
 
         {/* Spacer */}
         <div style={{ flex: 1 }} />
+
+        {/* Theme toggle */}
+        <button onClick={toggleTheme} style={{ ...iconBtn, fontSize: "1rem", color: GOLD }}>
+          {theme === "dark" ? <FiSun size="1.2rem" /> : <FiMoon size="1.2rem" />}
+        </button>
 
         {/* Language toggle */}
         <button onClick={toggleLanguage} style={{ ...iconBtn, fontSize: "0.82rem", fontWeight: 700, color: GOLD, border: `1px solid rgba(212,175,55,0.35)`, borderRadius: "20px", padding: "3px 12px" }}>

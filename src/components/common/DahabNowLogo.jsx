@@ -2,14 +2,21 @@
  * components/common/DahabNowLogo.jsx
  * Reusable logo SVG — two interlinked geometric rings in DahabNow gold.
  * Accepts optional size and className props for flexibility.
+ * Features: subtle pulse animation and gold glow on hover.
  */
+
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 /**
  * @param {number} size      - Width and height of the SVG (default 40)
  * @param {string} className - Extra CSS classes
+ * @param {boolean} animated - Enable animations (default true)
  */
-function DahabNowLogo({ size = 40, className = "" }) {
-  return (
+function DahabNowLogo({ size = 40, className = "", animated = true }) {
+  const [isHovered, setIsHovered] = useState(false);
+
+  const svgElement = (
     <svg
       width={size}
       height={size}
@@ -32,6 +39,35 @@ function DahabNowLogo({ size = 40, className = "" }) {
         strokeLinecap="round"
       />
     </svg>
+  );
+
+  if (!animated) {
+    return svgElement;
+  }
+
+  return (
+    <motion.div
+      animate={{
+        scale: [1, 1.05, 1],
+      }}
+      transition={{
+        duration: 2.5,
+        repeat: Infinity,
+        ease: "easeInOut",
+      }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      style={{
+        display: "inline-block",
+        boxShadow: isHovered
+          ? "0 0 20px rgba(212, 175, 55, 0.6), inset 0 0 10px rgba(212, 175, 55, 0.2)"
+          : "0 0 10px rgba(212, 175, 55, 0.3)",
+        borderRadius: "50%",
+        transition: "box-shadow 0.3s ease",
+      }}
+    >
+      {svgElement}
+    </motion.div>
   );
 }
 
