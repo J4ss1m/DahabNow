@@ -259,6 +259,17 @@
   "adSelectType": "Select ad type",
   "adRequestError": "Failed to submit request. Please try again.",
 
+  "projectName": "DahabNow",
+  "courseName": "Course Name",
+  "softwareEngineering": "Software Engineering",
+  "universityName": "Islamic University of Madinah",
+  "student": "Student",
+  "student1Name": "Jassim Mohammed Kalfud",
+  "student2Name": "Saad Mohammed Yunus",
+  "universityId": "University ID",
+  "courseInstructor": "Course Instructor",
+  "instructorName": "Prof. Ahmed Al Khodr",
+
   "accountSettingsTitle": "Account Settings",
   "settingsDisplayName": "Display Name",
   "settingsPhone": "Phone Number",

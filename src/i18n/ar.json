@@ -256,6 +256,17 @@
   "adSelectType": "اختر نوع الإعلان",
   "adRequestError": "فشل إرسال الطلب. يرجى المحاولة مجددًا.",
 
+  "projectName": "ذهب ناو",
+  "courseName": "اسم المقرر",
+  "softwareEngineering": "هندسة البرمجيات",
+  "universityName": "الجامعة الإسلامية بالمدينة المنورة",
+  "student": "الطالب",
+  "student1Name": "جاسم محمد كلفود",
+  "student2Name": "سعد محمد يونس",
+  "universityId": "الرقم الجامعي",
+  "courseInstructor": "أستاذ المقرر",
+  "instructorName": "أ.د. أحمد الخضر",
+
   "accountSettingsTitle": "إعدادات الحساب",
   "settingsDisplayName": "الاسم المعروض",
   "settingsPhone": "رقم الهاتف",

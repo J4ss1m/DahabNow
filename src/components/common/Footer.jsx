@@ -222,6 +222,65 @@ function Footer() {
           </div>
         </div>
 
+        {/* ── Project Info Section ──────────────────────────────── */}
+        <div style={{
+          maxWidth: "1100px",
+          margin: "0 auto 2.5rem",
+          backgroundColor: CARD,
+          border: `1.5px solid rgba(212,175,55,0.3)`,
+          borderRadius: "16px",
+          padding: "1.5rem 2rem",
+          position: "relative",
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+          gap: "1.25rem",
+          boxShadow: "0 8px 32px rgba(0,0,0,0.2)"
+        }}>
+          {/* Subtle Islamic Geometric Pattern Background */}
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            opacity: 0.04,
+            pointerEvents: "none",
+            backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 20px, ${GOLD} 20px, ${GOLD} 21px), repeating-linear-gradient(-45deg, transparent, transparent 20px, ${GOLD} 20px, ${GOLD} 21px)`
+          }} />
+          
+          {/* Top Row: Project Name & University */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1.5rem", position: "relative", zIndex: 1 }}>
+            <div>
+              <h3 style={{ margin: "0 0 0.4rem", color: GOLD, fontSize: "1.5rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                {t("projectName")}
+              </h3>
+              <p style={{ margin: 0, color: "rgba(255,255,255,0.6)", fontSize: "0.95rem" }}>
+                {t("courseName")}: <span style={{ color: WHITE, fontWeight: 700 }}>{t("softwareEngineering")}</span>
+              </p>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "12px", backgroundColor: "rgba(0,0,0,0.25)", padding: "0.6rem 1.25rem", borderRadius: "12px", border: "1px solid rgba(212,175,55,0.15)" }}>
+              <DahabNowLogo size={26} />
+              <span style={{ color: GOLD, fontWeight: 800, fontSize: "1rem" }}>{t("universityName")}</span>
+            </div>
+          </div>
+
+          {/* Bottom Row: Students & Instructor */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1.5rem", position: "relative", zIndex: 1, borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: "1.5rem" }}>
+            <div>
+              <p style={{ margin: "0 0 0.3rem", color: "rgba(255,255,255,0.45)", fontSize: "0.8rem", textTransform: "uppercase", fontWeight: 700, letterSpacing: "0.05em" }}>{t("student")} 1</p>
+              <p style={{ margin: "0 0 0.15rem", color: GOLD, fontWeight: 800, fontSize: "1.05rem" }}>{t("student1Name")}</p>
+              <p style={{ margin: 0, color: "rgba(255,255,255,0.55)", fontSize: "0.85rem", fontFamily: "monospace" }}>{t("universityId")}: 452032893</p>
+            </div>
+            <div>
+              <p style={{ margin: "0 0 0.3rem", color: "rgba(255,255,255,0.45)", fontSize: "0.8rem", textTransform: "uppercase", fontWeight: 700, letterSpacing: "0.05em" }}>{t("student")} 2</p>
+              <p style={{ margin: "0 0 0.15rem", color: GOLD, fontWeight: 800, fontSize: "1.05rem" }}>{t("student2Name")}</p>
+              <p style={{ margin: 0, color: "rgba(255,255,255,0.55)", fontSize: "0.85rem", fontFamily: "monospace" }}>{t("universityId")}: 443058203</p>
+            </div>
+            <div>
+              <p style={{ margin: "0 0 0.3rem", color: "rgba(255,255,255,0.45)", fontSize: "0.8rem", textTransform: "uppercase", fontWeight: 700, letterSpacing: "0.05em" }}>{t("courseInstructor")}</p>
+              <p style={{ margin: 0, color: GOLD, fontWeight: 800, fontSize: "1.05rem" }}>{t("instructorName")}</p>
+            </div>
+          </div>
+        </div>
+
         {/* ── Divider ─────────────────────────────────────────── */}
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "1.25rem", maxWidth: "1100px", margin: "0 auto", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "0.5rem", alignItems: "center" }}>
           <p style={{ color: "rgba(255,255,255,0.28)", fontSize: "0.8rem", margin: 0 }}>
