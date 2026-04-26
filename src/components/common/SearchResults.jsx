@@ -37,22 +37,28 @@ function SearchResults({ query: searchQ, onClose }) {
   /* ── Debounced search ───────────────────────────────────── */
   useEffect(() => {
     if (!searchQ || searchQ.trim().length < 2) {
-      setShops([]); setProducts([]); return;
+      setShops([]); return;
     }
     const timer = setTimeout(async () => {
       setLoading(true);
       try {
-        const lower = searchQ.toLowerCase().trim();
-        // Firestore doesn't support LIKE, so we use >= / <= trick for prefix search
-        const end = lower.slice(0, -1) + String.fromCharCode(lower.charCodeAt(lower.length - 1) + 1);
+        const lowerQ = searchQ.toLowerCase().trim();
+        
+        // Fetch all approved shops
+        const shopSnap = await getDocs(query(collection(db, "shops"), where("isApproved", "==", true)));
+        
+        const allShops = shopSnap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        
+        const matched = allShops.filter(s => 
+          (s.shopName && s.shopName.toLowerCase().includes(lowerQ)) ||
+          (s.shopNameAr && s.shopNameAr.toLowerCase().includes(lowerQ)) ||
+          (s.shopCity && s.shopCity.toLowerCase().includes(lowerQ)) ||
+          (s.shopCityAr && s.shopCityAr.toLowerCase().includes(lowerQ)) ||
+          (s.shopArea && s.shopArea.toLowerCase().includes(lowerQ)) ||
+          (s.shopAreaAr && s.shopAreaAr.toLowerCase().includes(lowerQ))
+        ).slice(0, 8); // Max 8 results
 
-        const [shopSnap, prodSnap] = await Promise.all([
-          getDocs(query(collection(db, "shops"), where("isApproved", "==", true), where("shopName", ">=", lower), where("shopName", "<", end), limit(5))),
-          getDocs(query(collection(db, "products"), where("isAvailable", "==", true), where("productName", ">=", lower), where("productName", "<", end), limit(5))),
-        ]);
-
-        setShops(shopSnap.docs.map((d) => ({ id: d.id, ...d.data() })));
-        setProducts(prodSnap.docs.map((d) => ({ id: d.id, ...d.data() })));
+        setShops(matched);
       } catch (e) { console.error("[SearchResults]", e); }
       finally { setLoading(false); }
     }, 500);
@@ -64,12 +70,7 @@ function SearchResults({ query: searchQ, onClose }) {
     onClose();
   };
 
-  const goToProduct = (product) => {
-    navigate(`/shop/${product.shopId}`);
-    onClose();
-  };
-
-  const hasResults = shops.length > 0 || products.length > 0;
+  const hasResults = shops.length > 0;
 
   if (!searchQ || searchQ.trim().length < 2) return null;
 
@@ -94,34 +95,19 @@ function SearchResults({ query: searchQ, onClose }) {
               <div style={S.sectionLabel}>🏪 {t("searchShopsSection")}</div>
               {shops.map((shop) => (
                 <div key={shop.id} style={S.item(hoverId === shop.id)} onMouseEnter={() => setHoverId(shop.id)} onMouseLeave={() => setHoverId(null)} onClick={() => goToShop(shop.id)}>
-                  <div style={S.shopIcon}>{(shop.shopName || "?").charAt(0)}</div>
+                  <div style={S.shopIcon}>{(language === "ar" && shop.shopNameAr ? shop.shopNameAr : shop.shopName || "?").charAt(0).toUpperCase()}</div>
                   <div>
-                    <div style={S.name}>{shop.shopName}</div>
-                    <div style={S.sub}>📍 {shop.shopCity}{shop.shopArea ? ` · ${shop.shopArea}` : ""}</div>
+                    <div style={S.name}>{language === "ar" && shop.shopNameAr ? shop.shopNameAr : shop.shopName}</div>
+                    <div style={S.sub}>
+                      📍 {language === "ar" && shop.shopCityAr ? shop.shopCityAr : shop.shopCity}
+                      {(language === "ar" && shop.shopAreaAr) || shop.shopArea ? ` · ${language === "ar" && shop.shopAreaAr ? shop.shopAreaAr : shop.shopArea}` : ""}
+                    </div>
                   </div>
                 </div>
               ))}
             </>
           )}
 
-          {/* Divider */}
-          {shops.length > 0 && products.length > 0 && <div style={S.divider} />}
-
-          {/* Products section */}
-          {products.length > 0 && (
-            <>
-              <div style={S.sectionLabel}>💎 {t("searchProductsSection")}</div>
-              {products.map((prod) => (
-                <div key={prod.id} style={S.item(hoverId === prod.id)} onMouseEnter={() => setHoverId(prod.id)} onMouseLeave={() => setHoverId(null)} onClick={() => goToProduct(prod)}>
-                  <div style={S.prodIcon}>💎</div>
-                  <div>
-                    <div style={S.name}>{prod.productName}</div>
-                    <div style={S.sub}>{prod.karat}K · {prod.weight}g</div>
-                  </div>
-                </div>
-              ))}
-            </>
-          )}
         </>
       )}
     </motion.div>

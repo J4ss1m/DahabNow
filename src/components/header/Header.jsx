@@ -307,9 +307,16 @@ function Header() {
             dir={dir}
           >
             {/* Mobile search */}
-            <form onSubmit={(e) => { handleSearchSubmit(e); setMobileOpen(false); }}>
-              <input value={searchQ} onChange={(e) => setSearchQ(e.target.value)} placeholder={t("searchPlaceholder")} style={{ width: "100%", padding: "0.55rem 1rem", backgroundColor: "rgba(38,50,56,0.75)", border: "1.5px solid rgba(212,175,55,0.2)", borderRadius: "22px", color: "#FFFFFF", fontFamily: "'Tajawal', sans-serif", fontSize: "0.88rem", outline: "none", boxSizing: "border-box" }} />
-            </form>
+            <div style={{ position: "relative" }}>
+              <form onSubmit={(e) => { handleSearchSubmit(e); setMobileOpen(false); }}>
+                <input value={searchQ} onChange={(e) => { setSearchQ(e.target.value); setShowSearch(true); }} onFocus={() => setShowSearch(true)} placeholder={t("searchPlaceholder")} style={{ width: "100%", padding: "0.55rem 1rem", backgroundColor: "rgba(38,50,56,0.75)", border: "1.5px solid rgba(212,175,55,0.2)", borderRadius: "22px", color: "#FFFFFF", fontFamily: "'Tajawal', sans-serif", fontSize: "0.88rem", outline: "none", boxSizing: "border-box" }} />
+              </form>
+              <AnimatePresence>
+                {showSearch && searchQ.trim().length >= 2 && (
+                  <SearchResults query={searchQ} onClose={() => { setShowSearch(false); setSearchQ(""); setMobileOpen(false); }} />
+                )}
+              </AnimatePresence>
+            </div>
             {/* Mobile location */}
             <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
               <button onClick={() => { setCity(""); setMobileOpen(false); }} style={{ padding: "0.35rem 0.8rem", borderRadius: "20px", border: "none", backgroundColor: !activeCity ? GOLD : "rgba(255,255,255,0.1)", color: !activeCity ? "#263238" : "#FFFFFF", fontFamily: "'Tajawal', sans-serif", fontSize: "0.8rem", cursor: "pointer" }}>
