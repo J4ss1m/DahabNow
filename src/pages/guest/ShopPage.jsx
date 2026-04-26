@@ -233,8 +233,18 @@ function ShopPage() {
   /* ── 8. Render helpers ────────────────────────────────────── */
   const waUrl = toWAUrl(shop?.contactWhatsApp);
   const emailUrl = shop?.contactEmail ? `mailto:${shop.contactEmail}` : null;
-  const locationUrl = shop?.locationLink || null;
-  const isGmaps = locationUrl && (locationUrl.toLowerCase().includes("google.com/maps") || locationUrl.toLowerCase().includes("goo.gl/maps") || locationUrl.toLowerCase().includes("maps.google") || locationUrl.toLowerCase().includes("maps.app.goo"));
+  const locationUrl = (shop?.locationLink || "").trim();
+  const isGmaps = Boolean(locationUrl) && (
+    locationUrl.toLowerCase().includes("google.com/maps") ||
+    locationUrl.toLowerCase().includes("goo.gl/maps") ||
+    locationUrl.toLowerCase().includes("maps.google") ||
+    locationUrl.toLowerCase().includes("maps.app.goo")
+  );
+  const searchTerms = `${shop?.shopName || ""} ${shop?.shopArea || ""} ${shop?.shopCity || ""}`.trim() || `${shop?.shopName || shop?.shopCity || "shop"}`;
+  const mapSearchQuery = encodeURIComponent(searchTerms);
+  const mapLink = isGmaps && locationUrl
+    ? locationUrl
+    : `https://www.google.com/maps/search/${mapSearchQuery}`;
   const saved = isFavorite(shopId);
 
   /* ── Loading state ────────────────────────────────────────── */
@@ -310,12 +320,10 @@ function ShopPage() {
                   ✉️ {t("shopContactEmail")}
                 </a>
               )}
-              {locationUrl && isGmaps && (
-                <a href={locationUrl} target="_blank" rel="noreferrer"
-                  style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "0.6rem 1.2rem", backgroundColor: "rgba(212,175,55,0.15)", border: `1.5px solid ${GOLD}`, borderRadius: "10px", color: GOLD, fontFamily: "'Tajawal', sans-serif", fontSize: "0.9rem", fontWeight: 700, textDecoration: "none" }}>
-                  📍 {t("shopLocationButton")}
-                </a>
-              )}
+              <a href={mapLink} target="_blank" rel="noreferrer"
+                style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "0.6rem 1.2rem", backgroundColor: "rgba(212,175,55,0.15)", border: `1.5px solid ${GOLD}`, borderRadius: "10px", color: GOLD, fontFamily: "'Tajawal', sans-serif", fontSize: "0.9rem", fontWeight: 700, textDecoration: "none" }}>
+                📍 Map Location
+              </a>
               {locationUrl && !isGmaps && (
                 <a href={locationUrl} target="_blank" rel="noreferrer"
                   style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "0.6rem 1.2rem", backgroundColor: "rgba(212,175,55,0.15)", border: `1.5px solid ${GOLD}`, borderRadius: "10px", color: GOLD, fontFamily: "'Tajawal', sans-serif", fontSize: "0.9rem", fontWeight: 700, textDecoration: "none" }}>
