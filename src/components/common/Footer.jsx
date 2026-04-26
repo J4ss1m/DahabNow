@@ -84,7 +84,7 @@ function ContactModal({ onClose, dir }) {
 
         <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1.5rem" }}>
           <a
-            href="https://wa.me/966578006021"
+            href="https://wa.me/966500183775"
             target="_blank"
             rel="noopener noreferrer"
             style={{
@@ -101,12 +101,12 @@ function ContactModal({ onClose, dir }) {
             <span style={{ fontSize: "1.5rem" }}>📱</span>
             <div>
               <p style={{ margin: 0, fontSize: "0.85rem", color: "rgba(255,255,255,0.6)" }}>{t("contactWhatsApp")}</p>
-              <p style={{ margin: 0, fontSize: "1.05rem", fontWeight: 700, direction: "ltr" }}>057 800 6021</p>
+              <p style={{ margin: 0, fontSize: "1.05rem", fontWeight: 700, direction: "ltr" }}>050 018 3775</p>
             </div>
           </a>
 
           <a
-            href="mailto:j421mw0rk@gmail.com"
+            href="mailto:saadsmy2912@gmail.com"
             style={{
               display: "flex", alignItems: "center", gap: "12px",
               backgroundColor: "rgba(38,50,56,0.6)",
@@ -121,7 +121,7 @@ function ContactModal({ onClose, dir }) {
             <span style={{ fontSize: "1.5rem" }}>✉️</span>
             <div>
               <p style={{ margin: 0, fontSize: "0.85rem", color: "rgba(255,255,255,0.6)" }}>{t("contactEmail")}</p>
-              <p style={{ margin: 0, fontSize: "1.05rem", fontWeight: 700 }}>j421mw0rk@gmail.com</p>
+              <p style={{ margin: 0, fontSize: "1.05rem", fontWeight: 700 }}>saadsmy2912@gmail.com</p>
             </div>
           </a>
         </div>
