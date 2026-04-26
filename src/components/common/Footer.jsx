@@ -77,8 +77,9 @@ function ContactModal({ onClose, dir }) {
           <FiX size={20} />
         </button>
 
-        <a
-          href="https://wa.me/966500183775"
+        <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1.5rem" }}>
+          <a
+            href="https://wa.me/966500183775"
           target="_blank"
           rel="noopener noreferrer"
           style={{
@@ -121,8 +122,8 @@ function ContactModal({ onClose, dir }) {
             </div>
           </a>
 
-          <a
-            href="mailto:saadsmy2912@gmail.com"
+        <a
+          href="mailto:saadsmy2912@gmail.com"
             style={{
               display: "flex", alignItems: "center", gap: "12px",
               backgroundColor: "rgba(38,50,56,0.6)",
@@ -141,8 +142,8 @@ function ContactModal({ onClose, dir }) {
             </div>
           </a>
 
-          <a
-            href="mailto:jjjassim559@gmail.com"
+        <a
+          href="mailto:jjjassim559@gmail.com"
             style={{
               display: "flex", alignItems: "center", gap: "12px",
               backgroundColor: "rgba(38,50,56,0.6)",

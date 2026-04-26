@@ -7,7 +7,7 @@
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiBarChart2, FiCalculator, FiBriefcase, FiX, FiInfo } from "react-icons/fi";
+import { FiBarChart2, FiActivity, FiBriefcase, FiX, FiInfo } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useLanguage }    from "../../context/LanguageContext";
@@ -159,7 +159,7 @@ function ZakatModal({ onClose, dir }) {
     <ModalWrap onClose={onClose}>
       <button style={closeBtn} onClick={onClose}><FiX size="1.1rem" /></button>
       <div dir={dir}>
-        <h2 style={{ fontSize: "1.2rem", fontWeight: 800, color: GOLD, margin: "0 0 0.7rem" }}><FiCalculator style={{ verticalAlign: "middle", marginInlineEnd: "0.35rem" }} />{t("zakatModalTitle")}</h2>
+        <h2 style={{ fontSize: "1.2rem", fontWeight: 800, color: GOLD, margin: "0 0 0.7rem" }}><FiActivity style={{ verticalAlign: "middle", marginInlineEnd: "0.35rem" }} />{t("zakatModalTitle")}</h2>
         <div style={{ backgroundColor: "rgba(212,175,55,0.07)", border: "1px solid rgba(212,175,55,0.2)", borderRadius: "10px", padding: "0.7rem 1rem", marginBottom: "1.1rem" }}>
           <p style={{ fontSize: "0.83rem", color: "rgba(255,255,255,0.62)", margin: 0, lineHeight: 1.5 }}><FiInfo style={{ verticalAlign: "middle", marginInlineEnd: "0.35rem" }} /> {t("zakatExplanation")}</p>
         </div>
@@ -247,7 +247,7 @@ function ServicesHub() {
       </div>
       <div style={{ display: "flex", gap: "1.25rem", flexWrap: "wrap", maxWidth: "900px", margin: "0 auto" }}>
         <ServiceBox icon={<FiBarChart2 size="2rem" />} titleKey="servicePriceChartTitle" descKey="servicePriceChartDesc" ctaKey="serviceOpenChart"  onClick={() => setModal("chart")} />
-        <ServiceBox icon={<FiCalculator size="2rem" />} titleKey="serviceZakatTitle"      descKey="serviceZakatDesc"      ctaKey="serviceCalculate" onClick={() => setModal("zakat")} />
+        <ServiceBox icon={<FiActivity size="2rem" />} titleKey="serviceZakatTitle"      descKey="serviceZakatDesc"      ctaKey="serviceCalculate" onClick={() => setModal("zakat")} />
         <ServiceBox icon={<FiBriefcase size="2rem" />} titleKey="servicePortfolioTitle"  descKey="servicePortfolioDesc"  ctaKey="serviceCreatePortfolio" onClick={() => navigate("/portfolio")} />
       </div>
       <AnimatePresence>

@@ -15,7 +15,7 @@ import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { FiMapPin, FiPhone, FiMail, FiLink, FiHeart, FiCheckCircle, FiStore } from "react-icons/fi";
+import { FiMapPin, FiPhone, FiMail, FiLink, FiHeart, FiCheckCircle, FiShoppingBag } from "react-icons/fi";
 import {
   doc, getDoc,
   collection, query, where, getDocs,
@@ -261,7 +261,7 @@ function ShopPage() {
   if (shopError || !shop) {
     return (
       <div style={{ backgroundColor: BG, minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontFamily: "'Tajawal', sans-serif", padding: "2rem" }}>
-        <FiStore size="3rem" style={{ color: GOLD, marginBottom: "1rem" }} />
+        <FiShoppingBag size="3rem" style={{ color: GOLD, marginBottom: "1rem" }} />
         <h2 style={{ color: "#FFFFFF", margin: "0 0 0.5rem" }}>{shopError || t("shopNotFound")}</h2>
         <button onClick={() => navigate("/")} style={{ marginTop: "1.5rem", backgroundColor: "#FFD700", color: "#263238", border: "none", borderRadius: "10px", padding: "0.75rem 2rem", fontFamily: "'Tajawal', sans-serif", fontWeight: 700, fontSize: "0.95rem", cursor: "pointer" }}>
           ← {t("home")}

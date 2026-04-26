@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation }      from "react-i18next";
 import { useNavigate }         from "react-router-dom";
-import { FiHome, FiClipboard, FiShoppingBag, FiFileText, FiMegaphone, FiBarChart2 } from "react-icons/fi";
+import { FiHome, FiClipboard, FiShoppingBag, FiFileText, FiBell, FiBarChart2 } from "react-icons/fi";
 import { useAuth }             from "../../context/AuthContext";
 import { useLanguage }         from "../../context/LanguageContext";
 import VerificationQueue       from "../../components/admin/VerificationQueue";
@@ -24,7 +24,7 @@ const TABS = [
   { id: "verif",   icon: <FiClipboard size={18} />, key: "tabVerificationQueue" },
   { id: "shops",   icon: <FiShoppingBag size={18} />, key: "tabShopManagement"    },
   { id: "content", icon: <FiFileText size={18} />, key: "tabContentManagement" },
-  { id: "ads",     icon: <FiMegaphone size={18} />, key: "tabAdRequestsMgmt"    },
+  { id: "ads",     icon: <FiBell size={18} />, key: "tabAdRequestsMgmt"    },
   { id: "stats",   icon: <FiBarChart2 size={18} />, key: "tabPlatformStats"     },
 ];
 

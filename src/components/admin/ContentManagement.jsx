@@ -5,7 +5,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiMegaphone, FiClipboard, FiStar } from "react-icons/fi";
+import { FiBell, FiClipboard, FiStar } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 import {
   collection, query, where, getDocs, addDoc,
@@ -114,7 +114,7 @@ function ContentManagement() {
 
       {/* ── Post news ─────────────────────────────────────── */}
       <div style={S.card}>
-        <p style={S.sectionTitle}><FiMegaphone size={18} /> {t("contentPostNews")}</p>
+        <p style={S.sectionTitle}><FiBell size={18} /> {t("contentPostNews")}</p>
         <label style={S.label}>{t("contentNewsTitle")}</label>
         <input style={S.input} placeholder={t("contentNewsTitlePlaceholder")} value={title} onChange={(e) => setTitle(e.target.value)} />
         <label style={S.label}>{t("contentNewsBody")}</label>

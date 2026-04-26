@@ -47,6 +47,7 @@ function FavCard({ shop, index, onRemove }) {
       {shop.isApproved && shop.sellerId !== "imported" && (
           <span style={{ backgroundColor: "rgba(212,175,55,0.12)", color: GOLD, border: "1px solid rgba(212,175,55,0.3)", borderRadius: "20px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: "6px", marginBottom: "1rem" }}>
             <FiCheckCircle size="0.85rem" style={{ display: "inline-flex", verticalAlign: "middle" }} /> {t("shopVerified")}
+          </span>
       )}
 
       <div style={{ display: "flex", gap: "0.6rem" }}>

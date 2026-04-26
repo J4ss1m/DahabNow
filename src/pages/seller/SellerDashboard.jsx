@@ -55,6 +55,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation }      from "react-i18next";
 import { useNavigate }        from "react-router-dom";
+import { FiHome, FiShoppingBag, FiStar, FiPlus, FiBell, FiSettings } from "react-icons/fi";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db }                  from "../../firebase/config";
 import { useAuth }             from "../../context/AuthContext";
@@ -76,7 +77,7 @@ const TABS = [
   { id: "myShop",           icon: <FiShoppingBag size={18} />, key: "tabMyShop"          },
   { id: "myProducts",       icon: <FiStar size={18} />, key: "tabMyProducts"       },
   { id: "addProduct",       icon: <FiPlus size={18} />, key: "tabAddProduct"       },
-  { id: "adRequests",       icon: <FiMegaphone size={18} />, key: "tabAdRequests"       },
+  { id: "adRequests",       icon: <FiBell size={18} />, key: "tabAdRequests"       },
   { id: "accountSettings",  icon: <FiSettings size={18} />, key: "tabAccountSettings"  },
 ];
 
