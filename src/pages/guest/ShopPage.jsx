@@ -15,16 +15,18 @@ import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { FiMapPin, FiPhone, FiMail, FiLink, FiHeart, FiCheckCircle, FiShoppingBag } from "react-icons/fi";
+import { FiMapPin, FiPhone, FiMail, FiLink, FiHeart, FiCheckCircle, FiShoppingBag, FiBox } from "react-icons/fi";
 import {
-  doc, getDoc,
+  doc, getDoc, setDoc, serverTimestamp,
   collection, query, where, getDocs,
 } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import { useLanguage } from "../../context/LanguageContext";
 import { useFavorites } from "../../context/FavoritesContext";
+import { useAuth } from "../../context/AuthContext";
 import GoldSpinner from "../../components/common/GoldSpinner";
 import ProductDetailModal from "../../components/shop/ProductDetailModal";
+import ShopRating from "../../components/shop/ShopRating";
 import Header from "../../components/header/Header";
 import ScrollToTopButton from "../../components/common/ScrollToTopButton";
 
@@ -117,6 +119,7 @@ function ShopPage() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const { language } = useLanguage();
+  const { currentUser } = useAuth();
   const { toggleFavorite, isFavorite } = useFavorites(); // never throws
   const { showToast } = useToastSafe();
   const dir = language === "ar" ? "rtl" : "ltr";
@@ -131,6 +134,9 @@ function ShopPage() {
   const [karatFilter, setKaratFilter] = useState("All");
   const [searchQ, setSearchQ] = useState("");
   const [sort, setSort] = useState("newest");
+  const [avgRating, setAvgRating] = useState(0);
+  const [totalRatings, setTotalRatings] = useState(0);
+  const [userRating, setUserRating] = useState(null);
 
   /* ── 4. Fetch shop from Firestore "shops" collection ──────── */
   useEffect(() => {
@@ -181,6 +187,38 @@ function ShopPage() {
     fetchShop();
     return () => { cancelled = true; };
   }, [shopId]);
+
+  /* ── Fetch ratings for this shop ────────────────────────── */
+  useEffect(() => {
+    if (!shopId) return;
+    let cancelled = false;
+
+    const fetchRatings = async () => {
+      try {
+        const q = query(collection(db, "ratings"), where("shopId", "==", shopId));
+        const snap = await getDocs(q);
+        if (cancelled) return;
+
+        const rows = snap.docs.map((d) => d.data()).filter((r) => typeof r.rating === "number");
+        const count = rows.length;
+        const sum = rows.reduce((acc, r) => acc + r.rating, 0);
+        setTotalRatings(count);
+        setAvgRating(count ? sum / count : 0);
+
+        if (currentUser) {
+          const mine = rows.find((r) => r.userId === currentUser.uid);
+          setUserRating(mine ? mine.rating : null);
+        } else {
+          setUserRating(null);
+        }
+      } catch (err) {
+        console.error("[ShopPage] fetchRatings error:", err);
+      }
+    };
+
+    fetchRatings();
+    return () => { cancelled = true; };
+  }, [shopId, currentUser]);
 
   /* ── 5. Fetch products ────────────────────────────────────── */
   useEffect(() => {
@@ -248,6 +286,31 @@ function ShopPage() {
     : `https://www.google.com/maps/search/${mapSearchQuery}`;
   const saved = isFavorite(shopId);
 
+  const handleRateShop = async (ratingValue) => {
+    if (!currentUser || userRating) return;
+    try {
+      const ref = doc(collection(db, "ratings"));
+      await setDoc(ref, {
+        ratingId: ref.id,
+        shopId,
+        userId: currentUser.uid,
+        rating: ratingValue,
+        createdAt: serverTimestamp(),
+        comment: "",
+      });
+
+      const nextCount = totalRatings + 1;
+      const nextAvg = ((avgRating * totalRatings) + ratingValue) / nextCount;
+      setUserRating(ratingValue);
+      setTotalRatings(nextCount);
+      setAvgRating(nextAvg);
+      showToast("Rating submitted successfully", "success");
+    } catch (err) {
+      console.error("[ShopPage] save rating error:", err);
+      showToast(t("toastError"), "error");
+    }
+  };
+
   /* ── Loading state ────────────────────────────────────────── */
   if (loading) {
     return (
@@ -300,6 +363,17 @@ function ShopPage() {
                   <FiCheckCircle size="0.85rem" /> {t("shopVerifiedBadge")}
                 </span>
               )}
+            </div>
+
+            <div style={{ marginBottom: "0.9rem" }}>
+              <ShopRating
+                averageRating={avgRating}
+                totalRatings={totalRatings}
+                userRating={userRating}
+                isLoggedIn={Boolean(currentUser)}
+                onRate={handleRateShop}
+                dir={dir}
+              />
             </div>
 
             {/* City / area */}

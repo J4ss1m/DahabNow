@@ -6,8 +6,11 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation }          from "react-i18next";
-import { FiX, FiBox, FiMail, FiMessageCircle, FiDownload, FiInfo } from "react-icons/fi";
+import { FiX, FiBox, FiMail, FiMessageCircle, FiDownload, FiInfo, FiHeart } from "react-icons/fi";
 import { useLanguage }             from "../../context/LanguageContext";
+import { useFavorites }            from "../../context/FavoritesContext";
+import { useToast }                from "../common/Toast";
+import { useAuth }                 from "../../context/AuthContext";
 
 /* ── Format WhatsApp URL ────────────────────────────────────── */
 const toWAUrl = (num) => {
@@ -35,9 +38,14 @@ const S = {
 
 function ProductDetailModal({ product, shop, onClose, dir }) {
   const { t } = useTranslation();
+  const { currentUser } = useAuth();
+  const { showToast } = useToast();
+  const { toggleFavoriteProduct, isFavoriteProduct } = useFavorites();
 
   const waUrl    = toWAUrl(shop?.contactWhatsApp);
   const emailUrl = shop?.contactEmail ? `mailto:${shop.contactEmail}` : null;
+  const productId = product?.productId ?? product?.id;
+  const isFavProduct = productId ? isFavoriteProduct(productId) : false;
 
   const handleDownload = () => {
     if (product?.productPicture) {
@@ -55,6 +63,15 @@ function ProductDetailModal({ product, shop, onClose, dir }) {
       const message = encodeURIComponent(`مرحباً، أريد أن أسأل عن المنتج: ${product.productName}`);
       window.open(`${waUrl}?text=${message}`, '_blank');
     }
+  };
+
+  const handleToggleFavoriteProduct = () => {
+    if (!currentUser) {
+      showToast("Please login to save favorites", "info");
+      return;
+    }
+    if (!productId) return;
+    toggleFavoriteProduct(productId);
   };
 
   return (
@@ -99,9 +116,31 @@ function ProductDetailModal({ product, shop, onClose, dir }) {
                 </div>
 
                 {/* Name */}
-                <h2 style={{ fontSize: "1.3rem", fontWeight: 800, color: "#FFFFFF", margin: "0 0 0.5rem" }}>
-                  {product.productName}
-                </h2>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.75rem" }}>
+                  <h2 style={{ fontSize: "1.3rem", fontWeight: 800, color: "#FFFFFF", margin: "0 0 0.5rem" }}>
+                    {product.productName}
+                  </h2>
+                  <button
+                    type="button"
+                    onClick={handleToggleFavoriteProduct}
+                    style={{
+                      background: "rgba(255,255,255,0.08)",
+                      border: "1px solid rgba(212,175,55,0.35)",
+                      color: isFavProduct ? "#D4AF37" : "rgba(255,255,255,0.75)",
+                      borderRadius: "10px",
+                      width: "36px",
+                      height: "36px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      flexShrink: 0,
+                    }}
+                    aria-label="favorite product"
+                  >
+                    <FiHeart size="1rem" style={{ fill: isFavProduct ? "#D4AF37" : "none" }} />
+                  </button>
+                </div>
 
                 {/* Weight */}
                 <div style={{ marginBottom: "1rem" }}>

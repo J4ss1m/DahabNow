@@ -11,7 +11,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion }                        from "framer-motion";
 import { useTranslation }                from "react-i18next";
-import { FiStar, FiMapPin, FiBox, FiCheckCircle, FiLink } from "react-icons/fi";
+import { FiShoppingBag } from "react-icons/fi";
 import { useLocation, useNavigate }      from "react-router-dom";
 import {
   collection, query, where, getDocs, getCountFromServer,
@@ -19,6 +19,7 @@ import {
 import { db }          from "../../firebase/config";
 import { useLanguage } from "../../context/LanguageContext";
 import GoldSpinner     from "../common/GoldSpinner";
+import ShopCard from "./ShopCard";
 
 const GOLD = "#D4AF37";
 
@@ -33,7 +34,7 @@ async function fetchProductCount(shopId) {
 }
 
 /* ── Shop Card ───────────────────────────────────────────────── */
-function ShopCard({ shop, index, productCount }) {
+function ShopCardLegacy({ shop, index, productCount }) {
   const { t, i18n }         = useTranslation();
   const navigate      = useNavigate();
   const [hov, setHov] = useState(false);
@@ -159,6 +160,7 @@ function ShopGrid() {
 
   const [allShops,     setAllShops]     = useState([]);
   const [productCounts,setProductCounts]= useState({});
+  const [shopRatings,  setShopRatings]  = useState({});
   const [loading,      setLoading]      = useState(true);
   const [error,        setError]        = useState("");
 
@@ -211,6 +213,25 @@ function ShopGrid() {
           counts[shop.id] = await fetchProductCount(shop.id);
         }));
         setProductCounts(counts);
+
+        const ratingSnap = await getDocs(collection(db, "ratings"));
+        const aggregate = {};
+        ratingSnap.forEach((d) => {
+          const r = d.data();
+          if (!r?.shopId || typeof r.rating !== "number") return;
+          if (!aggregate[r.shopId]) aggregate[r.shopId] = { sum: 0, count: 0 };
+          aggregate[r.shopId].sum += r.rating;
+          aggregate[r.shopId].count += 1;
+        });
+
+        const normalized = {};
+        Object.keys(aggregate).forEach((id) => {
+          normalized[id] = {
+            avg: aggregate[id].sum / aggregate[id].count,
+            count: aggregate[id].count,
+          };
+        });
+        setShopRatings(normalized);
       } catch (e) {
         console.error("[ShopGrid]", e);
         setError(t("errorLoadingShops"));
@@ -309,7 +330,13 @@ function ShopGrid() {
       {!loading && !error && displayed.length > 0 && (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1.25rem", maxWidth: "1200px", margin: "0 auto" }}>
           {displayed.map((shop, i) => (
-            <ShopCard key={shop.id} shop={shop} index={i} productCount={productCounts[shop.id]} />
+            <ShopCard
+              key={shop.id}
+              shop={shop}
+              index={i}
+              productCount={productCounts[shop.id]}
+              ratingData={shopRatings[shop.id]}
+            />
           ))}
         </div>
       )}
