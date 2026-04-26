@@ -202,7 +202,7 @@ function HeroSlider() {
                 </div>
                 <div style={{ width: "2px", height: "30px", backgroundColor: "rgba(212,175,55,0.3)" }} />
                 <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                  <img src={iuLogo} alt="Islamic University of Madinah" style={{ height: "40px", objectFit: "contain" }} />
+                  <img src={iuLogo} alt="Islamic University of Madinah" style={{ width: "80px", height: "80px", objectFit: "contain" }} />
                   <span style={{ color: "#FFFFFF", fontWeight: 700, fontSize: "1rem", maxWidth: "150px", textAlign: "start", lineHeight: 1.2 }}>{t("universityName")}</span>
                 </div>
               </div>
