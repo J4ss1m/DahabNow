@@ -15,6 +15,7 @@ import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { FiMapPin, FiPhone, FiMail, FiLink, FiHeart, FiCheckCircle, FiStore } from "react-icons/fi";
 import {
   doc, getDoc,
   collection, query, where, getDocs,
@@ -86,7 +87,7 @@ function ProductCard({ product, index, onClick }) {
       <div style={{ width: "100%", height: "160px", backgroundColor: "rgba(38,50,56,0.5)", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
         {product.productPicture
           ? <img src={product.productPicture} alt={product.productName} style={{ width: "100%", height: "100%", objectFit: "cover", transform: hov ? "scale(1.06)" : "scale(1)", transition: "transform 0.3s" }} />
-          : <span style={{ fontSize: "2.5rem", opacity: 0.4 }}>💎</span>
+          : <span style={{ fontSize: "2.5rem", opacity: 0.4 }}><FiBox size={40} /></span>
         }
       </div>
       <div style={{ padding: "0.9rem" }}>
@@ -260,7 +261,7 @@ function ShopPage() {
   if (shopError || !shop) {
     return (
       <div style={{ backgroundColor: BG, minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontFamily: "'Tajawal', sans-serif", padding: "2rem" }}>
-        <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🏪</div>
+        <FiStore size="3rem" style={{ color: GOLD, marginBottom: "1rem" }} />
         <h2 style={{ color: "#FFFFFF", margin: "0 0 0.5rem" }}>{shopError || t("shopNotFound")}</h2>
         <button onClick={() => navigate("/")} style={{ marginTop: "1.5rem", backgroundColor: "#FFD700", color: "#263238", border: "none", borderRadius: "10px", padding: "0.75rem 2rem", fontFamily: "'Tajawal', sans-serif", fontWeight: 700, fontSize: "0.95rem", cursor: "pointer" }}>
           ← {t("home")}
@@ -295,15 +296,15 @@ function ShopPage() {
                 {i18n.language === 'ar' && shop.shopNameAr ? shop.shopNameAr : shop.shopName}
               </h1>
               {shop.isApproved && shop.sellerId !== "imported" && (
-                <span style={{ backgroundColor: "rgba(212,175,55,0.15)", color: GOLD, border: "1px solid rgba(212,175,55,0.4)", borderRadius: "20px", padding: "3px 12px", fontSize: "0.8rem", fontWeight: 700 }}>
-                  ✓ {t("shopVerifiedBadge")}
+                <span style={{ backgroundColor: "rgba(212,175,55,0.15)", color: GOLD, border: "1px solid rgba(212,175,55,0.4)", borderRadius: "20px", padding: "3px 12px", fontSize: "0.8rem", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
+                  <FiCheckCircle size="0.85rem" /> {t("shopVerifiedBadge")}
                 </span>
               )}
             </div>
 
             {/* City / area */}
-            <p style={{ fontSize: "0.95rem", color: "rgba(255,255,255,0.55)", margin: "0 0 1.25rem" }}>
-              📍 {i18n.language === 'ar' && shop.shopCityAr ? shop.shopCityAr : shop.shopCity}{(i18n.language === 'ar' && shop.shopAreaAr) || shop.shopArea ? ` · ${i18n.language === 'ar' && shop.shopAreaAr ? shop.shopAreaAr : shop.shopArea}` : ""}
+            <p style={{ fontSize: "0.95rem", color: "rgba(255,255,255,0.55)", margin: "0 0 1.25rem", display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
+              <FiMapPin size="0.95rem" /> {i18n.language === 'ar' && shop.shopCityAr ? shop.shopCityAr : shop.shopCity}{(i18n.language === 'ar' && shop.shopAreaAr) || shop.shopArea ? ` · ${i18n.language === 'ar' && shop.shopAreaAr ? shop.shopAreaAr : shop.shopArea}` : ""}
             </p>
 
             {/* Action buttons */}
@@ -311,23 +312,23 @@ function ShopPage() {
               {waUrl && (
                 <a href={waUrl} target="_blank" rel="noreferrer"
                   style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "0.6rem 1.2rem", backgroundColor: "#25D366", border: "none", borderRadius: "10px", color: "#FFFFFF", fontFamily: "'Tajawal', sans-serif", fontSize: "0.9rem", fontWeight: 700, textDecoration: "none" }}>
-                  📱 {t("shopContactWhatsApp")}
+                  <FiPhone size="1rem" /> {t("shopContactWhatsApp")}
                 </a>
               )}
               {emailUrl && (
                 <a href={emailUrl}
                   style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "0.6rem 1.2rem", backgroundColor: "rgba(212,175,55,0.15)", border: `1.5px solid ${GOLD}`, borderRadius: "10px", color: GOLD, fontFamily: "'Tajawal', sans-serif", fontSize: "0.9rem", fontWeight: 700, textDecoration: "none" }}>
-                  ✉️ {t("shopContactEmail")}
+                  <FiMail size="1rem" /> {t("shopContactEmail")}
                 </a>
               )}
               <a href={mapLink} target="_blank" rel="noreferrer"
                 style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "0.6rem 1.2rem", backgroundColor: "rgba(212,175,55,0.15)", border: `1.5px solid ${GOLD}`, borderRadius: "10px", color: GOLD, fontFamily: "'Tajawal', sans-serif", fontSize: "0.9rem", fontWeight: 700, textDecoration: "none" }}>
-                📍 Map Location
+                <FiMapPin size="1rem" /> {t("shopMapLocation")}
               </a>
               {locationUrl && !isGmaps && (
                 <a href={locationUrl} target="_blank" rel="noreferrer"
                   style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "0.6rem 1.2rem", backgroundColor: "rgba(212,175,55,0.15)", border: `1.5px solid ${GOLD}`, borderRadius: "10px", color: GOLD, fontFamily: "'Tajawal', sans-serif", fontSize: "0.9rem", fontWeight: 700, textDecoration: "none" }}>
-                  🔗 {t("visitWebsite")}
+                  <FiLink size="1rem" /> {t("visitWebsite")}
                 </a>
               )}
               <motion.button
@@ -335,7 +336,7 @@ function ShopPage() {
                 onClick={handleFavorite}
                 style={{ padding: "0.6rem 1.2rem", backgroundColor: saved ? "rgba(212,175,55,0.15)" : "rgba(255,255,255,0.08)", border: `1.5px solid ${saved ? GOLD : "rgba(255,255,255,0.2)"}`, borderRadius: "10px", color: saved ? GOLD : "rgba(255,255,255,0.7)", fontFamily: "'Tajawal', sans-serif", fontSize: "0.9rem", fontWeight: 700, cursor: "pointer" }}
               >
-                {saved ? "❤️" : "🤍"} {saved ? t("shopSaved") : t("shopSaveFavorite")}
+                <FiHeart size="1rem" style={{ marginInlineEnd: "0.35rem", color: saved ? GOLD : "inherit" }} /> {saved ? t("shopSaved") : t("shopSaveFavorite")}
               </motion.button>
             </div>
           </div>
@@ -378,7 +379,7 @@ function ShopPage() {
             </div>
           ) : displayed.length === 0 ? (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: "center", padding: "4rem 1rem" }}>
-              <div style={{ fontSize: "3rem", marginBottom: "0.75rem" }}>💎</div>
+              <div style={{ fontSize: "3rem", marginBottom: "0.75rem" }}><FiBox size={42} /></div>
               <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.97rem" }}>{t("shopNoProducts")}</p>
             </motion.div>
           ) : (

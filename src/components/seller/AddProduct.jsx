@@ -16,6 +16,7 @@
 
 import { useState }    from "react";
 import { motion }      from "framer-motion";
+import { FiCheckCircle } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db }          from "../../firebase/config";
@@ -210,7 +211,7 @@ function AddProduct({ shopId, currentUser }) {
       {/* Status messages */}
       {success && (
         <motion.div initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} style={S.successMsg}>
-          ✓ {success}
+          <FiCheckCircle size="1rem" style={{ marginInlineEnd: "0.4rem" }} /> {success}
         </motion.div>
       )}
       {error && (

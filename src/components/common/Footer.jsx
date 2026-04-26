@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate }    from "react-router-dom";
 import { useLanguage }    from "../../context/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
+import { FiPhone, FiMail, FiX } from "react-icons/fi";
 import DahabNowLogo       from "./DahabNowLogo";
 
 const GOLD = "#D4AF37";
@@ -73,35 +74,30 @@ function ContactModal({ onClose, dir }) {
             lineHeight:     1,
           }}
         >
-          ✕
+          <FiX size={20} />
         </button>
 
-        <h2 style={{ fontSize: "1.3rem", fontWeight: 800, color: GOLD, margin: "0 0 1.25rem" }}>
-          {t("contactUsTitle")}
-        </h2>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1.5rem" }}>
-          <a
-            href="https://wa.me/966500183775"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "flex", alignItems: "center", gap: "12px",
-              backgroundColor: "rgba(38,50,56,0.6)",
-              padding: "1rem", borderRadius: "12px",
-              textDecoration: "none", color: WHITE,
-              border: "1px solid rgba(255,255,255,0.1)",
-              transition: "border-color 0.2s"
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.borderColor = GOLD}
-            onMouseLeave={(e) => e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"}
-          >
-            <span style={{ fontSize: "1.5rem" }}>📱</span>
-            <div>
-              <p style={{ margin: 0, fontSize: "0.85rem", color: "rgba(255,255,255,0.6)" }}>{t("contactWhatsApp")}</p>
-              <p style={{ margin: 0, fontSize: "1.05rem", fontWeight: 700, direction: "ltr" }}>050 018 3775</p>
-            </div>
-          </a>
+        <a
+          href="https://wa.me/966500183775"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: "flex", alignItems: "center", gap: "12px",
+            backgroundColor: "rgba(38,50,56,0.6)",
+            padding: "1rem", borderRadius: "12px",
+            textDecoration: "none", color: WHITE,
+            border: "1px solid rgba(255,255,255,0.1)",
+            transition: "border-color 0.2s"
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.borderColor = GOLD}
+          onMouseLeave={(e) => e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"}
+        >
+          <FiPhone size={22} />
+          <div>
+            <p style={{ margin: 0, fontSize: "0.85rem", color: "rgba(255,255,255,0.6)" }}>{t("contactWhatsApp")}</p>
+            <p style={{ margin: 0, fontSize: "1.05rem", fontWeight: 700, direction: "ltr" }}>050 018 3775</p>
+          </div>
+        </a>
 
           <a
             href="https://wa.me/966578006021"
@@ -118,7 +114,7 @@ function ContactModal({ onClose, dir }) {
             onMouseEnter={(e) => e.currentTarget.style.borderColor = GOLD}
             onMouseLeave={(e) => e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"}
           >
-            <span style={{ fontSize: "1.5rem" }}>📱</span>
+            <FiPhone size={22} />
             <div>
               <p style={{ margin: 0, fontSize: "0.85rem", color: "rgba(255,255,255,0.6)" }}>{t("contactWhatsApp")}</p>
               <p style={{ margin: 0, fontSize: "1.05rem", fontWeight: 700, direction: "ltr" }}>057 800 6021</p>
@@ -138,7 +134,7 @@ function ContactModal({ onClose, dir }) {
             onMouseEnter={(e) => e.currentTarget.style.borderColor = GOLD}
             onMouseLeave={(e) => e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"}
           >
-            <span style={{ fontSize: "1.5rem" }}>✉️</span>
+            <FiMail size={20} />
             <div>
               <p style={{ margin: 0, fontSize: "0.85rem", color: "rgba(255,255,255,0.6)" }}>{t("contactEmail")}</p>
               <p style={{ margin: 0, fontSize: "1.05rem", fontWeight: 700 }}>saadsmy2912@gmail.com</p>
@@ -158,7 +154,7 @@ function ContactModal({ onClose, dir }) {
             onMouseEnter={(e) => e.currentTarget.style.borderColor = GOLD}
             onMouseLeave={(e) => e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"}
           >
-            <span style={{ fontSize: "1.5rem" }}>✉️</span>
+            <FiMail size={20} />
             <div>
               <p style={{ margin: 0, fontSize: "0.85rem", color: "rgba(255,255,255,0.6)" }}>{t("contactEmail")}</p>
               <p style={{ margin: 0, fontSize: "1.05rem", fontWeight: 700 }}>jjjassim559@gmail.com</p>

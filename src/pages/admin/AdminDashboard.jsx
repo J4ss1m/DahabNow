@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation }      from "react-i18next";
 import { useNavigate }         from "react-router-dom";
+import { FiHome, FiClipboard, FiShoppingBag, FiFileText, FiMegaphone, FiBarChart2 } from "react-icons/fi";
 import { useAuth }             from "../../context/AuthContext";
 import { useLanguage }         from "../../context/LanguageContext";
 import VerificationQueue       from "../../components/admin/VerificationQueue";
@@ -20,11 +21,11 @@ import DahabNowLogo            from "../../components/common/DahabNowLogo";
 import ScrollToTopButton        from "../../components/common/ScrollToTopButton";
 
 const TABS = [
-  { id: "verif",   icon: "📋", key: "tabVerificationQueue" },
-  { id: "shops",   icon: "🏪", key: "tabShopManagement"    },
-  { id: "content", icon: "📰", key: "tabContentManagement" },
-  { id: "ads",     icon: "📣", key: "tabAdRequestsMgmt"    },
-  { id: "stats",   icon: "📊", key: "tabPlatformStats"     },
+  { id: "verif",   icon: <FiClipboard size={18} />, key: "tabVerificationQueue" },
+  { id: "shops",   icon: <FiShoppingBag size={18} />, key: "tabShopManagement"    },
+  { id: "content", icon: <FiFileText size={18} />, key: "tabContentManagement" },
+  { id: "ads",     icon: <FiMegaphone size={18} />, key: "tabAdRequestsMgmt"    },
+  { id: "stats",   icon: <FiBarChart2 size={18} />, key: "tabPlatformStats"     },
 ];
 
 const BG   = "#263238";
@@ -42,7 +43,7 @@ function Sidebar({ activeTab, onSelect, dir }) {
         <span style={{ color: GOLD, fontWeight: 800, fontSize: "0.95rem" }}>DahabNow</span>
       </button>
       <button onClick={() => navigate("/")} style={{ display: "flex", alignItems: "center", gap: "8px", margin: "0 1.25rem 1rem", padding: "0.65rem 0.85rem", backgroundColor: "rgba(212,175,55,0.08)", border: "1px solid rgba(212,175,55,0.25)", borderRadius: "14px", color: GOLD, fontWeight: 700, cursor: "pointer", fontFamily: "'Tajawal', sans-serif" }}>
-        🏠 {t("headerHome")}
+        <FiHome size={18} /> {t("headerHome")}
       </button>
       <p style={{ fontSize: "0.7rem", fontWeight: 700, color: "rgba(255,255,255,0.4)", letterSpacing: "0.1em", textTransform: "uppercase", padding: "0 1.25rem", marginBottom: "0.5rem" }}>
         {t("adminDashboard")}

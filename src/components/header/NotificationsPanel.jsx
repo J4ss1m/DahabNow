@@ -8,6 +8,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence }     from "framer-motion";
 import { useTranslation }              from "react-i18next";
+import { FiBell, FiClock }             from "react-icons/fi";
 import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestore";
 import { db }          from "../../firebase/config";
 import { useLanguage } from "../../context/LanguageContext";
@@ -113,7 +114,7 @@ function NotificationsPanel({ onClose }) {
     >
       {/* Header */}
       <div style={S.header}>
-        <p style={S.title}>🔔 {t("notifTitle")}</p>
+        <p style={S.title}><FiBell size={20} /> {t("notifTitle")}</p>
         {hasUnread && (
           <button style={S.markBtn} onClick={markAllRead}>{t("notifMarkRead")}</button>
         )}
@@ -122,7 +123,7 @@ function NotificationsPanel({ onClose }) {
       {/* Body */}
       <div style={S.body}>
         {loading ? (
-          <div style={S.empty}>⏳</div>
+          <div style={S.empty}><FiClock size={28} /></div>
         ) : notifs.length === 0 ? (
           <div style={S.empty}>{t("notifEmpty")}</div>
         ) : (

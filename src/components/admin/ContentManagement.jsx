@@ -5,6 +5,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { FiMegaphone, FiClipboard, FiStar } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 import {
   collection, query, where, getDocs, addDoc,
@@ -113,7 +114,7 @@ function ContentManagement() {
 
       {/* ── Post news ─────────────────────────────────────── */}
       <div style={S.card}>
-        <p style={S.sectionTitle}>📢 {t("contentPostNews")}</p>
+        <p style={S.sectionTitle}><FiMegaphone size={18} /> {t("contentPostNews")}</p>
         <label style={S.label}>{t("contentNewsTitle")}</label>
         <input style={S.input} placeholder={t("contentNewsTitlePlaceholder")} value={title} onChange={(e) => setTitle(e.target.value)} />
         <label style={S.label}>{t("contentNewsBody")}</label>
@@ -125,7 +126,7 @@ function ContentManagement() {
 
       {/* ── Current notifications ──────────────────────────── */}
       <div style={S.card}>
-        <p style={S.sectionTitle}>📋 {t("contentCurrentNotifs")}</p>
+        <p style={S.sectionTitle}><FiClipboard size={18} /> {t("contentCurrentNotifs")}</p>
         {notifsLoad ? <GoldSpinner fullScreen={false} size={36} /> :
           notifs.length === 0 ? (
             <p style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.9rem" }}>{t("contentNewsEmpty")}</p>
@@ -148,7 +149,7 @@ function ContentManagement() {
 
       {/* ── Featured shops ────────────────────────────────── */}
       <div style={S.card}>
-        <p style={S.sectionTitle}>⭐ {t("contentFeaturedShops")}</p>
+        <p style={S.sectionTitle}><FiStar size={18} /> {t("contentFeaturedShops")}</p>
         {shopsLoad ? <GoldSpinner fullScreen={false} size={36} /> :
           shops.map((shop) => (
             <div key={shop.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.65rem 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
@@ -157,7 +158,7 @@ function ContentManagement() {
                 <span style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.82rem", marginInlineStart: "8px" }}>{shop.shopCity}</span>
               </div>
               <button style={S.toggle(!!shop.isFeatured)} onClick={() => handleToggleFeatured(shop.id, !!shop.isFeatured)}>
-                {shop.isFeatured ? `⭐ ${t("contentFeaturedOn")}` : `☆ ${t("contentFeaturedOff")}`}
+                {shop.isFeatured ? <><FiStar size={16} /> {t("contentFeaturedOn")}</> : <><FiStar size={16} style={{ opacity: 0.35 }} /> {t("contentFeaturedOff")}</>}
               </button>
             </div>
           ))

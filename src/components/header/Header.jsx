@@ -12,6 +12,7 @@ import { useState, useRef, useEffect }  from "react";
 import { motion, AnimatePresence }       from "framer-motion";
 import { useTranslation }                from "react-i18next";
 import { useNavigate, useLocation }      from "react-router-dom";
+import { FiSearch, FiMapPin, FiHeart, FiUser, FiMenu, FiX } from "react-icons/fi";
 import { useAuth }                       from "../../context/AuthContext";
 import { useLanguage }                   from "../../context/LanguageContext";
 import { useFavorites }                  from "../../context/FavoritesContext";
@@ -194,7 +195,7 @@ function Header() {
               placeholder={t("searchPlaceholder")}
               style={{ width: "100%", padding: "0.5rem 1rem 0.5rem 2.2rem", backgroundColor: "rgba(38,50,56,0.75)", border: "1.5px solid rgba(212,175,55,0.2)", borderRadius: "22px", color: "#FFFFFF", fontFamily: "'Tajawal', sans-serif", fontSize: "0.88rem", outline: "none", boxSizing: "border-box" }}
             />
-            <span style={{ position: "absolute", top: "50%", insetInlineStart: "0.75rem", transform: "translateY(-50%)", fontSize: "0.85rem", opacity: 0.5, pointerEvents: "none" }}>🔍</span>
+            <FiSearch size="1rem" style={{ position: "absolute", top: "50%", insetInlineStart: "0.75rem", transform: "translateY(-50%)", opacity: 0.5, pointerEvents: "none", color: "#FFFFFF" }} />
           </form>
           <AnimatePresence>
             {showSearch && searchQ.trim().length >= 2 && (
@@ -225,7 +226,7 @@ function Header() {
         {/* Location (desktop) */}
         <div style={{ position: "relative", display: window.innerWidth < 900 ? "none" : "block" }}>
           <button onClick={() => setShowLocPicker((v) => !v)} style={{ ...iconBtn, fontSize: "0.82rem", color: activeCity ? GOLD : "rgba(255,255,255,0.65)" }}>
-            📍 {activeCity || t("locationAll")}
+            <FiMapPin size="1rem" /> {activeCity || t("locationAll")}
           </button>
           <AnimatePresence>
             {showLocPicker && (
@@ -263,7 +264,7 @@ function Header() {
 
         {/* Favorites */}
         <button onClick={() => navigate("/favorites")} style={{ ...iconBtn, position: "relative" }}>
-          <span style={{ fontSize: "1.2rem" }}>❤️</span>
+          <FiHeart size="1.2rem" />
           {favCount > 0 && (
             <span style={{ position: "absolute", top: 0, insetInlineEnd: 0, backgroundColor: GOLD, color: "#263238", borderRadius: "50%", width: "16px", height: "16px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.65rem", fontWeight: 800 }}>
               {favCount > 9 ? "9+" : favCount}
@@ -275,7 +276,7 @@ function Header() {
         {currentUser ? (
           <div ref={accountRef} style={{ position: "relative" }}>
             <button onClick={() => setShowAccount((v) => !v)} style={{ ...iconBtn, backgroundColor: showAccount ? "rgba(212,175,55,0.1)" : "transparent" }}>
-              <span style={{ fontSize: "1.2rem" }}>👤</span>
+              <FiUser size="1.2rem" />
             </button>
             <AnimatePresence>
               {showAccount && (
@@ -291,7 +292,7 @@ function Header() {
 
         {/* Mobile hamburger */}
         <button onClick={() => setMobileOpen((v) => !v)} style={{ ...iconBtn, display: window.innerWidth >= 640 ? "none" : "flex", fontSize: "1.2rem" }}>
-          {mobileOpen ? "✕" : "☰"}
+          {mobileOpen ? <FiX size="1.2rem" /> : <FiMenu size="1.2rem" />}
         </button>
       </header>
 

@@ -8,6 +8,7 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence }          from "framer-motion";
 import { useTranslation }                   from "react-i18next";
 import { useNavigate }                      from "react-router-dom";
+import { FiMapPin, FiShoppingBag }          from "react-icons/fi";
 import { collection, query, where, getDocs, limit } from "firebase/firestore";
 import { db }       from "../../firebase/config";
 import { useLanguage } from "../../context/LanguageContext";
@@ -90,14 +91,14 @@ function SearchResults({ query: searchQ, onClose }) {
           {/* Shops section */}
           {shops.length > 0 && (
             <>
-              <div style={S.sectionLabel}>🏪 {t("searchShopsSection")}</div>
+              <div style={S.sectionLabel}><FiShoppingBag style={{ verticalAlign: "middle" }} /> {t("searchShopsSection")}</div>
               {shops.map((shop) => (
                 <div key={shop.id} style={S.item(hoverId === shop.id)} onMouseEnter={() => setHoverId(shop.id)} onMouseLeave={() => setHoverId(null)} onClick={() => goToShop(shop.id)}>
                   <div style={S.shopIcon}>{(language === "ar" && shop.shopNameAr ? shop.shopNameAr : shop.shopName || "?").charAt(0).toUpperCase()}</div>
                   <div>
                     <div style={S.name}>{language === "ar" && shop.shopNameAr ? shop.shopNameAr : shop.shopName}</div>
                     <div style={S.sub}>
-                      📍 {language === "ar" && shop.shopCityAr ? shop.shopCityAr : shop.shopCity}
+                      <FiMapPin size="0.85rem" style={{ verticalAlign: "middle", marginInlineEnd: "0.35rem" }} />{language === "ar" && shop.shopCityAr ? shop.shopCityAr : shop.shopCity}
                       {(language === "ar" && shop.shopAreaAr) || shop.shopArea ? ` · ${language === "ar" && shop.shopAreaAr ? shop.shopAreaAr : shop.shopArea}` : ""}
                     </div>
                   </div>

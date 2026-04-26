@@ -8,6 +8,7 @@ import { useState, useEffect }     from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation }          from "react-i18next";
 import { useNavigate }             from "react-router-dom";
+import { FiMapPin, FiCheckCircle, FiTrash2, FiHeart } from "react-icons/fi";
 import { doc, getDoc }             from "firebase/firestore";
 import { db }                      from "../../firebase/config";
 import { useFavorites }            from "../../context/FavoritesContext";
@@ -40,21 +41,20 @@ function FavCard({ shop, index, onRemove }) {
         {(shop.shopName || "?").charAt(0).toUpperCase()}
       </div>
       <p style={{ fontSize: "1rem", fontWeight: 700, color: "#FFFFFF", margin: "0 0 0.3rem" }}>{shop.shopName}</p>
-      <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.5)", margin: "0 0 1rem" }}>📍 {shop.shopCity}{shop.shopArea ? ` · ${shop.shopArea}` : ""}</p>
+      <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.5)", margin: "0 0 1rem", display: "flex", alignItems: "center", gap: "6px" }}><FiMapPin size="1rem" style={{ display: "inline-flex", verticalAlign: "middle" }} /> {shop.shopCity}{shop.shopArea ? ` · ${shop.shopArea}` : ""}</p>
 
       {/* Verified badge */}
       {shop.isApproved && shop.sellerId !== "imported" && (
-        <span style={{ backgroundColor: "rgba(212,175,55,0.12)", color: GOLD, border: "1px solid rgba(212,175,55,0.3)", borderRadius: "20px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 700, display: "inline-block", marginBottom: "1rem" }}>
-          ✓ {t("shopVerified")}
-        </span>
+          <span style={{ backgroundColor: "rgba(212,175,55,0.12)", color: GOLD, border: "1px solid rgba(212,175,55,0.3)", borderRadius: "20px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: "6px", marginBottom: "1rem" }}>
+            <FiCheckCircle size="0.85rem" style={{ display: "inline-flex", verticalAlign: "middle" }} /> {t("shopVerified")}
       )}
 
       <div style={{ display: "flex", gap: "0.6rem" }}>
         <button onClick={() => navigate(`/shop/${shop.id}`)} style={{ flex: 1, padding: "0.55rem", backgroundColor: "#FFD700", color: "#263238", border: "none", borderRadius: "9px", fontFamily: "'Tajawal', sans-serif", fontSize: "0.88rem", fontWeight: 700, cursor: "pointer" }}>
           {t("favoriteView")}
         </button>
-        <button onClick={() => onRemove(shop.id)} style={{ padding: "0.55rem 0.9rem", backgroundColor: "rgba(239,68,68,0.12)", border: "1px solid rgba(239,68,68,0.3)", borderRadius: "9px", color: "#FCA5A5", fontFamily: "'Tajawal', sans-serif", fontSize: "0.88rem", cursor: "pointer" }}>
-          🗑️
+        <button onClick={() => onRemove(shop.id)} style={{ padding: "0.55rem 0.9rem", backgroundColor: "rgba(239,68,68,0.12)", border: "1px solid rgba(239,68,68,0.3)", borderRadius: "9px", color: "#FCA5A5", fontFamily: "'Tajawal', sans-serif", fontSize: "0.88rem", cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+          <FiTrash2 size="1em" />
         </button>
       </div>
     </motion.div>
@@ -108,7 +108,7 @@ function FavoritesPage() {
         {/* Title */}
         <div style={{ marginBottom: "2rem" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "0.4rem" }}>
-            <span style={{ fontSize: "1.6rem" }}>❤️</span>
+            <FiHeart size="1.6rem" style={{ color: GOLD }} />
             <h1 style={{ fontSize: "clamp(1.3rem,3vw,1.75rem)", fontWeight: 800, color: "#FFFFFF", margin: 0 }}>{t("favoritesTitle")}</h1>
           </div>
           <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.95rem", margin: 0 }}>{t("favoritesSubtitle")}</p>
@@ -123,7 +123,7 @@ function FavoritesPage() {
 
         {!loading && shops.length === 0 && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ textAlign: "center", padding: "4rem 1rem" }}>
-            <div style={{ fontSize: "4rem", marginBottom: "1rem" }}>🤍</div>
+            <FiHeart size="4rem" style={{ color: "rgba(212,175,55,0.9)", marginBottom: "1rem" }} />
             <h3 style={{ color: "#FFFFFF", fontSize: "1.15rem", fontWeight: 700, margin: "0 0 0.5rem" }}>{t("favoritesEmpty")}</h3>
             <p style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.92rem", margin: "0 0 1.5rem" }}>{t("favoritesEmptyDesc")}</p>
             <button onClick={() => navigate("/")} style={{ backgroundColor: "#FFD700", color: "#263238", border: "none", borderRadius: "10px", padding: "0.75rem 2rem", fontFamily: "'Tajawal', sans-serif", fontSize: "0.95rem", fontWeight: 700, cursor: "pointer" }}>

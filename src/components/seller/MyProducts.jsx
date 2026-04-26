@@ -7,6 +7,7 @@
 import { useState, useEffect }     from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation }          from "react-i18next";
+import { FiTrash2, FiBox, FiEdit } from "react-icons/fi";
 import {
   collection, query, where,
   getDocs, doc, deleteDoc, updateDoc,
@@ -45,7 +46,7 @@ function DeleteConfirm({ onConfirm, onCancel, dir }) {
           onClick={(e) => e.stopPropagation()}
           dir={dir}
         >
-          <div style={{ fontSize: "2.5rem", marginBottom: "0.75rem" }}>🗑️</div>
+          <div style={{ fontSize: "2.5rem", marginBottom: "0.75rem" }}><FiTrash2 size="2.5rem" /></div>
           <p style={{ color: "#FFFFFF", fontSize: "1rem", fontWeight: 600, margin: "0 0 1.25rem" }}>
             {t("productDeleteConfirm")}
           </p>
@@ -114,7 +115,7 @@ function ProductCard({ product, productId, index, onEdit, onDelete, onToggleAvai
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         ) : (
-          <span style={{ fontSize: "2.5rem", opacity: 0.4 }}>💎</span>
+          <span style={{ fontSize: "2.5rem", opacity: 0.4, display: "inline-flex", alignItems: "center", justifyContent: "center" }}><FiBox size="2.5rem" /></span>
         )}
       </div>
 
@@ -168,7 +169,7 @@ function ProductCard({ product, productId, index, onEdit, onDelete, onToggleAvai
               fontSize: "0.85rem", fontWeight: 600, cursor: "pointer",
             }}
           >
-            ✏️ {t("productEdit")}
+            <FiEdit size="1em" style={{ display: "inline-flex", verticalAlign: "middle" }} /> {t("productEdit")}
           </button>
           <button
             onClick={() => onDelete(productId)}
@@ -180,7 +181,7 @@ function ProductCard({ product, productId, index, onEdit, onDelete, onToggleAvai
               fontSize: "0.85rem", fontWeight: 600, cursor: "pointer",
             }}
           >
-            🗑️ {t("productDelete")}
+            <FiTrash2 size="1em" style={{ display: "inline-flex", verticalAlign: "middle" }} /> {t("productDelete")}
           </button>
         </div>
       </div>
@@ -262,7 +263,7 @@ function MyProducts({ shopId, currentUser }) {
           animate={{ opacity: 1 }}
           style={{ textAlign: "center", padding: "3rem 1rem" }}
         >
-          <div style={{ fontSize: "3rem", marginBottom: "0.75rem" }}>💎</div>
+          <div style={{ fontSize: "3rem", marginBottom: "0.75rem" }}><FiBox size={42} /></div>
           <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.97rem" }}>
             {t("myProductsEmpty")}
           </p>

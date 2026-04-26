@@ -15,6 +15,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence }  from "framer-motion";
 import { useTranslation }           from "react-i18next";
+import { FiStar, FiShoppingBag, FiTrendingUp } from "react-icons/fi";
 import { useNavigate }              from "react-router-dom";
 import { useLanguage }              from "../../context/LanguageContext";
 import { collection, query, where, getDocs } from "firebase/firestore";
@@ -36,7 +37,7 @@ const DEFAULTS = [
     ctaKey:    "heroCta",
     ctaPath:   "#shops",
     gradient:  "linear-gradient(135deg,#1a2430 0%,#263238 40%,#1c2e25 100%)",
-    icon:      "💎",
+    icon:      <FiStar size={28} />,
   },
   {
     isAd:      false,
@@ -45,7 +46,7 @@ const DEFAULTS = [
     ctaKey:    "heroCtaSell",
     ctaPath:   "/register",
     gradient:  "linear-gradient(135deg,#1e2a22 0%,#263238 45%,#232030 100%)",
-    icon:      "🏪",
+    icon:      <FiShoppingBag size={28} />,
   },
   {
     isAd:      false,
@@ -54,7 +55,7 @@ const DEFAULTS = [
     ctaKey:    "heroCtaPrice",
     ctaPath:   "#prices",
     gradient:  "linear-gradient(135deg,#1e2030 0%,#263238 45%,#2a1e1e 100%)",
-    icon:      "📈",
+    icon:      <FiTrendingUp size={28} />,
   },
   {
     isAd:           false,
@@ -118,7 +119,7 @@ function HeroSlider() {
               shopName:  a.shopName || "Shop",
               adMessage: a.adMessage || a.message || "",
               gradient:  "linear-gradient(135deg,#1a2b1a 0%,#263238 45%,#2b1e0a 100%)",
-              icon:      "⭐",
+              icon:      <FiStar size={24} />,
             };
           });
           setSlides(buildSlides(adSlides));
@@ -268,7 +269,7 @@ function HeroSlider() {
                   transition={{ delay: 0.15 }}
                   style={{ backgroundColor: "rgba(212,175,55,0.18)", color: "#D4AF37", border: "1px solid rgba(212,175,55,0.4)", borderRadius: "20px", padding: "3px 14px", fontSize: "0.78rem", fontWeight: 700, marginBottom: "0.6rem", display: "inline-block" }}
                 >
-                  ⭐ {t("adSlideLabel")}
+                  <FiStar size={16} /> {t("adSlideLabel")}
                 </motion.span>
               )}
 

@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { motion }              from "framer-motion";
 import { useTranslation }      from "react-i18next";
 import { useNavigate }         from "react-router-dom";
+import { FiClock, FiXCircle }   from "react-icons/fi";
 import { doc, onSnapshot }     from "firebase/firestore";
 import { db }                  from "../../firebase/config";
 import { useAuth }             from "../../context/AuthContext";
@@ -69,7 +70,7 @@ function ApprovalStatus() {
           <DahabNowLogo size={52} />
         </div>
 
-        <div style={S.icon}>{isPending ? "⏳" : "❌"}</div>
+        <div style={S.icon}>{isPending ? <FiClock size={54} /> : <FiXCircle size={54} />}</div>
 
         <div style={S.badge(isPending ? "#D4AF37" : "#EF4444")}>
           {isPending ? t("pending") : t("rejected")}

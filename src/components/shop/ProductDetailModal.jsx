@@ -6,6 +6,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation }          from "react-i18next";
+import { FiX, FiBox, FiMail, FiMessageCircle, FiDownload, FiInfo } from "react-icons/fi";
 import { useLanguage }             from "../../context/LanguageContext";
 
 /* ── Format WhatsApp URL ────────────────────────────────────── */
@@ -76,14 +77,14 @@ function ProductDetailModal({ product, shop, onClose, dir }) {
         >
           <div style={S.modal} dir={dir}>
             {/* Close */}
-            <button style={S.closeBtn} onClick={onClose}>✕</button>
+            <button style={S.closeBtn} onClick={onClose}><FiX size="1.1em" style={{ display: "inline-flex", verticalAlign: "middle" }} /></button>
 
             <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
               {/* Image */}
               <div style={{ flex: "0 0 300px", minHeight: "280px", backgroundColor: "rgba(38,50,56,0.5)" }}>
                 {product.productPicture
                   ? <img src={product.productPicture} alt={product.productName} style={S.img} />
-                  : <div style={S.imgPlaceholder}>💎</div>
+                  : <div style={S.imgPlaceholder}><FiBox size="2.4rem" style={{ color: "rgba(255,255,255,0.45)" }} /></div>
                 }
               </div>
 
@@ -119,19 +120,19 @@ function ProductDetailModal({ product, shop, onClose, dir }) {
                 )}
 
                 {/* Price note */}
-                <div style={S.priceNote}>💡 {t("productPriceNote")}</div>
+                <div style={S.priceNote}><FiInfo size="1em" style={{ display: "inline-flex", verticalAlign: "middle" }} /> {t("productPriceNote")}</div>
 
                 {/* Contact buttons */}
                 {(waUrl || emailUrl) && (
                   <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap", marginTop: "1.25rem" }}>
                     {waUrl && (
                       <a href={waUrl} target="_blank" rel="noreferrer" style={S.waBtn}>
-                        📱 {t("shopContactWhatsApp")}
+                        <FiMessageCircle size="1em" style={{ display: "inline-flex", verticalAlign: "middle" }} /> {t("shopContactWhatsApp")}
                       </a>
                     )}
                     {emailUrl && (
                       <a href={emailUrl} style={S.emailBtn}>
-                        ✉️ {t("shopContactEmail")}
+                        <FiMail size="1em" style={{ display: "inline-flex", verticalAlign: "middle" }} /> {t("shopContactEmail")}
                       </a>
                     )}
                   </div>
@@ -141,12 +142,12 @@ function ProductDetailModal({ product, shop, onClose, dir }) {
                 <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap", marginTop: "1rem" }}>
                   {product?.productPicture && (
                     <button onClick={handleDownload} style={S.emailBtn}>
-                      ⬇️ {t("downloadImage")}
+                      <FiDownload size="1em" style={{ display: "inline-flex", verticalAlign: "middle" }} /> {t("downloadImage")}
                     </button>
                   )}
                   {waUrl && (
                     <button onClick={handleAsk} style={S.waBtn}>
-                      💬 {t("askAboutProduct")}
+                      <FiMessageCircle size="1em" style={{ display: "inline-flex", verticalAlign: "middle" }} /> {t("askAboutProduct")}
                     </button>
                   )}
                 </div>

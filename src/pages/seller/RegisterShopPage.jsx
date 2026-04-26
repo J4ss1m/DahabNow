@@ -292,7 +292,7 @@ function RegisterShopPage() {
             animate={{ opacity: 1, scale: 1 }}
             style={S.successBox}
           >
-            <div style={{ fontSize: "1.8rem", marginBottom: "0.5rem" }}>✓</div>
+            <FiCheckCircle size="1.8rem" style={{ marginBottom: "0.5rem", color: "#4ADE80" }} />
             <p style={{ margin: 0 }}>{t("shopApplicationPending")}</p>
             <p style={{ margin: "0.5rem 0 0", fontSize: "0.85rem", opacity: 0.75 }}>
               {t("redirectingHome")}

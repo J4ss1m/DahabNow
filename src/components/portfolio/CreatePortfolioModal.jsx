@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { FiX } from "react-icons/fi";
 
 const overlay = { position: "fixed", inset: 0, backgroundColor: "rgba(0,0,0,0.72)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1300, padding: "1.25rem" };
 const modal = { width: "100%", maxWidth: "480px", backgroundColor: "#455A64", borderRadius: "18px", padding: "2rem", boxShadow: "0 18px 48px rgba(0,0,0,0.45)", position: "relative", color: "#FFFFFF", fontFamily: "'Tajawal',sans-serif", maxHeight: "85vh", overflowY: "auto" };
@@ -32,7 +33,7 @@ function CreatePortfolioModal({ onClose, onCreate }) {
         style={modal}
         onClick={(e) => e.stopPropagation()}
       >
-        <button onClick={onClose} style={{ position: "absolute", top: "1rem", right: "1rem", background: "none", border: "none", color: "rgba(255,255,255,0.65)", fontSize: "1.2rem", cursor: "pointer" }}>✕</button>
+        <button onClick={onClose} style={{ position: "absolute", top: "1rem", right: "1rem", background: "none", border: "none", color: "rgba(255,255,255,0.65)", fontSize: "1.2rem", cursor: "pointer" }}><FiX size={20} /></button>
         <h2 style={{ fontSize: "1.4rem", fontWeight: 800, color: "#D4AF37", margin: "0 0 1rem" }}>{t("portfolioCreate")}</h2>
         <input
           type="text"

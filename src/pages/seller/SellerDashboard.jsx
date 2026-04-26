@@ -73,11 +73,11 @@ import ScrollToTopButton from "../../components/common/ScrollToTopButton";
 
 /* ── Sidebar nav items ───────────────────────────────────────── */
 const TABS = [
-  { id: "myShop",           icon: "🏪", key: "tabMyShop"          },
-  { id: "myProducts",       icon: "💎", key: "tabMyProducts"       },
-  { id: "addProduct",       icon: "➕", key: "tabAddProduct"       },
-  { id: "adRequests",       icon: "📣", key: "tabAdRequests"       },
-  { id: "accountSettings",  icon: "⚙️", key: "tabAccountSettings"  },
+  { id: "myShop",           icon: <FiShoppingBag size={18} />, key: "tabMyShop"          },
+  { id: "myProducts",       icon: <FiStar size={18} />, key: "tabMyProducts"       },
+  { id: "addProduct",       icon: <FiPlus size={18} />, key: "tabAddProduct"       },
+  { id: "adRequests",       icon: <FiMegaphone size={18} />, key: "tabAdRequests"       },
+  { id: "accountSettings",  icon: <FiSettings size={18} />, key: "tabAccountSettings"  },
 ];
 
 /* ── Colours ─────────────────────────────────────────────────── */
@@ -111,7 +111,7 @@ function Sidebar({ activeTab, onSelect, dir }) {
         <span style={{ color: GOLD, fontWeight: 800, fontSize: "0.95rem" }}>DahabNow</span>
       </button>
       <button onClick={() => navigate("/")} style={{ display: "flex", alignItems: "center", gap: "8px", margin: "0 1.25rem 1rem", padding: "0.65rem 0.85rem", backgroundColor: "rgba(212,175,55,0.08)", border: "1px solid rgba(212,175,55,0.25)", borderRadius: "14px", color: GOLD, fontWeight: 700, cursor: "pointer", fontFamily: "'Tajawal', sans-serif" }}>
-        🏠 {t("headerHome")}
+        <FiHome size={18} /> {t("headerHome")}
       </button>
 
       {/* Label */}

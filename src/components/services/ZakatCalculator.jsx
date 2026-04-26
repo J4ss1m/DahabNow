@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { FiX, FiInfo, FiAward } from "react-icons/fi";
 
 /* ── Constants ── */
 const NISAB_BY_KARAT = { 24: 85, 22: 92.7, 21: 97.1, 18: 113.3 };
@@ -62,11 +63,11 @@ function ZakatCalculator({ onClose, dir }) {
 
   return (
     <ModalWrap onClose={onClose}>
-      <button style={closeBtn} onClick={onClose}>✕</button>
+      <button style={closeBtn} onClick={onClose}><FiX size={18} /></button>
       <div dir={dir}>
-        <h2 style={{ fontSize: "1.2rem", fontWeight: 800, color: GOLD, margin: "0 0 0.7rem" }}>🕌 {t("zakatModalTitle")}</h2>
+        <h2 style={{ fontSize: "1.2rem", fontWeight: 800, color: GOLD, margin: "0 0 0.7rem", display: "inline-flex", alignItems: "center", gap: "0.5rem" }}><FiAward size={20} /> {t("zakatModalTitle")}</h2>
         <div style={{ backgroundColor: "rgba(212,175,55,0.07)", border: "1px solid rgba(212,175,55,0.2)", borderRadius: "10px", padding: "0.7rem 1rem", marginBottom: "1.1rem" }}>
-          <p style={{ fontSize: "0.83rem", color: "rgba(255,255,255,0.62)", margin: 0, lineHeight: 1.5 }}>ℹ️ {t("zakatExplanation")}</p>
+          <p style={{ fontSize: "0.83rem", color: "rgba(255,255,255,0.62)", margin: 0, lineHeight: 1.5, display: "inline-flex", alignItems: "center", gap: "0.4rem" }}><FiInfo size={16} /> {t("zakatExplanation")}</p>
         </div>
         <label style={LBL}>{t("zakatKaratLabel")}</label>
         <select value={k} onChange={e => { setK(e.target.value); setRes(null); }} style={SEL}>

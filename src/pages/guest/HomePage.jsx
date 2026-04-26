@@ -9,6 +9,7 @@
 
 import { useLocation, useNavigate }  from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { FiShoppingBag } from "react-icons/fi";
 import { useLanguage }  from "../../context/LanguageContext";
 import { useAuth }      from "../../context/AuthContext";
 import Header           from "../../components/header/Header";
@@ -47,8 +48,8 @@ function HomePage() {
             flexWrap: "wrap",
             gap: "0.75rem",
           }}>
-            <p style={{ color: "#FFFFFF", margin: 0, fontSize: "0.95rem" }}>
-              🏪 {t("doYouHaveShop")}
+            <p style={{ color: "#FFFFFF", margin: 0, fontSize: "0.95rem", display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
+              <FiShoppingBag size={18} /> {t("doYouHaveShop")}
             </p>
             <button
               onClick={() => navigate("/register-shop")}

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
+import { FiTrash2 } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 
 const CARD = "#455A64";
@@ -97,8 +98,8 @@ function PortfolioCard({ portfolio, livePrices, onAddItem, onDeletePortfolio, on
                         <td style={{ padding: "0.85rem 0", color: "rgba(255,255,255,0.75)" }}>{item.weight.toFixed(2)}g</td>
                         <td style={{ padding: "0.85rem 0", color: "rgba(255,255,255,0.75)" }}>{value.toFixed(2)} SAR</td>
                         <td style={{ padding: "0.85rem 0" }}>
-                          <button onClick={() => onDeleteItem(portfolio.portfolioId, item.itemId)} style={{ backgroundColor: "rgba(239,68,68,0.12)", color: "#FCA5A5", border: "none", borderRadius: "10px", padding: "0.45rem 0.75rem", cursor: "pointer", fontSize: "0.8rem" }}>
-                            🗑️
+                          <button onClick={() => onDeleteItem(portfolio.portfolioId, item.itemId)} style={{ backgroundColor: "rgba(239,68,68,0.12)", color: "#FCA5A5", border: "none", borderRadius: "10px", padding: "0.45rem 0.75rem", cursor: "pointer", fontSize: "0.8rem", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+                            <FiTrash2 size="1rem" />
                           </button>
                         </td>
                       </tr>

@@ -11,6 +11,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion }                        from "framer-motion";
 import { useTranslation }                from "react-i18next";
+import { FiStar, FiMapPin, FiBox, FiCheckCircle, FiLink } from "react-icons/fi";
 import { useLocation, useNavigate }      from "react-router-dom";
 import {
   collection, query, where, getDocs, getCountFromServer,
@@ -69,8 +70,8 @@ function ShopCard({ shop, index, productCount }) {
     >
       {/* Featured badge */}
       {shop.isFeatured && (
-        <div style={{ position: "absolute", top: "10px", insetInlineEnd: "10px", backgroundColor: GOLD, color: "#263238", borderRadius: "20px", padding: "2px 10px", fontSize: "0.72rem", fontWeight: 800, pointerEvents: "none" }}>
-          ⭐ {t("shopFeatured")}
+        <div style={{ position: "absolute", top: "10px", insetInlineEnd: "10px", backgroundColor: GOLD, color: "#263238", borderRadius: "20px", padding: "2px 10px", fontSize: "0.72rem", fontWeight: 800, pointerEvents: "none", display: "flex", alignItems: "center", gap: "6px" }}>
+          <FiStar size="1rem" /> {t("shopFeatured")}
         </div>
       )}
 
@@ -87,22 +88,22 @@ function ShopCard({ shop, index, productCount }) {
       <p style={{ fontSize: "1rem", fontWeight: 700, color: "#FFFFFF", margin: "0 0 0.3rem", pointerEvents: "none" }}>{i18n.language === 'ar' && shop.shopNameAr ? shop.shopNameAr : shop.shopName}</p>
 
       {/* Location */}
-      <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.55)", margin: "0 0 0.5rem", pointerEvents: "none" }}>
-        📍 {i18n.language === 'ar' && shop.shopCityAr ? shop.shopCityAr : shop.shopCity}{(i18n.language === 'ar' && shop.shopAreaAr) || shop.shopArea ? ` · ${i18n.language === 'ar' && shop.shopAreaAr ? shop.shopAreaAr : shop.shopArea}` : ""}
+      <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.55)", margin: "0 0 0.5rem", pointerEvents: "none", display: "flex", alignItems: "center", gap: "6px" }}>
+        <FiMapPin size="1rem" style={{ display: "inline-flex", verticalAlign: "middle" }} /> {i18n.language === 'ar' && shop.shopCityAr ? shop.shopCityAr : shop.shopCity}{(i18n.language === 'ar' && shop.shopAreaAr) || shop.shopArea ? ` · ${i18n.language === 'ar' && shop.shopAreaAr ? shop.shopAreaAr : shop.shopArea}` : ""}
       </p>
 
       {/* Product count */}
       {productCount !== undefined && (
-        <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.4)", margin: "0 0 0.75rem", pointerEvents: "none" }}>
-          💎 {productCount} {t("shopProductsCount")}
+        <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.4)", margin: "0 0 0.75rem", pointerEvents: "none", display: "flex", alignItems: "center", gap: "6px" }}>
+          <FiBox size="1rem" style={{ display: "inline-flex", verticalAlign: "middle" }} /> {productCount} {t("shopProductsCount")}
         </p>
       )}
 
       {/* Badges */}
       <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "0.9rem", pointerEvents: "none" }}>
         {shop.isApproved && shop.sellerId !== "imported" && (
-          <span style={{ backgroundColor: "rgba(212,175,55,0.12)", color: GOLD, border: "1px solid rgba(212,175,55,0.3)", borderRadius: "20px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 700 }}>
-            ✓ {t("shopVerified")}
+          <span style={{ backgroundColor: "rgba(212,175,55,0.12)", color: GOLD, border: "1px solid rgba(212,175,55,0.3)", borderRadius: "20px", padding: "2px 10px", fontSize: "0.75rem", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: "6px" }}>
+            <FiCheckCircle size="0.9rem" style={{ display: "inline-flex", verticalAlign: "middle" }} /> {t("shopVerified")}
           </span>
         )}
       </div>
@@ -120,7 +121,7 @@ function ShopCard({ shop, index, productCount }) {
             onClick={(e) => e.stopPropagation()}
             style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", width: "100%", padding: "0.55rem", backgroundColor: "rgba(212,175,55,0.1)", border: `1px solid rgba(212,175,55,0.3)`, borderRadius: "9px", color: GOLD, fontFamily: "'Tajawal', sans-serif", fontSize: "0.85rem", fontWeight: 700, textDecoration: "none", marginBottom: "0.6rem", transition: "all 0.2s", boxSizing: "border-box" }}
           >
-            {isGmaps ? `📍 ${t("shopLocationButton")}` : `🔗 ${t("visitWebsite")}`}
+            {isGmaps ? <><FiMapPin size="1rem" style={{ display: "inline-flex", verticalAlign: "middle" }} /> {t("shopLocationButton")}</> : <><FiLink size="1rem" style={{ display: "inline-flex", verticalAlign: "middle" }} /> {t("visitWebsite")}</>}
           </a>
         );
       })()}
@@ -299,7 +300,7 @@ function ShopGrid() {
 
       {!loading && !error && displayed.length === 0 && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: "center", padding: "3rem 1rem" }}>
-          <div style={{ fontSize: "3rem", marginBottom: "0.75rem" }}>🏪</div>
+          <div style={{ fontSize: "3rem", marginBottom: "0.75rem" }}><FiShoppingBag size={42} /></div>
           <h3 style={{ color: "#FFFFFF", margin: "0 0 0.5rem", fontSize: "1.1rem" }}>{t("shopsEmpty")}</h3>
           <p style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.9rem" }}>{t("shopsEmptyDesc")}</p>
         </motion.div>

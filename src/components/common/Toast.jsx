@@ -13,15 +13,16 @@
 
 import { createContext, useContext, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { FiCheckCircle, FiX, FiInfo } from "react-icons/fi";
 
 /* ── Context ─────────────────────────────────────────────────── */
 const ToastContext = createContext(null);
 
 /* ── Type → colour map ───────────────────────────────────────── */
 const TYPE_STYLES = {
-  success: { bg: "rgba(74,222,128,0.15)",  border: "rgba(74,222,128,0.5)",  color: "#4ADE80", icon: "✓" },
-  error:   { bg: "rgba(239,68,68,0.15)",   border: "rgba(239,68,68,0.5)",   color: "#F87171", icon: "✕" },
-  info:    { bg: "rgba(212,175,55,0.15)",  border: "rgba(212,175,55,0.5)",  color: "#D4AF37", icon: "ℹ" },
+  success: { bg: "rgba(74,222,128,0.15)",  border: "rgba(74,222,128,0.5)",  color: "#4ADE80", icon: FiCheckCircle },
+  error:   { bg: "rgba(239,68,68,0.15)",   border: "rgba(239,68,68,0.5)",   color: "#F87171", icon: FiX },
+  info:    { bg: "rgba(212,175,55,0.15)",  border: "rgba(212,175,55,0.5)",  color: "#D4AF37", icon: FiInfo },
 };
 
 let _id = 0;
@@ -64,6 +65,7 @@ export function ToastProvider({ children }) {
         <AnimatePresence>
           {toasts.map((toast) => {
             const ts = TYPE_STYLES[toast.type] || TYPE_STYLES.info;
+            const Icon = ts.icon;
             return (
               <motion.div
                 key={toast.id}
@@ -89,8 +91,8 @@ export function ToastProvider({ children }) {
                 }}
                 onClick={() => dismiss(toast.id)}
               >
-                <span style={{ color: ts.color, fontWeight: 700, fontSize: "1rem", flexShrink: 0 }}>
-                  {ts.icon}
+                <span style={{ color: ts.color, fontWeight: 700, fontSize: "1rem", flexShrink: 0, display: "inline-flex", alignItems: "center" }}>
+                  <Icon />
                 </span>
                 <span style={{ flex: 1, lineHeight: 1.4 }}>{toast.message}</span>
               </motion.div>

@@ -6,6 +6,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion }       from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { FiUsers, FiShoppingBag, FiStar, FiClock } from "react-icons/fi";
 import { collection, query, where, getCountFromServer } from "firebase/firestore";
 import { db }           from "../../firebase/config";
 import { useLanguage }  from "../../context/LanguageContext";
@@ -102,10 +103,10 @@ function PlatformStats() {
   }, []);
 
   const cards = [
-    { icon: "👥", labelKey: "statsTotalSellers",   value: stats.sellers  },
-    { icon: "🏪", labelKey: "statsApprovedShops",  value: stats.shops    },
-    { icon: "💎", labelKey: "statsTotalProducts",  value: stats.products },
-    { icon: "⏳", labelKey: "statsPendingApprovals", value: stats.pending },
+    { icon: <FiUsers size={32} />, labelKey: "statsTotalSellers",   value: stats.sellers  },
+    { icon: <FiShoppingBag size={32} />, labelKey: "statsApprovedShops",  value: stats.shops    },
+    { icon: <FiStar size={32} />, labelKey: "statsTotalProducts",  value: stats.products },
+    { icon: <FiClock size={32} />, labelKey: "statsPendingApprovals", value: stats.pending },
   ];
 
   return (

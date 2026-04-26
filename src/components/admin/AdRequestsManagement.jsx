@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect } from "react";
+import { FiCheck, FiX } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { collection, onSnapshot, doc, updateDoc, orderBy, query, addDoc, serverTimestamp } from "firebase/firestore";
@@ -135,10 +136,10 @@ function AdRequestsManagement() {
                 {req.status === "pending" && (
                   <div style={{ display: "flex", gap: "0.6rem" }}>
                     <button style={{ ...S.approveBtn, opacity: busy === req.id ? 0.6 : 1 }} disabled={busy === req.id} onClick={() => updateStatus(req.id, "approved")}>
-                      ✓ {t("adMgmtApprove")}
+                      <FiCheck size="1rem" style={{ marginInlineEnd: "0.35rem" }} /> {t("adMgmtApprove")}
                     </button>
                     <button style={{ ...S.rejectBtn, opacity: busy === req.id ? 0.6 : 1 }} disabled={busy === req.id} onClick={() => updateStatus(req.id, "rejected")}>
-                      ✕ {t("adMgmtReject")}
+                      <FiX size="1rem" style={{ marginInlineEnd: "0.35rem" }} /> {t("adMgmtReject")}
                     </button>
                   </div>
                 )}

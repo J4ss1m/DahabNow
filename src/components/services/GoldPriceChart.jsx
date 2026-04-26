@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18nt";
 import { useLanguage } from "../../context/LanguageContext";
 import { useLiveGoldPrice } from "../../hooks/useLiveGoldPrice";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { FiBarChart2, FiX } from "react-icons/fi";
 
 /* ── Constants ── */
 const BG = "#263238", GOLD = "#D4AF37";
@@ -93,9 +94,9 @@ function GoldPriceChart({ onClose, dir }) {
 
   return (
     <ModalWrap onClose={onClose} wide>
-      <button style={closeBtn} onClick={onClose}>✕</button>
+      <button style={closeBtn} onClick={onClose}><FiX size={18} /></button>
       <div dir={dir} style={{ minHeight: "400px" }}>
-        <h2 style={{ fontSize: "1.2rem", fontWeight: 800, color: GOLD, margin: "0 0 0.6rem" }}>📊 {t("chartModalTitle")}</h2>
+        <h2 style={{ fontSize: "1.2rem", fontWeight: 800, color: GOLD, margin: "0 0 0.6rem", display: "inline-flex", alignItems: "center", gap: "0.45rem" }}><FiBarChart2 size={20} /> {t("chartModalTitle")}</h2>
 
         {/* Current price prominently */}
         <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>

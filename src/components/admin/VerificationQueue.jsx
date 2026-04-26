@@ -5,6 +5,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { FiAlertTriangle, FiCheck, FiX } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 import { collection, query, where, onSnapshot, writeBatch, doc, getDocs } from "firebase/firestore";
 import { db }           from "../../firebase/config";
@@ -44,7 +45,7 @@ function RejectConfirm({ name, onConfirm, onCancel, dir }) {
         style={{ backgroundColor: "#263238", border: "1.5px solid rgba(244,67,54,0.4)", borderRadius: "16px", padding: "1.75rem", maxWidth: "360px", width: "100%", textAlign: "center", fontFamily: "'Tajawal', sans-serif" }}
         onClick={(e) => e.stopPropagation()} dir={dir}
       >
-        <div style={{ fontSize: "2.5rem", marginBottom: "0.75rem" }}>⚠️</div>
+        <div style={{ fontSize: "2.5rem", marginBottom: "0.75rem" }}><FiAlertTriangle size="2.5rem" /></div>
         <p style={{ color: "#FFFFFF", fontSize: "1rem", fontWeight: 600, margin: "0 0 0.4rem" }}>{t("verifRejectConfirm")}</p>
         <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.88rem", margin: "0 0 1.25rem" }}>{name}</p>
         <div style={{ display: "flex", gap: "0.75rem", justifyContent: "center" }}>
@@ -137,7 +138,7 @@ function VerificationQueue() {
         </div>
       ) : sellers.length === 0 ? (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: "center", padding: "4rem 1rem" }}>
-          <div style={{ fontSize: "3rem", marginBottom: "0.75rem" }}>✅</div>
+          <div style={{ fontSize: "3rem", marginBottom: "0.75rem" }}><FiCheck size="3rem" /></div>
           <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.97rem" }}>{t("verifQueueEmpty")}</p>
         </motion.div>
       ) : (
@@ -167,10 +168,10 @@ function VerificationQueue() {
                 </div>
                 <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
                   <button disabled={isBusy} onClick={() => handleApprove(seller)} style={{ ...S.approveBtn, opacity: isBusy ? 0.6 : 1 }}>
-                    ✓ {isBusy ? t("verifApproving") : t("verifApprove")}
+                    <FiCheck size="1rem" style={{ marginInlineEnd: "0.35rem" }} /> {isBusy ? t("verifApproving") : t("verifApprove")}
                   </button>
                   <button disabled={isBusy} onClick={() => setRejectInfo({ seller, name: seller.accountName })} style={{ ...S.rejectBtn, opacity: isBusy ? 0.6 : 1 }}>
-                    ✕ {t("verifReject")}
+                    <FiX size="1rem" style={{ marginInlineEnd: "0.35rem" }} /> {t("verifReject")}
                   </button>
                 </div>
               </motion.div>

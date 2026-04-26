@@ -7,6 +7,7 @@
 import { useState }   from "react";
 import { motion }     from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { FiCheckCircle, FiEdit } from "react-icons/fi";
 import { doc, updateDoc } from "firebase/firestore";
 import { db }         from "../../firebase/config";
 import { useLanguage } from "../../context/LanguageContext";
@@ -241,7 +242,7 @@ function MyShop({ shop, shopId }) {
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
           <h2 style={S.title}>{t("myShopTitle")}</h2>
           {shop.isApproved && shop.sellerId !== "imported" && (
-            <span style={S.badge}>✓ {t("myShopVerified")}</span>
+            <span style={{ ...S.badge, display: "inline-flex", alignItems: "center", gap: "6px" }}><FiCheckCircle size="0.9rem" /> {t("myShopVerified")}</span>
           )}
         </div>
 
@@ -252,7 +253,7 @@ function MyShop({ shop, shopId }) {
             onMouseEnter={(e) => { e.currentTarget.style.background = "#D4AF37"; e.currentTarget.style.color = "#263238"; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#D4AF37"; }}
           >
-            ✏️ {t("myShopEdit")}
+            <FiEdit size="1em" style={{ display: "inline-flex", verticalAlign: "middle" }} /> {t("myShopEdit")}
           </button>
         ) : (
           <div style={{ display: "flex", gap: "0.6rem" }}>
