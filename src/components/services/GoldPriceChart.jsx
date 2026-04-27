@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18nt";
 import { useLanguage } from "../../context/LanguageContext";
@@ -9,22 +9,14 @@ import { FiBarChart2, FiX } from "react-icons/fi";
 /* ── Constants ── */
 const BG = "#263238", GOLD = "#D4AF37";
 
-/* ── Generate 7 day base data ONCE using real price ── */
-const generateWeekData = (basePrice) => {
-  const data = [];
-  let price = basePrice * 0.97;
-  for (let i = 6; i >= 0; i--) {
-    const date = new Date();
-    date.setDate(date.getDate() - i);
-    price += (Math.random() - 0.48) * (basePrice * 0.005);
-    data.push({
-      date: date.toLocaleDateString("en-SA", { month: "short", day: "numeric" }),
-      price: parseFloat(price.toFixed(2)),
-    });
-  }
-  // Last point is always the real current price
-  data[data.length - 1].price = basePrice;
-  return data;
+const generateChartData = (currentPrice) => {
+  const days = ["Day 1","Day 2","Day 3","Day 4","Day 5","Day 6","Today"];
+  return days.map((day, i) => ({
+    day,
+    price: parseFloat(
+      (currentPrice * (0.97 + (i * 0.005) + (Math.random() * 0.006))).toFixed(2)
+    )
+  }));
 };
 
 /* ── Styles ── */
@@ -65,23 +57,11 @@ function GoldPriceChart({ onClose, dir }) {
   const { prices, lastUpdate } = useLiveGoldPrice();
   const currentPrice24K = prices?.[24] || 568.14;
 
-  // Generate 7 day data ONCE and store in ref
-  const weekDataRef = useRef(null);
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
-    if (prices && !weekDataRef.current) {
-      weekDataRef.current = generateWeekData(currentPrice24K);
-      setChartData(weekDataRef.current);
-    }
-  }, [prices, currentPrice24K]);
-
-  // Update last data point every 60 seconds with latest real price
-  useEffect(() => {
-    if (weekDataRef.current && prices) {
-      const updatedData = [...weekDataRef.current];
-      updatedData[6].price = currentPrice24K;
-      setChartData(updatedData);
+    if (prices) {
+      setChartData(generateChartData(currentPrice24K));
     }
   }, [currentPrice24K, prices]);
 
@@ -96,7 +76,7 @@ function GoldPriceChart({ onClose, dir }) {
     <ModalWrap onClose={onClose} wide>
       <button style={closeBtn} onClick={onClose}><FiX size={18} /></button>
       <div dir={dir} style={{ minHeight: "400px" }}>
-        <h2 style={{ fontSize: "1.2rem", fontWeight: 800, color: GOLD, margin: "0 0 0.6rem", display: "inline-flex", alignItems: "center", gap: "0.45rem" }}><FiBarChart2 size={20} /> {t("chartModalTitle")}</h2>
+        <h2 style={{ fontSize: "1.2rem", fontWeight: 800, color: GOLD, margin: "0 0 0.6rem", display: "inline-flex", alignItems: "center", gap: "0.45rem" }}><FiBarChart2 size={20} /> {t("chartModalTitle")} ({currentPrice24K.toFixed(2)} {t("chartUnit")})</h2>
 
         {/* Current price prominently */}
         <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
@@ -113,7 +93,7 @@ function GoldPriceChart({ onClose, dir }) {
           <ResponsiveContainer width="100%" height={320}>
             <LineChart data={chartData} margin={{ top: 8, right: 10, left: -14, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.07)" />
-              <XAxis dataKey="date" tick={{ fill: "rgba(255,255,255,0.38)", fontSize: 10 }} interval={0} axisLine={false} tickLine={false} />
+              <XAxis dataKey="day" tick={{ fill: "rgba(255,255,255,0.38)", fontSize: 10 }} interval={0} axisLine={false} tickLine={false} />
               <YAxis tick={{ fill: "rgba(255,255,255,0.38)", fontSize: 10 }} axisLine={false} tickLine={false} domain={["auto", "auto"]} />
               <Tooltip contentStyle={{ backgroundColor: BG, border: `1px solid ${GOLD}`, borderRadius: "8px", fontFamily: "'Tajawal',sans-serif", color: "#FFFFFF", fontSize: "0.83rem" }} labelStyle={{ color: GOLD, fontWeight: 700 }} formatter={v => [`${v} ${t("chartUnit")}`, t("chartPrice")]} />
               <Line type="monotone" dataKey="price" stroke="#D4AF37" strokeWidth={2.5} dot={false} activeDot={{ r: 5, fill: "#D4AF37" }} />

@@ -36,12 +36,19 @@ export function useLiveGoldPrice() {
 
   const fetchPrices = async () => {
     try {
-      const res = await fetch("https://api.metals.live/v1/spot/gold");
+      const res = await fetch(
+        "https://www.goldapi.io/api/XAU/USD",
+        {
+          headers: {
+            "x-access-token": "goldapi-demo",
+            "Content-Type": "application/json"
+          }
+        }
+      );
       if (!res.ok) throw new Error("API error");
       const data = await res.json();
-      const spotUsd = Array.isArray(data) ? data[0]?.gold : data?.gold;
+      const spotUsd = data.price_gram_24k * TROY_OUNCE_TO_GRAM;
       if (!spotUsd || isNaN(spotUsd)) throw new Error("Invalid data");
-
       const next = calculateKaratPrices(spotUsd);
       setPrevPrices(prevRef.current);
       prevRef.current = next;
@@ -49,7 +56,6 @@ export function useLiveGoldPrice() {
       setLastUpdate(new Date());
       setIsError(false);
     } catch (err) {
-      // Use fallback on failure
       if (!prevRef.current) {
         setPrices(FALLBACK_PRICES);
         prevRef.current = FALLBACK_PRICES;
