@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation }      from "react-i18next";
 import { useNavigate }         from "react-router-dom";
-import { FiHome, FiClipboard, FiShoppingBag, FiFileText, FiBell, FiBarChart2 } from "react-icons/fi";
+import { FiHome, FiClipboard, FiShoppingBag, FiFileText, FiBell, FiBarChart2, FiSliders } from "react-icons/fi";
 import { useAuth }             from "../../context/AuthContext";
 import { useLanguage }         from "../../context/LanguageContext";
 import VerificationQueue       from "../../components/admin/VerificationQueue";
@@ -16,6 +16,7 @@ import ShopManagement          from "../../components/admin/ShopManagement";
 import ContentManagement       from "../../components/admin/ContentManagement";
 import AdRequestsManagement    from "../../components/admin/AdRequestsManagement";
 import PlatformStats           from "../../components/admin/PlatformStats";
+import HeroSliderManager       from "../../components/admin/HeroSliderManager";
 import GoldSpinner             from "../../components/common/GoldSpinner";
 import DahabNowLogo            from "../../components/common/DahabNowLogo";
 import ScrollToTopButton        from "../../components/common/ScrollToTopButton";
@@ -24,6 +25,7 @@ const TABS = [
   { id: "verif",   icon: <FiClipboard size={18} />, key: "tabVerificationQueue" },
   { id: "shops",   icon: <FiShoppingBag size={18} />, key: "tabShopManagement"    },
   { id: "content", icon: <FiFileText size={18} />, key: "tabContentManagement" },
+  { id: "hero",    icon: <FiSliders size={18} />, label: "Hero Slider" },
   { id: "ads",     icon: <FiBell size={18} />, key: "tabAdRequestsMgmt"    },
   { id: "stats",   icon: <FiBarChart2 size={18} />, key: "tabPlatformStats"     },
 ];
@@ -57,7 +59,7 @@ function Sidebar({ activeTab, onSelect, dir }) {
               onMouseLeave={(e) => { if (!active) { e.currentTarget.style.background = "none"; e.currentTarget.style.color = "rgba(255,255,255,0.65)"; } }}
             >
               <span style={{ fontSize: "1rem" }}>{tab.icon}</span>
-              {t(tab.key)}
+              {tab.label || t(tab.key)}
             </button>
           );
         })}
@@ -76,7 +78,7 @@ function MobileTabBar({ activeTab, onSelect }) {
         return (
           <button key={tab.id} onClick={() => onSelect(tab.id)} style={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: "2px", padding: "0.5rem 0.85rem", background: "none", border: "none", borderBottom: active ? `2px solid ${GOLD}` : "2px solid transparent", color: active ? GOLD : "rgba(255,255,255,0.55)", fontFamily: "'Tajawal', sans-serif", fontSize: "0.7rem", fontWeight: active ? 700 : 400, cursor: "pointer", whiteSpace: "nowrap" }}>
             <span style={{ fontSize: "1rem" }}>{tab.icon}</span>
-            {t(tab.key)}
+            {tab.label || t(tab.key)}
           </button>
         );
       })}
@@ -118,6 +120,7 @@ function AdminDashboard() {
       case "verif":   return <VerificationQueue />;
       case "shops":   return <ShopManagement />;
       case "content": return <ContentManagement />;
+      case "hero":    return <HeroSliderManager />;
       case "ads":     return <AdRequestsManagement />;
       case "stats":   return <PlatformStats />;
       default:        return null;

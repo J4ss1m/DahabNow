@@ -18,7 +18,7 @@ import { useTranslation }           from "react-i18next";
 import { FiStar, FiShoppingBag, FiTrendingUp } from "react-icons/fi";
 import { useNavigate }              from "react-router-dom";
 import { useLanguage }              from "../../context/LanguageContext";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
 import { db }                       from "../../firebase/config";
 import iuLogo                       from "../../assets/iu-logo.png";
 import DahabNowLogo                 from "../common/DahabNowLogo";
@@ -97,21 +97,49 @@ function HeroSlider() {
   const navigate     = useNavigate();
   const dir          = language === "ar" ? "rtl" : "ltr";
 
-  // Start with the 3 defaults immediately — no loading blank
+  // Start with defaults immediately — no loading blank
   const [slides,    setSlides]    = useState(DEFAULTS);
   const [current,  setCurrent]   = useState(0);
   const [direction,setDirection] = useState(1);
 
-  /* ── Fetch approved ads in background ──────────────────────── */
+  /* ── Fetch hero slides first, fallback to approved ads/defaults ── */
   useEffect(() => {
     let cancelled = false;
-    const fetchAds = async () => {
+    const fetchSlides = async () => {
       try {
-        const q    = query(collection(db, "adRequests"), where("status", "==", "approved"));
-        const snap = await getDocs(q);
+        const heroQ = query(
+          collection(db, "heroSlides"),
+          where("isActive", "==", true),
+          orderBy("order", "asc")
+        );
+        const heroSnap = await getDocs(heroQ);
         if (cancelled) return;
-        if (!snap.empty) {
-          const adSlides = snap.docs.map((d) => {
+
+        if (!heroSnap.empty) {
+          const heroSlides = heroSnap.docs.map((d) => {
+            const a = d.data();
+            return {
+              isAd: false,
+              title: a.title || "",
+              subtitle: a.subtitle || "",
+              buttonText: a.buttonText || "",
+              buttonLink: a.buttonLink || "",
+              backgroundColor: a.backgroundColor || "#263238",
+              textColor: a.textColor || "#FFFFFF",
+              gradient: `linear-gradient(135deg, ${a.backgroundColor || "#263238"} 0%, #263238 100%)`,
+              icon: <FiStar size={24} />,
+            };
+          });
+          setSlides(heroSlides);
+          setCurrent(0);
+          return;
+        }
+
+        const adQ = query(collection(db, "adRequests"), where("status", "==", "approved"));
+        const adSnap = await getDocs(adQ);
+        if (cancelled) return;
+        if (!adSnap.empty) {
+          const adSlides = adSnap.docs.map((d) => {
             const a = d.data();
             return {
               isAd:      true,
@@ -123,15 +151,13 @@ function HeroSlider() {
             };
           });
           setSlides(buildSlides(adSlides));
-          setCurrent(0); // reset to first slide after update
+          setCurrent(0);
         }
-        // If empty → already showing DEFAULTS, nothing to do
       } catch (err) {
-        console.error("[HeroSlider] fetch ads:", err);
-        // Silently keep DEFAULTS on error
+        console.error("[HeroSlider] fetch slides:", err);
       }
     };
-    fetchAds();
+    fetchSlides();
     return () => { cancelled = true; };
   }, []);
 
@@ -154,11 +180,18 @@ function HeroSlider() {
   const handleCta = (slide) => {
     if (slide.isAd) {
       navigate(`/shop/${slide.shopId}`);
-    } else if (slide.ctaPath.startsWith("#")) {
+    } else if (slide.buttonLink) {
+      if (slide.buttonLink.startsWith("#")) {
+        const el = document.getElementById(slide.buttonLink.slice(1));
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      } else {
+        navigate(slide.buttonLink);
+      }
+    } else if (slide.ctaPath && slide.ctaPath.startsWith("#")) {
       // Smooth scroll to anchor
       const el = document.getElementById(slide.ctaPath.slice(1));
       if (el) el.scrollIntoView({ behavior: "smooth" });
-    } else {
+    } else if (slide.ctaPath) {
       navigate(slide.ctaPath);
     }
   };
@@ -280,7 +313,7 @@ function HeroSlider() {
                 transition={{ delay: 0.2, duration: 0.5 }}
                 style={{ fontSize: "clamp(1.5rem,4vw,2.5rem)", fontWeight: 800, color: "#FFFFFF", margin: "0 0 0.75rem", lineHeight: 1.2, maxWidth: "700px" }}
               >
-                {slide.isAd ? slide.shopName : t(slide.titleKey)}
+                {slide.isAd ? slide.shopName : (slide.title || t(slide.titleKey))}
               </motion.h1>
 
               {/* Subtitle */}
@@ -290,7 +323,7 @@ function HeroSlider() {
                 transition={{ delay: 0.3, duration: 0.5 }}
                 style={{ fontSize: "clamp(0.92rem,2.2vw,1.15rem)", color: "rgba(255,255,255,0.72)", margin: "0 0 1.75rem", maxWidth: "560px", lineHeight: 1.55 }}
               >
-                {slide.isAd ? slide.adMessage : t(slide.subKey)}
+                {slide.isAd ? slide.adMessage : (slide.subtitle || t(slide.subKey))}
               </motion.p>
 
               {/* CTA button */}
@@ -303,7 +336,7 @@ function HeroSlider() {
                 onClick={() => handleCta(slide)}
                 style={{ backgroundColor: "#FFD700", color: "#263238", border: "none", borderRadius: "12px", padding: "0.8rem 2rem", fontSize: "1rem", fontWeight: 800, cursor: "pointer", fontFamily: "'Tajawal',sans-serif", letterSpacing: "0.04em" }}
               >
-                {slide.isAd ? t("viewShop") : t(slide.ctaKey)}
+                {slide.isAd ? t("viewShop") : (slide.buttonText || t(slide.ctaKey))}
               </motion.button>
             </>
           )}
