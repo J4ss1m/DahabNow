@@ -8,30 +8,14 @@
  * Refresh rate: every 60 seconds
  */
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence }      from "framer-motion";
 import { useTranslation }               from "react-i18next";
 import { useLanguage }                  from "../../context/LanguageContext";
+import { useLiveGoldPrice }             from "../../hooks/useLiveGoldPrice";
 
 /* ── Constants ───────────────────────────────────────────────── */
-const KARATS        = [24, 22, 21, 18];
-const SAR_PER_USD   = 3.75;
-const GRAMS_PER_OZ  = 31.1035;
-const REFRESH_MS    = 60_000;
-
-/* Fallback hardcoded approximate prices (SAR/g) */
-const FALLBACK = { 24: 568.14, 22: 520.80, 21: 497.12, 18: 426.10 };
-
-/* Convert spot price (USD/oz) → karat prices (SAR/g) */
-const spotToKaratsMap = (spotUsd) => {
-  const base24 = (spotUsd * SAR_PER_USD) / GRAMS_PER_OZ;
-  return {
-    24: parseFloat(base24.toFixed(2)),
-    22: parseFloat((base24 * (22 / 24)).toFixed(2)),
-    21: parseFloat((base24 * (21 / 24)).toFixed(2)),
-    18: parseFloat((base24 * (18 / 24)).toFixed(2)),
-  };
-};
+const KARATS = [24, 22, 21, 18];
 
 /* ── Shimmer overlay ─────────────────────────────────────────── */
 function Shimmer() {
@@ -121,47 +105,15 @@ function GoldPriceCard() {
   const { language } = useLanguage();
   const dir          = language === "ar" ? "rtl" : "ltr";
 
-  const [prices,    setPrices]    = useState(null);   // { 24: number, ... }
-  const [prevPrices,setPrevPrices]= useState(null);
-  const [lastUpdate,setLastUpdate]= useState(null);
-  const [shimmer,   setShimmer]   = useState(false);
-  const [isError,   setIsError]   = useState(false);
-  const prevRef = useRef(null);
+  const { prices, prevPrices, lastUpdate, isError } = useLiveGoldPrice();
+  const [shimmer, setShimmer] = useState(false);
 
-  const fetchPrices = async () => {
-    try {
-      const res   = await fetch("https://api.metals.live/v1/spot/gold");
-      if (!res.ok) throw new Error("API error");
-      const data  = await res.json(); // [{ gold: number }]
-      const spotUsd = Array.isArray(data) ? data[0]?.gold : data?.gold;
-      if (!spotUsd || isNaN(spotUsd)) throw new Error("Invalid data");
-
-      const next = spotToKaratsMap(spotUsd);
-      setPrevPrices(prevRef.current);
-      prevRef.current = next;
-      setPrices(next);
-      setLastUpdate(new Date());
-      setIsError(false);
-    } catch {
-      // Use fallback on failure
-      if (!prevRef.current) {
-        setPrices(FALLBACK);
-        prevRef.current = FALLBACK;
-      }
-      setIsError(true);
-    } finally {
-      // Trigger shimmer
-      setShimmer(true);
-      setTimeout(() => setShimmer(false), 900);
-    }
-  };
-
-  // Initial fetch + refresh interval
   useEffect(() => {
-    fetchPrices();
-    const id = setInterval(fetchPrices, REFRESH_MS);
-    return () => clearInterval(id);
-  }, []);
+    if (!prices) return;
+    setShimmer(true);
+    const id = setTimeout(() => setShimmer(false), 900);
+    return () => clearTimeout(id);
+  }, [prices]);
 
   const formatTime = (d) => {
     if (!d) return "";
@@ -199,16 +151,14 @@ function GoldPriceCard() {
             animation:    "pulse 2s ease-in-out infinite",
           }} />
         </h2>
-        {lastUpdate && (
-          <p style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.45)", margin: 0 }}>
-            {t("goldPriceLastUpdated")}: {formatTime(lastUpdate)}
-            {isError && (
-              <span style={{ color: "#F87171", marginInlineStart: "0.5rem" }}>
-                ({t("goldPriceError")})
-              </span>
-            )}
-          </p>
-        )}
+        <p style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.45)", margin: 0 }}>
+          {t("goldPriceLastUpdated")}: {lastUpdate ? formatTime(lastUpdate) : "--:--:--"}
+          {isError && (
+            <span style={{ color: "#F87171", marginInlineStart: "0.5rem" }}>
+              ({t("goldPriceError")})
+            </span>
+          )}
+        </p>
       </div>
 
       {/* Loading state */}
